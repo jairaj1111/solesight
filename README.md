@@ -1,6 +1,15 @@
+![SoleSight — The Hype Index](docs/screenshots/banner.png)
+
 # 👟 SoleSight
 
 **Sneaker & Streetwear Consumer Intelligence Platform**
+
+**▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index, ranking 23 silhouettes by a composite 0–100 Hype Score.
+
+| #1 · Air Jordan 4 Military Black | #2 · Air Jordan 11 Concord | #3 · Nike SB Dunk Low Jarritos |
+| :---: | :---: | :---: |
+| <img src="web/img/aj4-military-black.png" width="220" alt="AJ4 Military Black"> | <img src="web/img/aj11-concord.png" width="220" alt="AJ11 Concord"> | <img src="web/img/sb-dunk-low-jarritos.png" width="220" alt="SB Dunk Jarritos"> |
+| Hype **65.7** · 1.92× retail | Hype **65.0** · 2.00× retail | Hype **58.3** |
 
 SoleSight aggregates demand signals for 20+ sneaker models from **Google Trends**,
 **Reddit**, **social buzz** (Instagram / TikTok / YouTube), and **resale markets**
