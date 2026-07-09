@@ -36,3 +36,5 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+# retrigger: repo is now public
