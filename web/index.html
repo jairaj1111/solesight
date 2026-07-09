@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoleSight — The Hype Index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ambient grain + glow -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ───────────────── nav ───────────────── -->
+  <header class="nav" id="nav">
+    <a class="brand" href="#top">
+      <span class="brand-mark">◎</span>
+      <span class="brand-word">SoleSight</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#index">The Index</a>
+      <a href="#movers">Movers</a>
+      <a href="#method">Method</a>
+    </nav>
+    <div class="nav-live"><span class="live-dot"></span> Live signals</div>
+  </header>
+
+  <main id="top">
+    <!-- ───────────────── hero ───────────────── -->
+    <section class="hero">
+      <div class="hero-copy reveal">
+        <div class="eyebrow" id="hero-eyebrow">The Hype Index</div>
+        <h1 class="hero-title">
+          What the <em>culture</em><br />is chasing<br />right&nbsp;now.
+        </h1>
+        <p class="hero-sub">
+          One score, five signals. SoleSight blends search demand, resale
+          premium, social buzz, community sentiment and a 30-day forecast into a
+          single <strong>Hype Score</strong> — ranked across every silhouette we track.
+        </p>
+        <div class="hero-actions">
+          <a href="#index" class="btn btn-solid">Explore the index</a>
+          <a href="#method" class="btn btn-ghost">How it works</a>
+        </div>
+      </div>
+
+      <!-- featured #1 -->
+      <aside class="hero-feature reveal" id="hero-feature">
+        <!-- filled by JS -->
+      </aside>
+    </section>
+
+    <!-- ───────────────── controls ───────────────── -->
+    <section class="controls" id="index">
+      <div class="controls-head">
+        <h2 class="section-title">The Index</h2>
+        <div class="sort">
+          <span class="sort-label">Rank by</span>
+          <div class="seg" id="sort-seg">
+            <button data-sort="hype" class="on">Hype</button>
+            <button data-sort="momentum">Momentum</button>
+            <button data-sort="resale_premium">Resale</button>
+            <button data-sort="buzz">Buzz</button>
+          </div>
+        </div>
+      </div>
+      <div class="chips" id="brand-chips"></div>
+    </section>
+
+    <!-- podium (top 3) -->
+    <section class="podium" id="podium"></section>
+
+    <!-- ranked list -->
+    <section class="board" id="board"></section>
+
+    <!-- ───────────────── movers ───────────────── -->
+    <section class="movers-wrap" id="movers">
+      <h2 class="section-title">This week's movers</h2>
+      <div class="movers" id="movers-grid"></div>
+    </section>
+
+    <!-- ───────────────── method ───────────────── -->
+    <section class="method" id="method">
+      <h2 class="section-title">How the score works</h2>
+      <div class="method-grid">
+        <div class="method-card reveal"><span class="mc-w">26%</span><h3>Resale premium</h3><p>Last sale vs. retail across StockX &amp; eBay — the market's dollar vote.</p></div>
+        <div class="method-card reveal"><span class="mc-w">24%</span><h3>Search momentum</h3><p>Google Trends interest, last 14 days vs. the prior 14.</p></div>
+        <div class="method-card reveal"><span class="mc-w">20%</span><h3>Social buzz</h3><p>Mention volume &amp; engagement on Instagram, TikTok and YouTube.</p></div>
+        <div class="method-card reveal"><span class="mc-w">18%</span><h3>Search interest</h3><p>Raw demand level, indexed 0–100 to each model's own peak.</p></div>
+        <div class="method-card reveal"><span class="mc-w">12%</span><h3>Community mood</h3><p>Transformer sentiment over Reddit sneaker chatter.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-word">SoleSight</div>
+    <p>Sneaker &amp; streetwear consumer intelligence · demo data, synthesized offline.</p>
+  </footer>
+
+  <!-- ───────────────── detail overlay ───────────────── -->
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <aside class="sheet" id="sheet" aria-hidden="true"></aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

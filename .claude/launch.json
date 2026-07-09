@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "solesight",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "PATH=\"$HOME/Library/Python/3.9/bin:$PATH\" PYTHONPATH=/Users/jairajnarang/Projects/solesight streamlit run app/streamlit_app.py --server.headless true"],
+      "port": 8501
+    },
+    {
+      "name": "solesight-web",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8600", "--directory", "web"],
+      "port": 8600
+    }
+  ]
+}

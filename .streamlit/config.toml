@@ -1,0 +1,11 @@
+# SoleSight — StockX-inspired dark marketplace theme.
+[theme]
+base = "dark"
+primaryColor       = "#00ff87"
+backgroundColor    = "#09090b"
+secondaryBackgroundColor = "#111113"
+textColor          = "#fafafa"
+font               = "sans serif"
+
+[browser]
+gatherUsageStats = false

@@ -1,0 +1,25 @@
+# --- Core data stack ---
+pandas>=2.2
+numpy>=1.26
+
+# --- Data ingestion ---
+praw>=7.7              # Reddit API client
+pytrends>=4.9          # Unofficial Google Trends API
+
+# --- NLP / sentiment ---
+transformers>=4.40     # HuggingFace transformer models
+torch>=2.2             # Backend for transformers (CPU is fine)
+
+# --- Forecasting ---
+prophet>=1.1.5         # Facebook Prophet time-series forecasting
+
+# --- LLM insight engine ---
+openai>=1.30           # OpenAI API client
+
+# --- App / dashboard ---
+streamlit>=1.35
+plotly>=5.20           # Interactive charts in Streamlit
+
+# --- Utilities ---
+python-dotenv>=1.0     # Load secrets from .env
+tenacity>=8.2          # Retry logic for flaky API calls
