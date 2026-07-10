@@ -42,11 +42,22 @@ def _collapse(scores: list[dict]) -> tuple[float, str]:
 
 
 def score_texts(texts: list[str]) -> list[tuple[float, str]]:
-    """Batch-score a list of texts."""
+    """Batch-score a list of texts.
+
+    Uses the transformer pipeline when available; otherwise falls back to the
+    dependency-free lexicon scorer (see nlp/lexicon.py) so scoring still works
+    on machines and CI runners without torch. Same (score, label) contract.
+    """
     if not texts:
         return []
     clipped = [t[:_MAX_CHARS] for t in texts]
-    results = _pipeline()(clipped, batch_size=_BATCH)
+    try:
+        pipe = _pipeline()
+    except ImportError:
+        from . import lexicon
+        print("  sentiment: transformers not installed — using lexicon fallback")
+        return lexicon.score_texts(clipped)
+    results = pipe(clipped, batch_size=_BATCH)
     return [_collapse(r) for r in results]
 
 

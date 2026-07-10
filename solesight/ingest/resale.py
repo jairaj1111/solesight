@@ -67,29 +67,120 @@ def daily_price(model_slug: str) -> pd.DataFrame:
               .sort_values("date"))
 
 
-# --- Live ingestion adapters (not wired yet) --------------------------------
-def _fetch_ebay(model, timeframe):    # pragma: no cover - stub
-    raise NotImplementedError("wire the eBay Browse/Marketplace Insights API here")
+# --- eBay Browse API (live) --------------------------------------------------
+# Free developer keyset from developer.ebay.com. The Browse API returns ACTIVE
+# listings, so eBay rows are ask-side: `last_sale` holds the median asking price
+# (documented proxy until Marketplace Insights sold-data access is granted),
+# `lowest_ask` the cheapest listing, `sales_count` the listing count.
+_EBAY_OAUTH = "https://api.ebay.com/identity/v1/oauth2/token"
+_EBAY_SEARCH = "https://api.ebay.com/buy/browse/v1/item_summary/search"
+_EBAY_CATEGORY = "15709"          # Athletic Shoes
+_token_cache: dict = {}
 
 
-def _fetch_stockx(model, timeframe):  # pragma: no cover - stub
-    raise NotImplementedError("wire the StockX partner API here")
+def _ebay_token() -> str:
+    """Client-credentials token, cached until near expiry."""
+    import base64
+    import json
+    import time as _time
+    import urllib.parse
+    import urllib.request
+
+    if _token_cache.get("exp", 0) > _time.time() + 60:
+        return _token_cache["tok"]
+    basic = base64.b64encode(
+        f"{config.EBAY_CLIENT_ID}:{config.EBAY_CLIENT_SECRET}".encode()).decode()
+    body = urllib.parse.urlencode({
+        "grant_type": "client_credentials",
+        "scope": "https://api.ebay.com/oauth/api_scope",
+    }).encode()
+    req = urllib.request.Request(_EBAY_OAUTH, data=body, headers={
+        "Authorization": f"Basic {basic}",
+        "Content-Type": "application/x-www-form-urlencoded",
+    })
+    with urllib.request.urlopen(req, timeout=20) as resp:
+        payload = json.loads(resp.read())
+    _token_cache.update(tok=payload["access_token"],
+                        exp=_time.time() + int(payload.get("expires_in", 7200)))
+    return _token_cache["tok"]
 
 
-_ADAPTERS = {"ebay": _fetch_ebay, "stockx": _fetch_stockx}
+def _fetch_ebay(model) -> dict | None:
+    """One ask-side daily row for `model` from live eBay listings, or None."""
+    import json
+    import statistics
+    import time as _time
+    import urllib.parse
+    import urllib.request
+
+    from datetime import date as _date
+
+    query = urllib.parse.urlencode({
+        "q": model.trends_term,
+        "category_ids": _EBAY_CATEGORY,
+        "limit": "50",
+        "filter": "buyingOptions:{FIXED_PRICE},priceCurrency:USD",
+    })
+    req = urllib.request.Request(f"{_EBAY_SEARCH}?{query}", headers={
+        "Authorization": f"Bearer {_ebay_token()}",
+        "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
+    })
+    with urllib.request.urlopen(req, timeout=25) as resp:
+        items = json.loads(resp.read()).get("itemSummaries", [])
+    prices = sorted(float(i["price"]["value"]) for i in items
+                    if i.get("price", {}).get("value"))
+    if len(prices) < 3:          # too thin to be a signal
+        return None
+    # Trim the top/bottom decile: fakes, kids' sizes and typo listings live there.
+    k = max(1, len(prices) // 10)
+    core = prices[k:-k] or prices
+    return {
+        "model_slug": model.slug,
+        "date": _date.today().isoformat(),
+        "source": "ebay",
+        "last_sale": round(statistics.median(core), 2),
+        "lowest_ask": round(core[0], 2),
+        "sales_count": len(prices),
+        "fetched_at": int(_time.time()),
+    }
+
+
+def _purge_seeded(source: str) -> int:
+    """Drop synthetic rows for `source` once real data is flowing."""
+    with connect() as conn:
+        cur = conn.execute(
+            "DELETE FROM resale WHERE source=? AND fetched_at=?",
+            (source, config.SEED_TAG))
+    return cur.rowcount
 
 
 def run() -> None:
-    """Live ingestion entry point — not wired yet.
+    """Ingest live resale data from every source with credentials configured."""
+    import time as _time
 
-    Implement the `_fetch_*` adapters (each gated on its config token) and store
-    their rows via `store()`. Until then, use `python -m scripts.seed_demo`.
-    """
-    raise NotImplementedError(
-        "Live resale ingestion isn't wired. Implement the _fetch_* adapters in "
-        "solesight/ingest/resale.py, or run `python -m scripts.seed_demo` for "
-        "offline demo resale data."
-    )
+    if not (config.EBAY_CLIENT_ID and config.EBAY_CLIENT_SECRET):
+        raise NotImplementedError(
+            "No live resale credentials. Set EBAY_CLIENT_ID / EBAY_CLIENT_SECRET "
+            "(free keyset from developer.ebay.com), or run `python -m "
+            "scripts.seed_demo` for offline demo resale data. StockX requires "
+            "partner-program approval and stays stubbed.")
+
+    from .. import models as _models
+
+    rows, failed = [], []
+    for model in _models.CATALOG:
+        try:
+            row = _fetch_ebay(model)
+            if row:
+                rows.append(row)
+        except Exception as exc:
+            failed.append(model.slug)
+            print(f"  ! ebay failed for {model.slug}: {exc}")
+        _time.sleep(0.4)   # stay polite; Browse API default quota is 5k/day
+    n = store(rows)
+    purged = _purge_seeded("ebay") if n else 0
+    print(f"  resale: ebay -> {n} model-rows stored, {len(failed)} failed"
+          + (f", purged {purged} seeded ebay rows" if purged else ""))
 
 
 if __name__ == "__main__":

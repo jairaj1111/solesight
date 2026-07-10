@@ -28,8 +28,9 @@ from solesight.db import connect
 from solesight.ingest import resale, social
 from solesight.insights import rules, signals
 
-# A sentinel we stamp into fetched_at so synthetic rows are easy to find/remove.
-SEED_TAG = 970000000  # fixed, recognizable, clearly not a real recent timestamp
+# Sentinel stamped into fetched_at so synthetic rows are easy to find/remove
+# (shared with live ingesters, which purge demo rows once real data flows).
+from solesight.config import SEED_TAG  # noqa: E402
 
 _SUBREDDITS = ["Sneakers", "SneakerMarket", "streetwear", "Nike", "Jordans"]
 

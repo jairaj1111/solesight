@@ -30,6 +30,14 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      # Live-source credentials (repo secrets). Each stage below activates only
+      # when its keys are present, so the workflow runs fine with none set.
+      REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+      REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+      REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
+      EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
+      EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,7 +47,7 @@ jobs:
           cache: pip
 
       - name: Install pipeline deps (no torch/OpenAI needed)
-        run: pip install pandas numpy pytrends tenacity python-dotenv prophet
+        run: pip install pandas numpy pytrends tenacity python-dotenv prophet praw
 
       - name: Ensure schema
         run: python -m scripts.init_db
@@ -47,6 +55,21 @@ jobs:
       - name: Ingest Google Trends (real data; tolerate rate-limit nights)
         continue-on-error: true
         run: python -m scripts.run_pipeline --trends
+
+      - name: Ingest Reddit chatter (live once REDDIT_* secrets are set)
+        if: env.REDDIT_CLIENT_ID != ''
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --reddit
+
+      - name: Score sentiment (lexicon fallback — no torch in CI)
+        if: env.REDDIT_CLIENT_ID != ''
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --sentiment
+
+      - name: Ingest eBay resale (live once EBAY_* secrets are set)
+        if: env.EBAY_CLIENT_ID != ''
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --resale
 
       - name: Refit Prophet forecasts
         continue-on-error: true

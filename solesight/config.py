@@ -54,8 +54,15 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")   # YouTube Data API v3
 # Marketplaces we track for resale price/volume. eBay has a real free API
 # (Browse + Marketplace Insights); StockX requires partner-program approval.
 RESALE_SOURCES = ("stockx", "ebay")
-EBAY_APP_ID = os.getenv("EBAY_APP_ID", "")           # eBay Developer app id
+# eBay developer keyset (free at developer.ebay.com): App ID = client id,
+# Cert ID = client secret. EBAY_APP_ID kept as a legacy alias.
+EBAY_CLIENT_ID = os.getenv("EBAY_CLIENT_ID", os.getenv("EBAY_APP_ID", ""))
+EBAY_CLIENT_SECRET = os.getenv("EBAY_CLIENT_SECRET", "")
 STOCKX_API_KEY = os.getenv("STOCKX_API_KEY", "")     # StockX partner API
+
+# Synthetic rows written by scripts/seed_demo.py carry this fetched_at sentinel,
+# so live ingestion can purge demo data the moment real data starts flowing.
+SEED_TAG = 970000000
 
 # --- NLP ---
 SENTIMENT_MODEL = os.getenv(

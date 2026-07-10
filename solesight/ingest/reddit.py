@@ -128,6 +128,13 @@ def run(limit: int = config.REDDIT_SCAN_LIMIT,
                 rows.append(_row(post, m, now))
                 summary.per_model[m.slug] += 1
         summary.stored += store(rows)  # store per-subreddit for incremental progress
+    if summary.stored:
+        # Real chatter is flowing — drop any synthetic demo posts (seed_demo).
+        with connect() as conn:
+            purged = conn.execute("DELETE FROM reddit_posts WHERE fetched_at=?",
+                                  (config.SEED_TAG,)).rowcount
+        if purged:
+            print(f"  reddit: purged {purged} seeded demo posts")
     summary.report()
     return summary
 

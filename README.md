@@ -102,7 +102,29 @@ python -m scripts.run_pipeline --reddit --sentiment
 
 The insights stage auto-selects an engine: it uses OpenAI when `OPENAI_API_KEY`
 is set, and otherwise falls back to the offline rule engine. Force the offline
-engine anytime with `--offline-insights`.
+engine anytime with `--offline-insights`. Sentiment scoring works the same way:
+the transformer when torch is installed, a dependency-free lexicon scorer
+otherwise (that's what the nightly CI uses).
+
+## Live data sources
+
+Every stage degrades gracefully, so the platform is honest about what's real:
+
+| Signal | Source | Status | Activate with |
+|---|---|---|---|
+| Search demand | Google Trends | **Live** (nightly) | nothing — no key needed |
+| Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
+| Community sentiment | Reddit API | Synthetic until keys set | free app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
+| Resale (ask-side) | eBay Browse API | Synthetic until keys set | free keyset at [developer.ebay.com](https://developer.ebay.com) → `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` |
+| Resale (sold) | StockX | Stubbed | partner-program approval |
+| Social buzz | IG / TikTok / YouTube | Modeled | per-platform API tokens (stubs documented in `ingest/social.py`) |
+
+Set the keys locally in `.env`, and for the nightly refresh add them as
+**repository secrets** (Settings → Secrets and variables → Actions) with the
+same names. The moment real data flows for a source, its synthetic demo rows
+are purged automatically. eBay rows reflect **asking prices** (median of live
+listings, top/bottom decile trimmed) until Marketplace Insights sold-data
+access is granted.
 
 ## Dashboard
 
