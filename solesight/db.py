@@ -80,6 +80,13 @@ CREATE TABLE IF NOT EXISTS resale (
 );
 CREATE INDEX IF NOT EXISTS idx_resale_model_time
     ON resale (model_slug, date);
+
+CREATE TABLE IF NOT EXISTS hype_history (
+    model_slug    TEXT NOT NULL,
+    date          TEXT NOT NULL,          -- ISO date the snapshot was taken
+    hype          REAL NOT NULL,          -- composite 0-100 Hype Score that day
+    PRIMARY KEY (model_slug, date)
+);
 """
 
 

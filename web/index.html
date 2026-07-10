@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
   <!-- ambient grain + glow -->
@@ -24,6 +24,7 @@
     <nav class="nav-links">
       <a href="#index">The Index</a>
       <a href="#movers">Movers</a>
+      <a href="#market">Market</a>
       <a href="#method">Method</a>
     </nav>
     <div class="nav-live"><span class="live-dot"></span> Live signals</div>
@@ -69,6 +70,7 @@
         </div>
       </div>
       <div class="chips" id="brand-chips"></div>
+      <div class="chips chips-cats" id="cat-chips"></div>
     </section>
 
     <!-- podium (top 3) -->
@@ -80,7 +82,18 @@
     <!-- ───────────────── movers ───────────────── -->
     <section class="movers-wrap" id="movers">
       <h2 class="section-title">This week's movers</h2>
+      <p class="section-sub" id="movers-sub"></p>
       <div class="movers" id="movers-grid"></div>
+    </section>
+
+    <!-- ───────────── market intelligence ───────────── -->
+    <section class="market" id="market">
+      <h2 class="section-title">Market <em>intelligence</em></h2>
+      <p class="section-sub">The analyst view — every brand and category in the
+        index, rolled up: average hype, resale premium over retail, search
+        momentum and share of the top&nbsp;10.</p>
+      <div class="mkt-table" id="mkt-brands"></div>
+      <div class="mkt-cats" id="mkt-cats"></div>
     </section>
 
     <!-- ───────────────── method ───────────────── -->
@@ -105,6 +118,6 @@
   <div class="sheet-backdrop" id="sheet-backdrop"></div>
   <aside class="sheet" id="sheet" aria-hidden="true"></aside>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

@@ -118,6 +118,22 @@ IMAGE_SLUG: dict[str, str] = {
     "nike-kobe-6-grinch": "Nike-Kobe-6-Protro-Grinch",
 }
 
+# Product category per model — the aggregation dimension for market-intelligence
+# rollups (demand by category, category movers).
+CATEGORY: dict[str, str] = {
+    "aj1-chicago": "basketball", "aj1-bred": "basketball", "aj4-bred": "basketball",
+    "aj3-black-cement": "basketball", "aj11-concord": "basketball",
+    "aj4-military-black": "basketball", "nike-kobe-6-grinch": "basketball",
+    "travis-scott-aj1-low": "basketball",
+    "dunk-low-panda": "lifestyle", "dunk-low-unc": "lifestyle",
+    "dunk-low-syracuse": "lifestyle", "nike-af1-white": "lifestyle",
+    "nb-550-white-green": "lifestyle", "yeezy-350-v2": "lifestyle",
+    "yeezy-slide": "lifestyle", "samba-og": "lifestyle", "adidas-gazelle": "lifestyle",
+    "nb-990v5": "running", "nb-2002r": "running", "nike-vomero-5": "running",
+    "asics-gel-1130": "running", "asics-gt-2160": "running",
+    "sb-dunk-low-jarritos": "skate",
+}
+
 # Local, background-removed product photos live here (PNG with alpha).
 _IMAGE_DIR = Path(__file__).resolve().parent.parent / "assets" / "sneakers"
 
@@ -129,6 +145,11 @@ def get(slug: str) -> SneakerModel:
 def retail(slug: str) -> int | None:
     """Retail MSRP for a model, or None if unknown."""
     return RETAIL.get(slug)
+
+
+def category(slug: str) -> str:
+    """Product category (basketball / running / lifestyle / skate)."""
+    return CATEGORY.get(slug, "lifestyle")
 
 
 def image_path(slug: str) -> str | None:

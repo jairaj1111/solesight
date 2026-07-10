@@ -5,6 +5,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 let DATA = null;
 let SORT = "hype";
 const ACTIVE = new Set();           // active brand filters (empty = all)
+const CATS = new Set();             // active category filters (empty = all)
 
 const fmtSigned = (v, unit = "") =>
   v == null ? "—" : (v > 0 ? "+" : "") + v + unit;
@@ -15,7 +16,7 @@ const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
 init();
 
 async function init() {
-  DATA = await fetch("data.json").then((r) => r.json());
+  DATA = await fetch("data.json?v=2").then((r) => r.json());
   document.documentElement.style.setProperty("--n", DATA.models.length);
   buildEyebrow();
   buildChips();
@@ -34,31 +35,38 @@ function buildEyebrow() {
 
 /* ---------------- filtering + sorting ---------------- */
 function view() {
-  let list = DATA.models.filter((m) => ACTIVE.size === 0 || ACTIVE.has(m.brand));
+  let list = DATA.models.filter((m) =>
+    (ACTIVE.size === 0 || ACTIVE.has(m.brand)) &&
+    (CATS.size === 0 || CATS.has(m.category)));
   const key = SORT;
   list = [...list].sort((a, b) => (b[key] ?? -1e9) - (a[key] ?? -1e9));
   return list;
 }
 
-function buildChips() {
-  const box = $("#brand-chips");
-  const mk = (label, brand) => {
+function chipRow(boxSel, values, set, allLabel) {
+  const box = $(boxSel);
+  const mk = (label, val) => {
     const el = document.createElement("button");
-    el.className = "chip" + (brand === null && ACTIVE.size === 0 ? " on" : "");
+    el.className = "chip" + (val === null && set.size === 0 ? " on" : "");
     el.textContent = label;
     el.onclick = () => {
-      if (brand === null) ACTIVE.clear();
-      else ACTIVE.has(brand) ? ACTIVE.delete(brand) : ACTIVE.add(brand);
+      if (val === null) set.clear();
+      else set.has(val) ? set.delete(val) : set.add(val);
       $$(".chip", box).forEach((c) => c.classList.remove("on"));
-      if (ACTIVE.size === 0) box.firstChild.classList.add("on");
-      else $$(".chip", box).forEach((c) => { if (ACTIVE.has(c.dataset.brand)) c.classList.add("on"); });
+      if (set.size === 0) box.firstChild.classList.add("on");
+      else $$(".chip", box).forEach((c) => { if (set.has(c.dataset.val)) c.classList.add("on"); });
       render();
     };
-    if (brand) el.dataset.brand = brand;
+    if (val) el.dataset.val = val;
     return el;
   };
-  box.appendChild(mk("All", null));
-  DATA.brands.forEach((b) => box.appendChild(mk(b, b)));
+  box.appendChild(mk(allLabel, null));
+  values.forEach((v) => box.appendChild(mk(v[0].toUpperCase() + v.slice(1), v)));
+}
+
+function buildChips() {
+  chipRow("#brand-chips", DATA.brands, ACTIVE, "All brands");
+  chipRow("#cat-chips", DATA.categories || [], CATS, "All categories");
 }
 
 /* ---------------- hero (overall #1) ---------------- */
@@ -89,6 +97,7 @@ function render() {
   renderPodium(list.slice(0, 3));
   renderBoard(list.slice(3));
   renderMovers();
+  renderMarket();
 }
 
 function renderPodium(top) {
@@ -123,15 +132,55 @@ function renderBoard(rest) {
 }
 
 function renderMovers() {
-  const gain = [...DATA.models].filter((m) => m.momentum != null)
-    .sort((a, b) => b.momentum - a.momentum).slice(0, 4);
-  $("#movers-grid").innerHTML = gain.map((m) => `
+  // Once the nightly snapshots have accrued a week of history, movers rank by
+  // real 7-day Hype Score change; until then, search momentum stands in.
+  const hasHist = DATA.models.some((m) => m.hype_delta_7d != null);
+  const key = hasHist ? "hype_delta_7d" : "momentum";
+  const unit = hasHist ? "" : "%";
+  $("#movers-sub").textContent = hasHist
+    ? "Biggest 7-day Hype Score changes, up and down."
+    : "Biggest search-momentum swings, up and down (7-day hype deltas unlock as nightly history accrues).";
+  const ranked = [...DATA.models].filter((m) => m[key] != null)
+    .sort((a, b) => b[key] - a[key]);
+  const picks = [...ranked.slice(0, 2).map((m) => [m, "Heating up"]),
+                 ...ranked.slice(-2).reverse().map((m) => [m, "Cooling off"])];
+  $("#movers-grid").innerHTML = picks.map(([m, tag]) => `
     <div class="mover" data-slug="${m.slug}">
+      <div class="mover-tag ${tag === "Heating up" ? "hot" : "cold"}">${tag}</div>
       ${img(m, "")}
       <div class="mover-name">${esc(m.name)}</div>
-      <div class="mover-delta delta ${deltaClass(m.momentum)}">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")}</div>
+      <div class="mover-delta delta ${deltaClass(m[key])}">${arrow(m[key])} ${fmtSigned(m[key], unit)}</div>
     </div>`).join("");
   bindCards("#movers-grid .mover");
+}
+
+/* ---------------- market intelligence ---------------- */
+function renderMarket() {
+  const mkt = DATA.market || {};
+  const rows = mkt.brands || [];
+  const maxHype = Math.max(...rows.map((r) => r.avg_hype || 0), 1);
+  $("#mkt-brands").innerHTML = `
+    <div class="mkt-row mkt-head">
+      <div>Brand</div><div>Models</div><div class="mkt-wide">Avg hype</div>
+      <div>Resale ×</div><div>Momentum</div><div>Top 10</div>
+    </div>` + rows.map((r) => `
+    <div class="mkt-row">
+      <div class="mkt-brand">${esc(r.name)}</div>
+      <div>${r.models}</div>
+      <div class="mkt-wide"><div class="mkt-bar">
+        <div class="mkt-fill" style="width:${((r.avg_hype || 0) / maxHype) * 100}%"></div>
+      </div><b>${r.avg_hype == null ? "—" : r.avg_hype.toFixed(1)}</b></div>
+      <div>${r.avg_premium == null ? "—" : r.avg_premium.toFixed(2) + "×"}</div>
+      <div><span class="delta ${deltaClass(r.avg_momentum)}">${arrow(r.avg_momentum)} ${fmtSigned(r.avg_momentum == null ? null : Math.round(r.avg_momentum), "%")}</span></div>
+      <div>${r.top10}/${r.models}</div>
+    </div>`).join("");
+
+  $("#mkt-cats").innerHTML = (mkt.categories || []).map((c) => `
+    <div class="mkt-cat">
+      <div class="mkt-cat-name">${esc(c.name)}</div>
+      <div class="mkt-cat-hype">${c.avg_hype == null ? "—" : c.avg_hype.toFixed(1)}</div>
+      <div class="mkt-cat-sub">avg hype · ${c.models} model${c.models === 1 ? "" : "s"}</div>
+    </div>`).join("");
 }
 
 function bindCards(sel) {
@@ -225,6 +274,17 @@ function openSheet(slug) {
       ${bar("Sentiment", sentPct)}
       ${bar("Resale", resalePct)}
     </div>
+
+    ${m.sent_summary ? `
+    <h4>Community pulse</h4>
+    <div class="pulse">
+      <div class="pulse-pct ${m.sent_summary.positive_pct >= 50 ? "up" : "down"}">${m.sent_summary.positive_pct}%<span>positive</span></div>
+      <div class="pulse-notes">
+        <div>${m.sent_summary.posts} scored posts</div>
+        ${m.sent_summary.praise ? `<div>Praised for <b>${esc(m.sent_summary.praise)}</b></div>` : ""}
+        ${m.sent_summary.complaint ? `<div>Top complaint: <b>${esc(m.sent_summary.complaint)}</b></div>` : ""}
+      </div>
+    </div>` : ""}
 
     <h4>Marketing readout</h4>
     <div class="sheet-insight">${esc(m.insight) || "No insight available."}</div>

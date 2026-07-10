@@ -17,7 +17,7 @@ from pathlib import Path
 from solesight import models
 from solesight.db import connect
 from solesight.ingest import resale
-from solesight.insights import signals
+from solesight.insights import market, signals
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
@@ -78,12 +78,17 @@ def _round(x, n=1):
 
 
 def build() -> dict:
+    # One snapshot per model, computed once and shared with every aggregation.
+    snaps = {m.slug: signals.snapshot(m.slug) for m in models.CATALOG}
+    market.record_hype_snapshot(snaps)   # accrue daily Hype Score history
+
     records = []
     for m in models.CATALOG:
-        s = signals.snapshot(m.slug)
+        s = snaps[m.slug]
         img = models.image_path(m.slug)
         records.append({
             "slug": m.slug, "name": m.name, "brand": m.brand,
+            "category": models.category(m.slug),
             "retail": s["retail_price"],
             "img": f"img/{m.slug}.png" if img else None,
             "hype": s["hype_score"],
@@ -107,6 +112,8 @@ def build() -> dict:
             "forecast_peak": _round(s["forecast_peak"], 0),
             "forecast_peak_date": s["forecast_peak_date"],
             "insight": _insight(m.slug),
+            "hype_delta_7d": market.hype_delta(m.slug, days=7),
+            "sent_summary": market.sentiment_summary(m.slug),
             "trend": _trend(m.slug),
             "forecast": _forecast(m.slug),
             "resale_series": _resale_series(m.slug),
@@ -116,6 +123,9 @@ def build() -> dict:
         r["rank"] = i
     return {"generated_at": int(time.time()),
             "brands": sorted({m.brand for m in models.CATALOG}),
+            "categories": sorted({models.category(m.slug) for m in models.CATALOG}),
+            "market": {"brands": market.brand_rollups(snaps),
+                       "categories": market.category_rollups(snaps)},
             "models": records}
 
 
