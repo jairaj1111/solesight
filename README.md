@@ -4,6 +4,13 @@
 
 **Hype, quantified — AI consumer intelligence for the sneaker market.**
 
+[![Nightly data refresh](https://github.com/jairaj1111/solesight/actions/workflows/refresh.yml/badge.svg)](https://github.com/jairaj1111/solesight/actions/workflows/refresh.yml)
+[![Deploy to GitHub Pages](https://github.com/jairaj1111/solesight/actions/workflows/pages.yml/badge.svg)](https://github.com/jairaj1111/solesight/actions/workflows/pages.yml)
+
+The index refreshes itself nightly: a scheduled GitHub Action pulls fresh Google
+Trends data, refits the Prophet forecasts, recomputes every Hype Score, and
+redeploys the site — no human in the loop.
+
 **▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index, ranking 23 silhouettes by a composite 0–100 Hype Score.
 
 | #1 · Air Jordan 4 Military Black | #2 · Air Jordan 11 Concord | #3 · Nike SB Dunk Low Jarritos |

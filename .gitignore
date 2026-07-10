@@ -6,6 +6,9 @@ data/*.db
 data/*.sqlite
 data/raw/
 *.csv
+# ...except the project's data store — the nightly refresh Action reads and
+# updates it in place, so it lives in the repo (a few MB).
+!data/solesight.db
 
 # Python
 __pycache__/
