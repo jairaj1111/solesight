@@ -2,7 +2,7 @@
 
 # 👟 SoleSight
 
-**Sneaker & Streetwear Consumer Intelligence Platform**
+**Hype, quantified — AI consumer intelligence for the sneaker market.**
 
 **▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index, ranking 23 silhouettes by a composite 0–100 Hype Score.
 

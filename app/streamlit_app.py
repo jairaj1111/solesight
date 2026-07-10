@@ -712,7 +712,7 @@ st.markdown(
         <div class="logo-icon">👟</div>
         <div>
           <div class="logo-text">SOLE<span>SIGHT</span></div>
-          <div class="logo-sub">Sneaker Intelligence Platform</div>
+          <div class="logo-sub">AI Sneaker-Market Intelligence</div>
         </div>
       </div>
       <div class="nav-pill">
