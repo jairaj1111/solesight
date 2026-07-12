@@ -13,7 +13,7 @@ redeploys the site — no human in the loop.
 
 📄 **[Technical report](docs/REPORT.md)** · 🗺️ **[Architecture diagram](docs/architecture.png)**
 
-**▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index, ranking 23 silhouettes by a composite 0–100 Hype Score.
+**▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index: 90 tracked silhouettes across 12 brands, ranked by a composite 0–100 Hype Score, with the hottest 25 featured up front.
 
 | #1 · Air Jordan 4 Military Black | #2 · Air Jordan 11 Concord | #3 · Nike SB Dunk Low Jarritos |
 | :---: | :---: | :---: |

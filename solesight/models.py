@@ -1,13 +1,24 @@
-"""Registry of tracked sneaker models.
+"""Registry of tracked sneaker models — loaded from catalog.json.
+
+The catalog is DATA, not code: every tracked model lives in
+``solesight/catalog.json`` with its search terms, retail price, category and
+product-image reference. Adding a model to the index is a one-entry JSON change;
+every pipeline stage (ingest, forecast, scoring, insights, site build) iterates
+this registry and picks new entries up automatically on the next run.
 
 Each SneakerModel carries the search terms we feed to Google Trends and Reddit.
-`keywords` are OR-matched when scanning Reddit chatter; `trends_term` is the single
-query string sent to Google Trends (which only accepts one term per series well).
+`keywords` are OR-matched when scanning Reddit chatter; `trends_term` is the
+single query string sent to Google Trends (which only accepts one term per
+series well).
 """
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
+
+_PKG_DIR = Path(__file__).resolve().parent
+CATALOG_PATH = _PKG_DIR / "catalog.json"
 
 
 @dataclass(frozen=True)
@@ -17,125 +28,45 @@ class SneakerModel:
     brand: str
     trends_term: str             # Google Trends query
     keywords: tuple[str, ...] = field(default_factory=tuple)  # Reddit match terms
+    category: str = "lifestyle"  # basketball / running / lifestyle / skate
+    retail_price: int | None = None   # MSRP (USD) — resale-premium baseline
+    image_slug: str | None = None     # StockX 360 CDN product id (photo source)
 
     def matches(self, text: str) -> bool:
         lowered = text.lower()
         return any(k.lower() in lowered for k in self.keywords)
 
 
-# 20+ tracked models spanning the major hype silhouettes.
-CATALOG: list[SneakerModel] = [
-    SneakerModel("aj1-chicago", "Air Jordan 1 Chicago", "Jordan",
-                 "Air Jordan 1 Chicago", ("jordan 1 chicago", "aj1 chicago", "chicago 1")),
-    SneakerModel("aj1-bred", "Air Jordan 1 Bred", "Jordan",
-                 "Air Jordan 1 Bred", ("jordan 1 bred", "aj1 bred", "bred toe")),
-    SneakerModel("aj4-bred", "Air Jordan 4 Bred", "Jordan",
-                 "Air Jordan 4 Bred", ("jordan 4 bred", "aj4 bred")),
-    SneakerModel("aj3-black-cement", "Air Jordan 3 Black Cement", "Jordan",
-                 "Air Jordan 3 Black Cement", ("jordan 3 black cement", "aj3 cement")),
-    SneakerModel("aj11-concord", "Air Jordan 11 Concord", "Jordan",
-                 "Air Jordan 11 Concord", ("jordan 11 concord", "aj11 concord")),
-    SneakerModel("dunk-low-panda", "Nike Dunk Low Panda", "Nike",
-                 "Nike Dunk Low Panda", ("dunk low panda", "panda dunk", "panda dunks")),
-    SneakerModel("dunk-low-unc", "Nike Dunk Low UNC", "Nike",
-                 "Nike Dunk Low UNC", ("dunk low unc", "unc dunk")),
-    SneakerModel("dunk-low-syracuse", "Nike Dunk Low Syracuse", "Nike",
-                 "Nike Dunk Low Syracuse", ("dunk syracuse",)),
-    SneakerModel("nike-af1-white", "Nike Air Force 1 '07 White", "Nike",
-                 "Nike Air Force 1 White", ("air force 1", "af1 white", "triple white af1")),
-    SneakerModel("travis-scott-aj1-low", "Travis Scott x Air Jordan 1 Low", "Jordan",
-                 "Travis Scott Jordan 1 Low", ("travis scott jordan 1", "ts aj1", "cactus jack 1")),
-    SneakerModel("nb-550-white-green", "New Balance 550 White Green", "New Balance",
-                 "New Balance 550 White Green", ("nb 550", "new balance 550")),
-    SneakerModel("nb-990v5", "New Balance 990v5", "New Balance",
-                 "New Balance 990v5", ("990v5", "nb 990")),
-    SneakerModel("nb-2002r", "New Balance 2002R", "New Balance",
-                 "New Balance 2002R", ("2002r", "nb 2002")),
-    SneakerModel("yeezy-350-v2", "adidas Yeezy Boost 350 V2", "adidas",
-                 "Yeezy Boost 350 V2", ("yeezy 350", "350 v2", "boost 350")),
-    SneakerModel("yeezy-slide", "adidas Yeezy Slide", "adidas",
-                 "Yeezy Slide", ("yeezy slide", "yeezy slides")),
-    SneakerModel("samba-og", "adidas Samba OG", "adidas",
-                 "adidas Samba OG", ("adidas samba", "samba og")),
-    SneakerModel("adidas-gazelle", "adidas Gazelle", "adidas",
-                 "adidas Gazelle", ("adidas gazelle", "gazelle")),
-    SneakerModel("nike-vomero-5", "Nike Zoom Vomero 5", "Nike",
-                 "Nike Vomero 5", ("vomero 5", "zoom vomero")),
-    SneakerModel("asics-gel-1130", "ASICS Gel-1130", "ASICS",
-                 "ASICS Gel 1130", ("gel-1130", "gel 1130", "asics 1130")),
-    SneakerModel("asics-gt-2160", "ASICS GT-2160", "ASICS",
-                 "ASICS GT 2160", ("gt-2160", "gt 2160")),
-    SneakerModel("sb-dunk-low-jarritos", "Nike SB Dunk Low Jarritos", "Nike",
-                 "Nike SB Dunk Jarritos", ("sb dunk jarritos", "jarritos dunk")),
-    SneakerModel("aj4-military-black", "Air Jordan 4 Military Black", "Jordan",
-                 "Air Jordan 4 Military Black", ("jordan 4 military", "aj4 military")),
-    SneakerModel("nike-kobe-6-grinch", "Nike Kobe 6 Protro Grinch", "Nike",
-                 "Nike Kobe 6 Grinch", ("kobe 6 grinch", "grinch kobe")),
-]
+def _load() -> list[SneakerModel]:
+    entries = json.loads(CATALOG_PATH.read_text())
+    catalog = [
+        SneakerModel(
+            slug=e["slug"], name=e["name"], brand=e["brand"],
+            trends_term=e["trends_term"], keywords=tuple(e["keywords"]),
+            category=e.get("category", "lifestyle"),
+            retail_price=e.get("retail"), image_slug=e.get("image"),
+        )
+        for e in entries
+    ]
+    slugs = [m.slug for m in catalog]
+    if len(slugs) != len(set(slugs)):
+        dupes = {s for s in slugs if slugs.count(s) > 1}
+        raise ValueError(f"catalog.json has duplicate slugs: {dupes}")
+    return catalog
 
+
+CATALOG: list[SneakerModel] = _load()
 BY_SLUG: dict[str, SneakerModel] = {m.slug: m for m in CATALOG}
 
-# Retail MSRP (USD) per model — the baseline the resale premium is measured
-# against. Approximate public launch prices; retros vary a little by region/year.
-RETAIL: dict[str, int] = {
-    "aj1-chicago": 180, "aj1-bred": 180, "aj4-bred": 215, "aj3-black-cement": 210,
-    "aj11-concord": 235, "dunk-low-panda": 115, "dunk-low-unc": 115,
-    "dunk-low-syracuse": 110, "nike-af1-white": 115, "travis-scott-aj1-low": 150,
-    "nb-550-white-green": 120, "nb-990v5": 185, "nb-2002r": 150,
-    "yeezy-350-v2": 230, "yeezy-slide": 70, "samba-og": 100, "adidas-gazelle": 100,
-    "nike-vomero-5": 160, "asics-gel-1130": 100, "asics-gt-2160": 110,
-    "sb-dunk-low-jarritos": 125, "aj4-military-black": 215, "nike-kobe-6-grinch": 190,
-}
-
-
-# StockX image slug per model (the Title-Case-Dashes product id in its 360 image
-# CDN path) — the provenance of each local photo. scripts/seed_images fetches
-# from these, strips the white background to alpha, and caches the result under
-# assets/sneakers/<slug>.png. See image_path() (local) and image_url() (remote).
-IMAGE_SLUG: dict[str, str] = {
-    "aj1-chicago": "Air-Jordan-1-Retro-Chicago-2015",
-    "aj1-bred": "Air-Jordan-1-Retro-Bred-2016",
-    "aj4-bred": "Air-Jordan-4-Retro-Bred-2019",
-    "aj3-black-cement": "Air-Jordan-3-Retro-Black-Cement-2018",
-    "aj11-concord": "Air-Jordan-11-Retro-Concord-2018",
-    "dunk-low-panda": "Nike-Dunk-Low-Retro-White-Black-2021",
-    "dunk-low-unc": "Nike-Dunk-Low-UNC-2021",
-    "dunk-low-syracuse": "Nike-Dunk-Low-SP-Syracuse",
-    "nike-af1-white": "Nike-Air-Force-1-Low-White-07",
-    "travis-scott-aj1-low": "Air-Jordan-1-Retro-Low-Travis-Scott",
-    "nb-550-white-green": "New-Balance-550-White-Green",
-    "nb-990v5": "New-Balance-990v5-Grey",
-    "nb-2002r": "New-Balance-2002R-Rain-Cloud",
-    "yeezy-350-v2": "adidas-Yeezy-Boost-350-V2-Zebra",
-    "yeezy-slide": "adidas-Yeezy-Slide-Pure",
-    "samba-og": "adidas-Samba-OG-Cloud-White-Core-Black",
-    "adidas-gazelle": "adidas-Gazelle-Indoor-College-Navy-Gum",
-    "nike-vomero-5": "Nike-Zoom-Vomero-5-SP-Vast-Grey",
-    "asics-gel-1130": "ASICS-Gel-1130-White-Clay-Canyon",
-    "asics-gt-2160": "ASICS-GT-2160-White-Black",
-    "sb-dunk-low-jarritos": "Nike-SB-Dunk-Low-Jarritos",
-    "aj4-military-black": "Air-Jordan-4-Retro-Military-Black",
-    "nike-kobe-6-grinch": "Nike-Kobe-6-Protro-Grinch",
-}
-
-# Product category per model — the aggregation dimension for market-intelligence
-# rollups (demand by category, category movers).
-CATEGORY: dict[str, str] = {
-    "aj1-chicago": "basketball", "aj1-bred": "basketball", "aj4-bred": "basketball",
-    "aj3-black-cement": "basketball", "aj11-concord": "basketball",
-    "aj4-military-black": "basketball", "nike-kobe-6-grinch": "basketball",
-    "travis-scott-aj1-low": "basketball",
-    "dunk-low-panda": "lifestyle", "dunk-low-unc": "lifestyle",
-    "dunk-low-syracuse": "lifestyle", "nike-af1-white": "lifestyle",
-    "nb-550-white-green": "lifestyle", "yeezy-350-v2": "lifestyle",
-    "yeezy-slide": "lifestyle", "samba-og": "lifestyle", "adidas-gazelle": "lifestyle",
-    "nb-990v5": "running", "nb-2002r": "running", "nike-vomero-5": "running",
-    "asics-gel-1130": "running", "asics-gt-2160": "running",
-    "sb-dunk-low-jarritos": "skate",
-}
+# Backwards-compatible views (kept because scripts iterate/introspect these).
+RETAIL: dict[str, int] = {m.slug: m.retail_price for m in CATALOG
+                          if m.retail_price is not None}
+IMAGE_SLUG: dict[str, str] = {m.slug: m.image_slug for m in CATALOG
+                              if m.image_slug}
+CATEGORY: dict[str, str] = {m.slug: m.category for m in CATALOG}
 
 # Local, background-removed product photos live here (PNG with alpha).
-_IMAGE_DIR = Path(__file__).resolve().parent.parent / "assets" / "sneakers"
+_IMAGE_DIR = _PKG_DIR.parent / "assets" / "sneakers"
 
 
 def get(slug: str) -> SneakerModel:

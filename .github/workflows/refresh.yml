@@ -38,6 +38,9 @@ jobs:
       REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
       EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
       EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+      # Scale guard: refresh at most N (stalest-first) models per nightly run,
+      # so the catalog can grow without Google Trends rate-limit bursts.
+      TRENDS_MAX_PER_RUN: "60"
     steps:
       - uses: actions/checkout@v4
 

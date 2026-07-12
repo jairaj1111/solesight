@@ -407,3 +407,6 @@ svg.chart { width: 100%; height: auto; display: block; }
   .mkt-row > div:nth-child(5), .mkt-row > div:nth-child(6) { display: none; }
   .mkt-cats { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* board footer — featured/full-index toggle */
+.board-foot { display: flex; justify-content: center; padding: 26px 0 8px; }

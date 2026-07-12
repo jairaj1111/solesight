@@ -10,7 +10,7 @@
 
 ## 1. Executive summary
 
-SoleSight tracks 23 high-interest sneaker silhouettes and answers one question
+SoleSight tracks 90 high-interest sneaker silhouettes across 12 brands and answers one question
 continuously: **how much does the market want each shoe right now?**
 
 It ingests five demand signals (search interest, resale pricing, community
@@ -48,12 +48,14 @@ Three layers, deliberately decoupled:
 
 ### 2.1 The registry (single source of truth)
 
-`solesight/models.py` defines the tracked catalog: 23 `SneakerModel` entries,
-each carrying a stable slug (`aj4-military-black`), display name, brand,
-category, Google Trends query term, Reddit match keywords, retail MSRP, and a
-product-image reference. **Every pipeline stage iterates this list** — adding a
-24th shoe is a one-entry change and requires no other code; the nightly run
-picks it up automatically.
+The tracked catalog is **data, not code**: `solesight/catalog.json` holds 90
+entries (12 brands, 4 categories), each carrying a stable slug
+(`aj4-military-black`), display name, brand, category, Google Trends query
+term, Reddit match keywords, retail MSRP, and a product-image reference.
+`solesight/models.py` loads and validates it. **Every pipeline stage iterates
+this registry** — adding a 91st shoe is a one-entry JSON change and requires no
+other code; the nightly run picks it up automatically (stalest-first, so new
+models are ingested before anything else).
 
 ### 2.2 Storage
 
@@ -202,9 +204,12 @@ Reliability decisions worth noting:
   cross-model comparisons use momentum and levels, never raw magnitudes.
 - Product imagery is sourced from StockX's CDN with provenance recorded per
   model; for commercial use, imagery should be licensed or replaced.
-- 23 models is a curated index, not the market — chosen so every silhouette
-  gets full nightly coverage within polite API budgets. The registry design
-  makes expansion a data change, not a code change.
+- 90 models across 12 brands is a curated index, not the whole market. The
+  catalog lives in `solesight/catalog.json` — expansion is a data change, not a
+  code change — and the nightly ingest refreshes the *stalest* N models per run
+  (`TRENDS_MAX_PER_RUN`), so the universe can keep growing without ever
+  bursting past polite API budgets. The site features the top 25; the full
+  index is one click away.
 
 ## 9. Roadmap
 

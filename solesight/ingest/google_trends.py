@@ -116,15 +116,44 @@ def store(rows: list[dict]) -> int:
     return len(rows)
 
 
+def _stalest_first() -> list[models.SneakerModel]:
+    """Catalog ordered by how stale each model's trends data is.
+
+    Never-fetched models come first, then oldest-last-date first. Combined with
+    TRENDS_MAX_PER_RUN this lets the catalog grow arbitrarily: each nightly run
+    refreshes the N stalest models, so every model still cycles through within
+    a couple of days and Google never sees an unbounded burst.
+    """
+    with connect() as conn:
+        last = {r["model_slug"]: r["d"] for r in conn.execute(
+            "SELECT model_slug, MAX(date) d FROM trends GROUP BY model_slug")}
+    return sorted(models.CATALOG, key=lambda m: last.get(m.slug) or "")
+
+
 def run(timeframe: str | None = None,
-        pause: float = config.TRENDS_REQUEST_PAUSE) -> TrendsSummary:
-    """Ingest trends for all models, pausing between calls to dodge rate limits."""
+        pause: float = config.TRENDS_REQUEST_PAUSE,
+        max_models: int | None = None) -> TrendsSummary:
+    """Ingest trends for the stalest models, pausing to dodge rate limits.
+
+    `max_models` (or env TRENDS_MAX_PER_RUN) caps how many models one run
+    fetches; unset means the whole catalog.
+    """
     # NB: don't pass retries/backoff_factor — pytrends 4.9.x builds a urllib3 Retry
     # with the removed `method_whitelist` kwarg, which breaks on urllib3 v2. We
     # retry via tenacity around _interest_over_time instead.
+    import os
+    cap = max_models if max_models is not None else int(
+        os.getenv("TRENDS_MAX_PER_RUN", "0")) or None
+    queue = _stalest_first()
+    if cap:
+        skipped = max(0, len(queue) - cap)
+        queue = queue[:cap]
+        if skipped:
+            print(f"  trends: fetching {len(queue)} stalest models "
+                  f"({skipped} fresher ones deferred to the next run)")
     pytrends = TrendReq(hl="en-US", tz=360)
     summary = TrendsSummary()
-    for model in models.CATALOG:
+    for model in queue:
         try:
             n = store(fetch_model(pytrends, model, timeframe))
             summary.days[model.slug] = n

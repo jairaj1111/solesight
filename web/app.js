@@ -92,12 +92,28 @@ function buildHero() {
 }
 
 /* ---------------- render podium + board + movers ---------------- */
+// The index features the top FEATURED models by the active sort; the rest of
+// the universe stays one click away ("Show the full index").
+const FEATURED = 25;
+let SHOW_ALL = false;
+
 function render() {
   const list = view();
   renderPodium(list.slice(0, 3));
-  renderBoard(list.slice(3));
+  const rest = SHOW_ALL ? list.slice(3) : list.slice(3, FEATURED);
+  renderBoard(rest);
+  renderBoardFoot(list.length);
   renderMovers();
   renderMarket();
+}
+
+function renderBoardFoot(total) {
+  const foot = $("#board-foot");
+  if (total <= FEATURED) { foot.innerHTML = ""; return; }
+  foot.innerHTML = SHOW_ALL
+    ? `<button class="btn btn-ghost" id="show-toggle">Show featured top ${FEATURED} only</button>`
+    : `<button class="btn btn-ghost" id="show-toggle">Show the full index — all ${total} models</button>`;
+  $("#show-toggle").onclick = () => { SHOW_ALL = !SHOW_ALL; render(); };
 }
 
 function renderPodium(top) {
