@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <!-- ambient grain + glow -->
@@ -30,6 +30,11 @@
     </nav>
     <div class="nav-live"><span class="live-dot"></span> Refreshed nightly</div>
   </header>
+
+  <!-- market ticker — top movers, stock-exchange style -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="ticker-track"></div>
+  </div>
 
   <main id="top">
     <!-- ───────────────── hero ───────────────── -->
@@ -168,6 +173,6 @@
   <div class="sheet-backdrop" id="sheet-backdrop"></div>
   <aside class="sheet" id="sheet" aria-hidden="true"></aside>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@ async function init() {
   buildEyebrow();
   buildChips();
   buildHero();
+  renderTicker();
   renderFresh();
   renderCase();
   renderWorkedExample();
@@ -28,6 +29,26 @@ async function init() {
   wireControls();
   wireReveal();
   wireSheet();
+}
+
+/* ---------------- market ticker (top movers, exchange style) ---------------- */
+function renderTicker() {
+  const track = $("#ticker-track");
+  if (!track) return;
+  const picks = [...DATA.models]
+    .filter((m) => m.momentum != null && m.hype != null)
+    .sort((a, b) => Math.abs(b.momentum) - Math.abs(a.momentum))
+    .slice(0, 14);
+  const item = (m) => `
+    <span class="tk-item" data-slug="${m.slug}">
+      <span class="tk-name">${esc(m.name)}</span>
+      <span class="tk-delta ${deltaClass(m.momentum)}">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")}</span>
+      <span class="tk-hype">${m.hype}</span>
+    </span><span class="tk-dot">·</span>`;
+  // content twice for a seamless loop
+  const half = picks.map(item).join("");
+  track.innerHTML = half + half;
+  $$(".tk-item", track).forEach((el) => (el.onclick = () => openSheet(el.dataset.slug)));
 }
 
 /* ---------------- pipeline freshness (real numbers only) ---------------- */
