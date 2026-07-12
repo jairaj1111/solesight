@@ -1,6 +1,8 @@
 # SoleSight — Technical Report
 
-**Hype, quantified.** An AI consumer-intelligence platform for the sneaker market.
+**Hype, quantified.** An AI-powered consumer-intelligence platform for the
+sneaker market — transformer NLP, machine-learning demand forecasting,
+generative-AI insights, and an autonomous nightly data pipeline.
 
 - Live index: **https://jairaj1111.github.io/solesight/**
 - Repository: **https://github.com/jairaj1111/solesight**

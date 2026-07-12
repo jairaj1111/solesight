@@ -7,28 +7,33 @@
 [![Nightly data refresh](https://github.com/jairaj1111/solesight/actions/workflows/refresh.yml/badge.svg)](https://github.com/jairaj1111/solesight/actions/workflows/refresh.yml)
 [![Deploy to GitHub Pages](https://github.com/jairaj1111/solesight/actions/workflows/pages.yml/badge.svg)](https://github.com/jairaj1111/solesight/actions/workflows/pages.yml)
 
-The index refreshes itself nightly: a scheduled GitHub Action pulls fresh Google
-Trends data, refits the Prophet forecasts, recomputes every Hype Score, and
-redeploys the site — no human in the loop.
+An end-to-end **AI/ML data product**: transformer-based **NLP** for community
+sentiment, **machine-learning time-series forecasting**, an **LLM-powered
+insight engine** (generative AI with a deterministic fallback), and a fully
+**autonomous data pipeline** — a scheduled agent pulls fresh Google Trends data
+nightly, refits the forecasts, recomputes every Hype Score with **predictive
+analytics**, and redeploys the site with no human in the loop.
 
 📄 **[Technical report](docs/REPORT.md)** · 🗺️ **[Architecture diagram](docs/architecture.png)**
 
 **▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index: 90 tracked silhouettes across 12 brands, ranked by a composite 0–100 Hype Score, with the hottest 25 featured up front.
 
-| #1 · Air Jordan 4 Military Black | #2 · Air Jordan 11 Concord | #3 · Nike SB Dunk Low Jarritos |
+| #1 · Air Jordan 4 White Cement | #2 · ASICS Gel-Lyte III | #3 · Air Jordan 1 Bred |
 | :---: | :---: | :---: |
-| <img src="web/img/aj4-military-black.png" width="220" alt="AJ4 Military Black"> | <img src="web/img/aj11-concord.png" width="220" alt="AJ11 Concord"> | <img src="web/img/sb-dunk-low-jarritos.png" width="220" alt="SB Dunk Jarritos"> |
-| Hype **65.7** · 1.92× retail | Hype **65.0** · 2.00× retail | Hype **58.3** |
+| <img src="web/img/aj4-white-cement.png" width="220" alt="AJ4 White Cement"> | <img src="web/img/gel-lyte-iii.png" width="220" alt="ASICS Gel-Lyte III"> | <img src="web/img/aj1-bred.png" width="220" alt="AJ1 Bred"> |
+| Hype **68.7** · +223% momentum | Hype **67.8** | Hype **63.4** |
 
-SoleSight aggregates demand signals for 20+ sneaker models from **Google Trends**,
-**Reddit**, **social buzz** (Instagram / TikTok / YouTube), and **resale markets**
-(StockX / eBay), runs **transformer-based sentiment analysis** on the chatter, and
-uses **Facebook Prophet** to generate 30-day demand forecasts. An **OpenAI-powered
-insight engine** (with an offline rule-based fallback) translates the raw signals —
-including the **resale premium** over retail — into plain-English marketing
-recommendations, surfaced in a **Streamlit** dashboard.
+SoleSight aggregates demand signals for **90 sneaker models across 12 brands**
+from **Google Trends**, **Reddit**, **social buzz** (Instagram / TikTok /
+YouTube), and **resale markets** (StockX / eBay). A **transformer neural network**
+(RoBERTa) performs **sentiment analysis** on community chatter, **Facebook
+Prophet** generates ML-based 30-day demand forecasts, and a **generative-AI
+insight engine** (OpenAI LLM with a deterministic rule-based fallback)
+translates the raw signals — including the **resale premium** over retail —
+into plain-English marketing recommendations. Served through a public
+**Hype Index** site and a **Streamlit** analyst dashboard.
 
-`Python · HuggingFace · OpenAI API · Prophet · Reddit API · Google Trends · Streamlit · SQLite`
+`AI/ML · NLP · Transformers (HuggingFace) · LLM (OpenAI) · Predictive Analytics · Time-Series Forecasting (Prophet) · Autonomous Pipelines (GitHub Actions) · Python · SQLite · Streamlit`
 
 ## Architecture
 
