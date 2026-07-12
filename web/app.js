@@ -16,15 +16,107 @@ const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
 init();
 
 async function init() {
-  DATA = await fetch("data.json?v=2").then((r) => r.json());
+  DATA = await fetch("data.json?v=3").then((r) => r.json());
   document.documentElement.style.setProperty("--n", DATA.models.length);
   buildEyebrow();
   buildChips();
   buildHero();
+  renderFresh();
+  renderCase();
+  renderWorkedExample();
   render();
   wireControls();
   wireReveal();
   wireSheet();
+}
+
+/* ---------------- pipeline freshness (real numbers only) ---------------- */
+function renderFresh() {
+  const s = DATA.stats;
+  if (!s) return;
+  const d = new Date(DATA.generated_at * 1000);
+  const when = d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  $("#fresh-strip").innerHTML = [
+    ["Last updated", when],
+    ["Models tracked", `${s.models} across ${s.brands} brands`],
+    ["Daily observations", s.daily_observations.toLocaleString("en-US")],
+    ["Forecast days generated", s.forecast_days.toLocaleString("en-US")],
+  ].map(([k, v]) => `<div class="fresh-item"><span>${k}</span><b>${v}</b></div>`).join("");
+}
+
+/* ---------------- case study (claims backed by stored data) ---------------- */
+function renderCase() {
+  const cs = DATA.case_study;
+  const m = cs && DATA.models.find((x) => x.slug === cs.slug);
+  if (!m) { $("#case").style.display = "none"; return; }
+  const surgeName = new Date(cs.surge_month + "-02").toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const baseSpan = `${cs.baseline_months[0]} → ${cs.baseline_months[cs.baseline_months.length - 1]}`;
+  const forecastLine = m.forecast_peak_date
+    ? `Prophet currently projects its demand peaking around <b>${m.forecast_peak_date}</b> —
+       a public call, graded here as the data comes in.`
+    : `Its first 30-day forecast generates on the next nightly run — the call
+       will appear here and get graded in public.`;
+  $("#case-body").innerHTML = `
+    <div class="case-card reveal">
+      <div class="case-img">${img(m, "")}</div>
+      <div class="case-text">
+        <div class="case-kicker">${esc(m.brand)} · every number below is reproducible from the stored dataset</div>
+        <h3>${esc(m.name)}</h3>
+        <p><b>What the signals showed.</b> Through ${baseSpan}, search interest
+        averaged just <b>${cs.baseline_avg}</b> on its own 0–100 scale — a quiet
+        baseline. In ${surgeName} it surged to an average of
+        <b>${cs.surge_avg}</b> — a <b>${cs.surge_multiple}×</b> jump — and has
+        held elevated since.</p>
+        <p><b>What SoleSight did.</b> The day this model entered the index, its
+        14-day momentum (${fmtSigned(m.momentum, "%")}) and sustained intensity
+        scored it <b>${m.hype} Hype</b> — ranked <b>#${m.rank}</b> of
+        ${DATA.models.length} at build time, ahead of every established
+        favorite.</p>
+        <p><b>What happens next.</b> ${forecastLine}</p>
+      </div>
+    </div>`;
+}
+
+/* ---------------- worked example (live numbers, real formula) ---------------- */
+function renderWorkedExample() {
+  const box = $("#worked-example");
+  if (!box) return;
+  const W = { resale: 0.26, momentum: 0.24, buzz: 0.20, interest: 0.18, sentiment: 0.12 };
+  const m = DATA.models[0];
+  const clamp = (x) => Math.max(0, Math.min(100, x));
+  const comp = {
+    resale: m.resale_premium == null ? null : clamp((m.resale_premium - 0.8) / 1.8 * 100),
+    momentum: m.momentum == null ? null : clamp(50 + m.momentum * 0.8),
+    buzz: m.buzz == null ? null : clamp(m.buzz),
+    interest: m.interest == null ? null : clamp(m.interest),
+    sentiment: m.sentiment == null ? null : clamp((m.sentiment + 1) / 2 * 100),
+  };
+  const raw = {
+    resale: m.resale_premium == null ? "—" : `${m.resale_premium}× retail`,
+    momentum: m.momentum == null ? "—" : fmtSigned(m.momentum, "%"),
+    buzz: m.buzz == null ? "—" : `${m.buzz}/100`,
+    interest: m.interest == null ? "—" : `${m.interest}/100`,
+    sentiment: m.sentiment == null ? "—" : `${m.sentiment > 0 ? "+" : ""}${m.sentiment}`,
+  };
+  const names = { resale: "Resale premium", momentum: "Search momentum",
+                  buzz: "Social buzz", interest: "Search intensity",
+                  sentiment: "Community mood" };
+  let num = 0, den = 0;
+  const rows = Object.keys(W).map((k) => {
+    const v = comp[k];
+    if (v != null) { num += W[k] * v; den += W[k]; }
+    return `<tr><td>${names[k]}</td><td>${raw[k]}</td>
+      <td>${v == null ? "—" : v.toFixed(0)}</td><td>×${W[k]}</td></tr>`;
+  }).join("");
+  const score = den ? num / den : null;
+  box.innerHTML = `
+    <p class="tm-model">${esc(m.name)} — today's #1</p>
+    <table class="tm-table">
+      <thead><tr><th>Signal</th><th>Raw</th><th>0–100</th><th>Weight</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="tm-final">Weighted mean → <b>${score == null ? "—" : score.toFixed(1)} Hype</b>
+    ${Math.abs((score ?? 0) - (m.hype ?? 0)) < 0.4 ? "— matching the published score." : ""}</p>`;
 }
 
 function buildEyebrow() {

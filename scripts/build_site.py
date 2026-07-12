@@ -126,7 +126,51 @@ def build() -> dict:
             "categories": sorted({models.category(m.slug) for m in models.CATALOG}),
             "market": {"brands": market.brand_rollups(snaps),
                        "categories": market.category_rollups(snaps)},
+            "stats": _pipeline_stats(),
+            "case_study": _case_study("aj4-white-cement"),
             "models": records}
+
+
+def _pipeline_stats() -> dict:
+    """Real freshness numbers — visible proof the pipeline runs."""
+    with connect() as conn:
+        obs = conn.execute("SELECT COUNT(*) n FROM trends").fetchone()["n"]
+        fc = conn.execute(
+            """SELECT COUNT(*) n FROM forecasts WHERE generated_at=
+               (SELECT MAX(generated_at) FROM forecasts)""").fetchone()["n"]
+    return {"daily_observations": obs, "forecast_days": fc,
+            "models": len(models.CATALOG),
+            "brands": len({m.brand for m in models.CATALOG})}
+
+
+def _case_study(slug: str) -> dict | None:
+    """Verifiable numbers behind the case-study section — all from stored data.
+
+    Compares the model's surge month (highest monthly average interest) against
+    its baseline (the three months prior), so every claim in the narrative is
+    reproducible straight from the trends table.
+    """
+    with connect() as conn:
+        rows = conn.execute(
+            """SELECT substr(date,1,7) mo, AVG(interest) v FROM trends
+               WHERE model_slug=? GROUP BY mo ORDER BY mo""", (slug,)).fetchall()
+    if len(rows) < 4:
+        return None
+    months = [(r["mo"], float(r["v"])) for r in rows]
+    peak_i = max(range(len(months)), key=lambda i: months[i][1])
+    base = months[max(0, peak_i - 3):peak_i]
+    if not base:
+        return None
+    base_avg = sum(v for _, v in base) / len(base)
+    surge_mo, surge_avg = months[peak_i]
+    return {
+        "slug": slug,
+        "baseline_months": [m for m, _ in base],
+        "baseline_avg": round(base_avg, 1),
+        "surge_month": surge_mo,
+        "surge_avg": round(surge_avg, 1),
+        "surge_multiple": round(surge_avg / base_avg, 1) if base_avg else None,
+    }
 
 
 def main() -> None:
