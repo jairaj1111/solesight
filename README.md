@@ -14,7 +14,7 @@ insight engine** (generative AI with a deterministic fallback), and a fully
 nightly, refits the forecasts, recomputes every Hype Score with **predictive
 analytics**, and redeploys the site with no human in the loop.
 
-📄 **[Technical report](docs/REPORT.md)** · 🗺️ **[Architecture diagram](docs/architecture.png)**
+📄 **[Technical report](docs/REPORT.md)** · 🗺️ **[System flow diagram](docs/architecture.png)** · 📃 **[Product one-pager](docs/onepager.pdf)**
 
 **▶ Live: [jairaj1111.github.io/solesight](https://jairaj1111.github.io/solesight/)** — the Hype Index: 90 tracked silhouettes across 12 brands, ranked by a composite 0–100 Hype Score, with the hottest 25 featured up front.
 
