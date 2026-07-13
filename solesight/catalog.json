@@ -341,7 +341,7 @@
    "lost & found 1"
   ],
   "retail": 180,
-  "image": null
+  "image": "Air-Jordan-1-Retro-High-OG-Lost-and-Found-PS"
  },
  {
   "slug": "travis-scott-aj1-high",
@@ -444,7 +444,7 @@
    "jumpman jack"
   ],
   "retail": 160,
-  "image": null
+  "image": "Air-Jordan-Jumpman-Jack-TR-Travis-Scott-University-Red"
  },
  {
   "slug": "air-max-1",
@@ -457,7 +457,7 @@
    "am1"
   ],
   "retail": 150,
-  "image": null
+  "image": "Nike-Air-Max-1-86-Big-Bubble-Red"
  },
  {
   "slug": "air-max-90",
@@ -496,7 +496,7 @@
    "silver bullet"
   ],
   "retail": 185,
-  "image": null
+  "image": "Nike-Air-Max-97-OG-Silver-Bullet-2022"
  },
  {
   "slug": "air-max-dn",
@@ -714,7 +714,7 @@
    "ultra boost"
   ],
   "retail": 190,
-  "image": null
+  "image": "adidas-Ultra-Boost-Core-Black"
  },
  {
   "slug": "adidas-ae-1",
@@ -854,7 +854,7 @@
    "new balance 993"
   ],
   "retail": 200,
-  "image": null
+  "image": "New-Balance-993-MIU-Grey"
  },
  {
   "slug": "nb-1906r",
@@ -931,7 +931,7 @@
    "novablast"
   ],
   "retail": 140,
-  "image": null
+  "image": "ASICS-Novablast-4-Black-Thunder-Blue"
  },
  {
   "slug": "puma-suede",
@@ -983,7 +983,7 @@
    "mb03"
   ],
   "retail": 125,
-  "image": null
+  "image": "Puma-LaMelo-Ball-MB03-Toxic"
  },
  {
   "slug": "reebok-club-c-85",
@@ -1160,6 +1160,6 @@
    "hoka bondi"
   ],
   "retail": 165,
-  "image": null
+  "image": "Hoka-One-One-Bondi-8-Shifting-Sand"
  }
 ]
