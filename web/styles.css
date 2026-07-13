@@ -596,3 +596,12 @@ section[id] { scroll-margin-top: 84px; }
 .ask-inputrow input:focus { border-color: var(--ink); }
 .ask-inputrow button { width: 42px; border-radius: 50%; border: none;
   background: var(--ink); color: var(--canvas); font-size: 1.05rem; cursor: pointer; }
+
+/* ── 360° hero viewer ─────────────────────────────────────── */
+.hf-360 { position: relative; cursor: grab; user-select: none; -webkit-user-drag: none; }
+.hf-360:active { cursor: grabbing; }
+.hf-360 img { -webkit-user-drag: none; pointer-events: none; }
+.hf-360-pill { position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%);
+  white-space: nowrap; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; background: var(--ink); color: var(--canvas);
+  padding: 5px 12px; border-radius: 999px; opacity: 0.85; }

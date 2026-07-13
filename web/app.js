@@ -242,10 +242,14 @@ function buildChips() {
 /* ---------------- hero (overall #1) ---------------- */
 function buildHero() {
   const m = DATA.models.find((x) => x.rank === 1);
+  const photo = m.has_360
+    ? `<div class="hf-360" id="hf-360">${img(m, "")}
+         <span class="hf-360-pill">↻ 360° — drag to spin</span></div>`
+    : img(m, "");
   $("#hero-feature").innerHTML = `
     <div class="hf-glow"></div>
     <div class="hf-rankpill">#1 · Most hyped</div>
-    <div class="hf-img">${img(m, "")}</div>
+    <div class="hf-img">${photo}</div>
     <div class="hf-meta">
       <div><div class="hf-brand">${esc(m.brand)}</div>
         <div class="hf-name">${esc(m.name)}</div></div>
@@ -257,8 +261,64 @@ function buildHero() {
       <div class="hf-stat"><b>${m.buzz ?? "—"}</b><span>Buzz</span></div>
       <div class="hf-stat"><b>$${m.resale_last ?? "—"}</b><span>Last sale</span></div>
     </div>`;
-  $("#hero-feature").onclick = () => openSheet(m.slug);
+  $("#hero-feature").onclick = () => { if (!SPIN_DRAGGED) openSheet(m.slug); };
   countUp($("#hero-feature [data-count]"));
+  if (m.has_360) init360(m.slug);
+}
+
+/* ---------------- 360° hero viewer ---------------- */
+let SPIN_DRAGGED = false;   // suppress the card's click-to-open after a drag
+
+function init360(slug) {
+  const box = $("#hf-360");
+  const imgEl = box.querySelector("img");
+  if (!imgEl) return;
+  const N = 36;
+  const frames = [];
+  let loaded = 0, frame = 0, auto = null, ready = false;
+
+  // lazy-preload all frames after first paint; upgrade once complete
+  for (let i = 1; i <= N; i++) {
+    const im = new Image();
+    im.src = `img360/${slug}/f${String(i).padStart(2, "0")}.png`;
+    im.onload = () => { if (++loaded === N) { ready = true; startAuto(); } };
+    frames.push(im);
+  }
+  const show = (i) => {
+    frame = ((i % N) + N) % N;
+    imgEl.src = frames[frame].src;
+  };
+  const startAuto = () => {
+    if (auto || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    auto = setInterval(() => show(frame + 1), 110);
+  };
+  const stopAuto = () => { clearInterval(auto); auto = null; };
+
+  let dragging = false, startX = 0, startFrame = 0;
+  box.style.touchAction = "pan-y";
+  box.addEventListener("pointerdown", (e) => {
+    if (!ready) return;
+    dragging = true; SPIN_DRAGGED = false;
+    startX = e.clientX; startFrame = frame;
+    stopAuto();
+    box.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 6) SPIN_DRAGGED = true;
+    show(startFrame + Math.round(dx / 12));   // ~12px per 10° frame
+  });
+  const end = () => {
+    if (!dragging) return;
+    dragging = false;
+    setTimeout(() => (SPIN_DRAGGED = false), 80);
+    setTimeout(startAuto, 2600);
+  };
+  box.addEventListener("pointerup", end);
+  box.addEventListener("pointercancel", end);
+  box.addEventListener("mouseenter", stopAuto);
+  box.addEventListener("mouseleave", () => ready && !dragging && startAuto());
 }
 
 /* ---------------- render podium + board + movers ---------------- */

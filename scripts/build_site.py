@@ -91,6 +91,7 @@ def build() -> dict:
             "category": models.category(m.slug),
             "retail": s["retail_price"],
             "img": f"img/{m.slug}.png" if img else None,
+            "has_360": (WEB / "img360" / m.slug / "f01.png").exists(),
             "hype": s["hype_score"],
             "interest": _round(s["recent_14d_interest"], 0),
             "momentum": _round(s["momentum_pct"], 0),
