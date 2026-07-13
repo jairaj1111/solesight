@@ -36,6 +36,15 @@ _PAUSE = 1.2            # polite gap between requests
 
 # Sneaker boutiques known to run Shopify. Editable data, like the catalog.
 STORES = [
+    "kith.com",                 # Kith — NYC flagship of the culture
+    "undefeated.com",           # Undefeated — LA
+    "www.a-ma-maniere.com",     # A Ma Maniere — Atlanta (Jordan collabs)
+    "store.unionlosangeles.com",# Union LA (Jordan collabs)
+    "extrabutterny.com",        # Extra Butter — NYC
+    "shopnicekicks.com",        # Nice Kicks
+    "packershoes.com",          # Packer — NJ
+    "notre-shop.com",           # Notre — Chicago
+    "xhibition.co",             # Xhibition — Cleveland
     "bdgastore.com",            # Bodega
     "cncpts.com",               # Concepts
     "feature.com",              # Feature
