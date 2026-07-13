@@ -216,6 +216,9 @@ Reliability decisions worth noting:
 ## 9. Roadmap
 
 1. **Activate live keys** — eBay + Reddit secrets flip 4 of 5 signals to real.
+0. ~~Conversational analyst + launch tracking~~ — **shipped**: Ask SoleSight
+   (dual-engine chat: deterministic intents + Claude tool-use over data tools)
+   and Launch Radar (data-detected demand events + lifecycle stages).
 2. **Brand/category intelligence depth** — richer rollups, complaint-theme
    extraction from real chatter ("sizing complaints spiking on Dunks").
 3. **Learned scoring** — regress Hype components against observed outcomes

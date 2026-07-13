@@ -17,7 +17,7 @@ from pathlib import Path
 from solesight import models
 from solesight.db import connect
 from solesight.ingest import resale
-from solesight.insights import market, signals
+from solesight.insights import lifecycle, market, signals
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
@@ -113,6 +113,7 @@ def build() -> dict:
             "forecast_peak_date": s["forecast_peak_date"],
             "insight": _insight(m.slug),
             "hype_delta_7d": market.hype_delta(m.slug, days=7),
+            "stage": lifecycle.stage(m.slug, s["momentum_pct"]),
             "sent_summary": market.sentiment_summary(m.slug),
             "trend": _trend(m.slug),
             "forecast": _forecast(m.slug),
@@ -127,6 +128,7 @@ def build() -> dict:
             "market": {"brands": market.brand_rollups(snaps),
                        "categories": market.category_rollups(snaps)},
             "stats": _pipeline_stats(),
+            "radar": lifecycle.radar(),
             "case_study": _case_study("aj4-white-cement"),
             "models": records}
 

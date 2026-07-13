@@ -503,3 +503,96 @@ section[id] { scroll-margin-top: 84px; }
 .section-title em { font-style: italic; }
 .case-card, .method-card, .tech-method { transition: border-color .3s var(--ease); }
 .case-card:hover, .tech-method[open] { border-color: var(--line-2); }
+
+/* ── launch radar ─────────────────────────────────────────── */
+.radar { max-width: var(--maxw); margin: 0 auto; padding: 70px clamp(20px, 5vw, 56px) 30px; }
+.radar-stages { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0; }
+.radar-stage { display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 108px; padding: 14px 18px; border-radius: 14px; cursor: pointer;
+  background: var(--paper); border: 1px solid var(--line-2);
+  transition: transform .2s var(--ease), box-shadow .2s; }
+.radar-stage:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(20,19,15,.10); }
+.radar-stage.on { outline: 2px solid var(--ink); }
+.radar-stage b { font-family: var(--serif); font-size: 1.7rem; line-height: 1; }
+.radar-stage span { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; }
+.radar-events { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.radar-event { display: flex; align-items: center; gap: 16px; cursor: pointer;
+  padding: 14px 18px; border: 1px solid var(--line); border-radius: 14px;
+  background: var(--paper); transition: transform .2s var(--ease), box-shadow .2s; }
+.radar-event:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(20,19,15,.12); }
+.re-img { width: 74px; flex-shrink: 0; } .re-img img { width: 100%; }
+.re-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.re-main b { font-size: 0.95rem; } .re-main span { font-size: 0.78rem; color: var(--ink-2); }
+.re-side { margin-left: auto; display: flex; flex-direction: column;
+  align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.re-ret { font-size: 0.68rem; color: var(--ink-3); }
+@media (max-width: 860px) { .radar-events { grid-template-columns: 1fr; } }
+
+/* stage badges */
+.stage-badge { display: inline-block; padding: 2px 10px; border-radius: 999px;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.st-emerging { background: var(--acid); color: var(--acid-ink); }
+.st-heating  { background: #FFDFA1; color: #7A4B00; }
+.st-peaking  { background: #16150F; color: #F1ECE1; }
+.st-steady   { background: var(--paper-2); border: 1px solid var(--line-2); color: var(--ink-2); }
+.st-cooling  { background: #DCE7F5; color: #23477F; }
+.st-dormant  { background: var(--line); color: var(--ink-2); }
+.radar-stage.st-emerging, .radar-stage.st-heating, .radar-stage.st-peaking,
+.radar-stage.st-steady, .radar-stage.st-cooling, .radar-stage.st-dormant {
+  background: var(--paper); color: var(--ink); }
+.radar-stage.st-emerging b { color: #5a7a00; }
+.radar-stage.st-heating b { color: #b06e00; }
+.radar-stage.st-cooling b { color: #23477F; }
+.radar-stage.st-dormant b, .radar-stage.st-steady b { color: var(--ink-3); }
+
+/* ── ask solesight (analyst chat) ─────────────────────────── */
+.ask-fab { position: fixed; right: 26px; bottom: 26px; z-index: 90;
+  display: inline-flex; align-items: center; gap: 9px;
+  background: var(--ink); color: var(--canvas); border: none; cursor: pointer;
+  padding: 14px 22px; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
+  font-family: var(--sans); box-shadow: 0 18px 40px rgba(20,19,15,.35);
+  transition: transform .2s var(--ease); }
+.ask-fab:hover { transform: translateY(-2px); }
+.ask-fab-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--acid); }
+.ask-panel { position: fixed; right: 26px; bottom: 92px; z-index: 91;
+  width: min(430px, calc(100vw - 40px)); height: min(600px, calc(100vh - 130px));
+  display: none; flex-direction: column; overflow: hidden;
+  background: var(--paper); border: 1px solid var(--line-2); border-radius: 20px;
+  box-shadow: 0 40px 90px -20px rgba(20,19,15,.45); }
+.ask-panel.open { display: flex; }
+.ask-head { display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: var(--ink); color: var(--canvas); }
+.ask-head b { font-family: var(--serif); font-size: 1.15rem; }
+.ask-engine { font-size: 0.68rem; color: #B7B2A2; margin-left: 8px; }
+.ask-head-btns button { background: none; border: none; color: var(--canvas);
+  font-size: 1.1rem; cursor: pointer; padding: 2px 8px; opacity: .8; }
+.ask-head-btns button:hover { opacity: 1; }
+.ask-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex;
+  flex-direction: column; gap: 10px; }
+.ask-msg { display: flex; } .ask-msg.user { justify-content: flex-end; }
+.ask-bubble { max-width: 88%; padding: 10px 14px; border-radius: 14px;
+  font-size: 0.86rem; line-height: 1.5; }
+.ask-msg.bot .ask-bubble { background: var(--paper-2); border: 1px solid var(--line);
+  border-bottom-left-radius: 4px; }
+.ask-msg.user .ask-bubble { background: var(--ink); color: var(--canvas);
+  border-bottom-right-radius: 4px; }
+.ask-bubble ol, .ask-bubble ul { padding-left: 18px; margin: 6px 0; }
+.ask-bubble li { margin-bottom: 4px; }
+.ask-bubble small { color: var(--ink-3); display: block; margin-top: 6px; }
+.ask-src { margin-top: 8px; font-size: 0.62rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); }
+.ask-think { color: var(--ink-3); font-style: italic; }
+.ask-chips { display: flex; gap: 8px; padding: 0 14px 10px; flex-wrap: wrap; }
+.ask-chip { border: 1px solid var(--line-2); background: var(--paper);
+  border-radius: 999px; padding: 6px 12px; font-size: 0.74rem; cursor: pointer;
+  font-family: var(--sans); transition: background .2s; }
+.ask-chip:hover { background: var(--acid); border-color: var(--acid); }
+.ask-inputrow { display: flex; gap: 8px; padding: 12px 14px;
+  border-top: 1px solid var(--line); }
+.ask-inputrow input { flex: 1; border: 1px solid var(--line-2); background: var(--paper-2);
+  border-radius: 999px; padding: 11px 16px; font-size: 0.88rem;
+  font-family: var(--sans); outline: none; }
+.ask-inputrow input:focus { border-color: var(--ink); }
+.ask-inputrow button { width: 42px; border-radius: 50%; border: none;
+  background: var(--ink); color: var(--canvas); font-size: 1.05rem; cursor: pointer; }

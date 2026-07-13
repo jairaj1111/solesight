@@ -33,6 +33,14 @@ translates the raw signals — including the **resale premium** over retail —
 into plain-English marketing recommendations. Served through a public
 **Hype Index** site and a **Streamlit** analyst dashboard.
 
+Two agentic layers sit on top: **Ask SoleSight**, a conversational analyst —
+rule-based intent engine for every visitor, upgrading to genuine **Claude
+tool-use** (bring-your-own-key, browser-local) that answers free-form questions
+by querying the index's data tools; and **Launch Radar**, which detects
+launch-like demand events (3×+ spikes over each model's trailing baseline) and
+classifies every model's lifecycle stage (emerging / heating / peaking /
+cooling / dormant) straight from the stored series.
+
 `AI/ML · NLP · Transformers (HuggingFace) · LLM (OpenAI) · Predictive Analytics · Time-Series Forecasting (Prophet) · Autonomous Pipelines (GitHub Actions) · Python · SQLite · Streamlit`
 
 ## Architecture

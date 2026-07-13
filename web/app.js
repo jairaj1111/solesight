@@ -6,6 +6,7 @@ let DATA = null;
 let SORT = "hype";
 const ACTIVE = new Set();           // active brand filters (empty = all)
 const CATS = new Set();             // active category filters (empty = all)
+let STAGE_FILTER = null;            // lifecycle stage filter from Launch Radar
 
 const fmtSigned = (v, unit = "") =>
   v == null ? "—" : (v > 0 ? "+" : "") + v + unit;
@@ -23,6 +24,7 @@ async function init() {
   buildHero();
   renderTicker();
   renderFresh();
+  renderRadar();
   renderCase();
   renderWorkedExample();
   render();
@@ -49,6 +51,60 @@ function renderTicker() {
   const half = picks.map(item).join("");
   track.innerHTML = half + half;
   $$(".tk-item", track).forEach((el) => (el.onclick = () => openSheet(el.dataset.slug)));
+}
+
+/* ---------------- launch radar (detected demand events + stages) ---------------- */
+const STAGE_META = {
+  emerging: { label: "Emerging", cls: "st-emerging" },
+  heating:  { label: "Heating",  cls: "st-heating" },
+  peaking:  { label: "Peaking",  cls: "st-peaking" },
+  steady:   { label: "Steady",   cls: "st-steady" },
+  cooling:  { label: "Cooling",  cls: "st-cooling" },
+  dormant:  { label: "Dormant",  cls: "st-dormant" },
+};
+const stageBadge = (st) => {
+  const m = STAGE_META[st];
+  return m ? `<span class="stage-badge ${m.cls}">${m.label}</span>` : "";
+};
+
+function renderRadar() {
+  const r = DATA.radar;
+  if (!r) { $("#radar").style.display = "none"; return; }
+  const order = ["emerging", "heating", "peaking", "steady", "cooling", "dormant"];
+  $("#radar-stages").innerHTML = order
+    .filter((k) => r.stages[k])
+    .map((k) => `<button class="radar-stage ${STAGE_META[k].cls}" data-stage="${k}">
+        <b>${r.stages[k]}</b><span>${STAGE_META[k].label}</span></button>`)
+    .join("");
+  // clicking a stage filters the board via the category-free view
+  $$("#radar-stages .radar-stage").forEach((el) => (el.onclick = () => {
+    STAGE_FILTER = STAGE_FILTER === el.dataset.stage ? null : el.dataset.stage;
+    $$("#radar-stages .radar-stage").forEach((b) => b.classList.toggle("on",
+      b.dataset.stage === STAGE_FILTER));
+    render();
+    document.querySelector("#index").scrollIntoView({ behavior: "smooth" });
+  }));
+
+  $("#radar-events").innerHTML = r.events.map((e) => {
+    const m = DATA.models.find((x) => x.slug === e.slug);
+    if (!m) return "";
+    const when = new Date(e.date + "T12:00:00").toLocaleDateString("en-US",
+      { month: "short", day: "numeric" });
+    return `<div class="radar-event" data-slug="${m.slug}">
+      <div class="re-img">${img(m, "")}</div>
+      <div class="re-main">
+        <b>${esc(m.name)}</b>
+        <span>${when} · spiked <b>${e.multiple}×</b> over baseline
+          (${e.baseline} → ${e.peak})</span>
+      </div>
+      <div class="re-side">
+        ${stageBadge(m.stage)}
+        <span class="re-ret">${e.retention_pct == null ? "" :
+          `holding ${e.retention_pct}% of peak`}</span>
+      </div>
+    </div>`;
+  }).join("");
+  bindCards("#radar-events .radar-event");
 }
 
 /* ---------------- pipeline freshness (real numbers only) ---------------- */
@@ -150,7 +206,8 @@ function buildEyebrow() {
 function view() {
   let list = DATA.models.filter((m) =>
     (ACTIVE.size === 0 || ACTIVE.has(m.brand)) &&
-    (CATS.size === 0 || CATS.has(m.category)));
+    (CATS.size === 0 || CATS.has(m.category)) &&
+    (STAGE_FILTER == null || m.stage === STAGE_FILTER));
   const key = SORT;
   list = [...list].sort((a, b) => (b[key] ?? -1e9) - (a[key] ?? -1e9));
   return list;
@@ -388,7 +445,7 @@ function openSheet(slug) {
 
   $("#sheet").innerHTML = `
     <button class="sheet-close" onclick="(${closeSheet.toString()})()">×</button>
-    <div class="sheet-eyebrow">Rank #${m.rank} · ${esc(m.brand)}</div>
+    <div class="sheet-eyebrow">Rank #${m.rank} · ${esc(m.brand)} ${stageBadge(m.stage)}</div>
     <div class="sheet-title">${esc(m.name)}</div>
     <div class="sheet-hype"><b>${m.hype ?? "—"}</b><span class="of">/ 100 hype</span>
       <span class="delta ${deltaClass(m.momentum)}" style="margin-left:auto">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")} search</span></div>
