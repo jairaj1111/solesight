@@ -491,6 +491,17 @@ function closeSheet() {
   $("#sheet").setAttribute("aria-hidden", "true");
   $("#sheet-backdrop").classList.remove("on");
 }
+const STORE_NAMES = {
+  "kith.com": "Kith", "undefeated.com": "Undefeated",
+  "www.a-ma-maniere.com": "A Ma Mani\u00e8re",
+  "store.unionlosangeles.com": "Union LA", "extrabutterny.com": "Extra Butter",
+  "shopnicekicks.com": "Nice Kicks", "packershoes.com": "Packer",
+  "notre-shop.com": "Notre", "xhibition.co": "Xhibition",
+  "bdgastore.com": "Bodega", "cncpts.com": "Concepts", "feature.com": "Feature",
+  "lapstoneandhammer.com": "Lapstone & Hammer",
+  "socialstatuspgh.com": "Social Status", "sneakerpolitics.com": "Sneaker Politics",
+};
+
 function openSheet(slug) {
   const m = DATA.models.find((x) => x.slug === slug);
   if (!m) return;
@@ -512,7 +523,18 @@ function openSheet(slug) {
     <div class="sheet-photo">${img(m, "")}</div>
 
     <div class="sheet-facts">
-      ${m.stores_stocking ? `<div class="sf"><b>${m.stores_stocking}</b><span>boutiques stocking${m.sellout_rate != null ? ` · ${Math.round(m.sellout_rate * 100)}% of sizes sold out` : ""}</span></div>` : ""}
+      ${m.stores_stocking ? `<details class="sf-details">
+        <summary class="sf"><b>${m.stores_stocking}</b><span>boutiques stocking${m.sellout_rate != null ? ` · ${Math.round(m.sellout_rate * 100)}% of sizes sold out` : ""} <em class="sf-more">which stores?</em></span></summary>
+        <div class="stockists">${(m.stockists || []).map((s) => {
+          const pct = s.total ? s.avail / s.total : 0;
+          const cls = pct === 0 ? "gone" : pct < 0.34 ? "low" : "ok";
+          return `<div class="stk-row">
+            <span class="stk-name">${STORE_NAMES[s.store] || s.store}</span>
+            <span class="stk-price">${s.price ? "$" + Math.round(s.price) : ""}</span>
+            <span class="stk-bar"><i class="${cls}" style="width:${Math.round(pct * 100)}%"></i></span>
+            <span class="stk-sizes ${cls}">${pct === 0 ? "sold out" : s.avail + "/" + s.total + " sizes"}</span>
+          </div>`; }).join("")}</div>
+      </details>` : ""}
       ${m.wiki_views ? `<div class="sf"><b>${m.wiki_views.toLocaleString()}</b><span>Wikipedia views/day${m.wiki_momentum != null ? ` · ${fmtSigned(m.wiki_momentum, "%")}` : ""} (silhouette)</span></div>` : ""}
     </div>
 

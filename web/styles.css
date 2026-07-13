@@ -612,3 +612,24 @@ section[id] { scroll-margin-top: 84px; }
 .sheet-facts { display: flex; flex-direction: column; gap: 6px; margin: 14px 0 4px; }
 .sf { display: flex; align-items: baseline; gap: 8px; font-size: 0.82rem; color: var(--ink-2); }
 .sf b { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
+
+/* ── stockist expander in the detail sheet ────────────────── */
+.sf-details summary { cursor: pointer; list-style: none; }
+.sf-details summary::-webkit-details-marker { display: none; }
+.sf-more { font-style: normal; font-size: 0.7rem; font-weight: 700;
+  color: var(--acid-ink); background: var(--acid); border-radius: 999px;
+  padding: 1px 9px; margin-left: 6px; white-space: nowrap; }
+.sf-details[open] .sf-more { opacity: 0.55; }
+.stockists { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 7px; }
+.stk-row { display: grid; grid-template-columns: 1fr 44px 70px 76px;
+  align-items: center; gap: 10px; font-size: 0.78rem; }
+.stk-name { font-weight: 600; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; }
+.stk-price { color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+.stk-bar { height: 6px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.stk-bar i { display: block; height: 100%; border-radius: 4px; }
+.stk-bar i.ok { background: var(--pos); } .stk-bar i.low { background: #C98500; }
+.stk-bar i.gone { background: var(--neg); }
+.stk-sizes { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.stk-sizes.gone { color: var(--neg); font-weight: 700; }
+.stk-sizes.low { color: #9a6a00; font-weight: 600; }

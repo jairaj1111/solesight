@@ -65,6 +65,19 @@ def _resale_series(slug: str) -> dict:
     return out
 
 
+def _stockists(slug: str) -> list[dict]:
+    """Latest-day per-store availability rows, most sold-out first."""
+    with connect() as conn:
+        rows = conn.execute(
+            """SELECT store, price, variants_total t, variants_available a
+               FROM availability WHERE model_slug=? AND date=
+                 (SELECT MAX(date) FROM availability WHERE model_slug=?)""",
+            (slug, slug)).fetchall()
+    out = [{"store": r["store"], "price": r["price"],
+            "avail": r["a"], "total": r["t"]} for r in rows]
+    return sorted(out, key=lambda x: x["avail"] / x["total"] if x["total"] else 1)
+
+
 def _insight(slug: str) -> str | None:
     with connect() as conn:
         row = conn.execute(
@@ -112,6 +125,7 @@ def build() -> dict:
             "stores_stocking": s["stores_stocking"],
             "sellout_rate": s["sellout_rate"],
             "boutique_price": s["boutique_price"],
+            "stockists": _stockists(m.slug),
             "forecast_delta": _round(
                 None if s["forecast_start"] is None
                 else s["forecast_end_30d"] - s["forecast_start"], 0),
