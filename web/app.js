@@ -534,7 +534,7 @@ function openSheet(slug) {
             <span class="stk-bar"><i class="${cls}" style="width:${Math.round(pct * 100)}%"></i></span>
             <span class="stk-sizes ${cls}">${pct === 0 ? "sold out" : s.avail + "/" + s.total + " sizes"}</span>
           </div>`; }).join("")}</div>
-      </details>` : ""}
+      </details>` : `<div class="sf sf-none"><b>0</b><span>of 15 tracked boutiques have it on shelves — sold through at retail or never a general release</span></div>`}
       ${m.wiki_views ? `<div class="sf"><b>${m.wiki_views.toLocaleString()}</b><span>Wikipedia views/day${m.wiki_momentum != null ? ` · ${fmtSigned(m.wiki_momentum, "%")}` : ""} (silhouette)</span></div>` : ""}
     </div>
 

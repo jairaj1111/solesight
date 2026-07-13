@@ -633,3 +633,4 @@ section[id] { scroll-margin-top: 84px; }
 .stk-sizes { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
 .stk-sizes.gone { color: var(--neg); font-weight: 700; }
 .stk-sizes.low { color: #9a6a00; font-weight: 600; }
+.sf-none span { color: var(--ink-3); font-style: italic; }
