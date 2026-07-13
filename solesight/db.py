@@ -68,6 +68,26 @@ CREATE TABLE IF NOT EXISTS social (
 CREATE INDEX IF NOT EXISTS idx_social_model_time
     ON social (model_slug, date);
 
+CREATE TABLE IF NOT EXISTS attention (
+    model_slug    TEXT NOT NULL,
+    date          TEXT NOT NULL,          -- ISO date (daily)
+    source        TEXT NOT NULL,          -- wikipedia (article-level views)
+    views         INTEGER NOT NULL,
+    fetched_at    INTEGER NOT NULL,
+    PRIMARY KEY (model_slug, date, source)
+);
+
+CREATE TABLE IF NOT EXISTS availability (
+    model_slug    TEXT NOT NULL,
+    date          TEXT NOT NULL,          -- ISO date (daily)
+    store         TEXT NOT NULL,          -- boutique domain
+    price         REAL,                   -- current ask (USD)
+    variants_total     INTEGER NOT NULL,  -- sizes listed
+    variants_available INTEGER NOT NULL,  -- sizes in stock
+    fetched_at    INTEGER NOT NULL,
+    PRIMARY KEY (model_slug, date, store)
+);
+
 CREATE TABLE IF NOT EXISTS resale (
     model_slug    TEXT NOT NULL,
     date          TEXT NOT NULL,          -- ISO date (daily)

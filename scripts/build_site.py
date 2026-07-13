@@ -107,6 +107,11 @@ def build() -> dict:
             "resale_premium": _round(s["resale_premium"], 2),
             "resale_momentum": _round(s["resale_momentum_pct"], 0),
             "sales": s["resale_sales_14d"],
+            "wiki_views": s["wiki_views_14d"],
+            "wiki_momentum": s["wiki_momentum_pct"],
+            "stores_stocking": s["stores_stocking"],
+            "sellout_rate": s["sellout_rate"],
+            "boutique_price": s["boutique_price"],
             "forecast_delta": _round(
                 None if s["forecast_start"] is None
                 else s["forecast_end_30d"] - s["forecast_start"], 0),

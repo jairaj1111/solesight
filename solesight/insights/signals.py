@@ -16,7 +16,7 @@ import pandas as pd
 
 from .. import models
 from ..db import connect
-from ..ingest import resale, social
+from ..ingest import boutiques, resale, social, wikipedia
 
 
 def _latest_forecast(conn, slug: str) -> pd.DataFrame:
@@ -75,6 +75,15 @@ def snapshot(model_slug: str) -> dict:
     r_premium = (r_recent / retail if r_recent is not None and retail else None)
     r_sales = int(price["sales_count"].tail(14).sum()) if not price.empty else 0
 
+    # Wikipedia attention (silhouette-level cultural interest; context only).
+    wiki = wikipedia.load(model_slug)
+    wv = [v for _, v in wiki]
+    wiki_recent = round(sum(wv[-14:]) / 14) if len(wv) >= 14 else (
+        round(sum(wv) / len(wv)) if wv else None)
+    wiki_prior = round(sum(wv[-28:-14]) / 14) if len(wv) >= 28 else None
+    wiki_momentum = (round((wiki_recent - wiki_prior) / wiki_prior * 100, 1)
+                     if wiki_recent and wiki_prior else None)
+
     f_start = float(fc["yhat"].iloc[0]) if not fc.empty else None
     f_end = float(fc["yhat"].iloc[-1]) if not fc.empty else None
     if not fc.empty:
@@ -100,6 +109,9 @@ def snapshot(model_slug: str) -> dict:
         "social_buzz_momentum_pct": buzz_momentum,
         "social_posts_14d": social_posts,
         "social_platform_engagement": social.platform_breakdown(model_slug),
+        "wiki_views_14d": wiki_recent,
+        "wiki_momentum_pct": wiki_momentum,
+        **boutiques.snapshot_fields(model_slug),
         "retail_price": retail,
         "resale_last_sale": r_recent,
         "resale_premium": r_premium,

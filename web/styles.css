@@ -608,3 +608,7 @@ section[id] { scroll-margin-top: 84px; }
 
 /* ── B2 brand lockup in the nav ───────────────────────────── */
 .brand-lockup { height: 30px; width: auto; display: block; }
+.sig-badge.part { background: transparent; border: 1.5px solid var(--acid-ink); color: var(--acid-ink); }
+.sheet-facts { display: flex; flex-direction: column; gap: 6px; margin: 14px 0 4px; }
+.sf { display: flex; align-items: baseline; gap: 8px; font-size: 0.82rem; color: var(--ink-2); }
+.sf b { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }

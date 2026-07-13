@@ -16,7 +16,7 @@
   <meta property="og:image" content="https://jairaj1111.github.io/solesight/og.png" />
   <meta property="og:url" content="https://jairaj1111.github.io/solesight/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
   <!-- ambient grain + glow -->
@@ -144,14 +144,16 @@
         <span class="sig-badge live">live</span> real data refreshed nightly,
         <span class="sig-badge api">api-ready</span> real adapters awaiting free
         API keys (demo data until then), or
+        <span class="sig-badge part">partial</span> some platforms real, the rest
+        modeled, or
         <span class="sig-badge modeled">modeled</span> synthesized from real
         search momentum pending a viable API.</p>
       <div class="method-grid">
         <div class="method-card reveal"><span class="mc-w">26%</span><span class="sig-badge api">api-ready</span><h3>Resale premium</h3><p>Median sale vs. retail across marketplaces — the market's dollar vote.</p></div>
         <div class="method-card reveal"><span class="mc-w">24%</span><span class="sig-badge live">live</span><h3>Search momentum</h3><p>Google Trends interest, last 14 days vs. the prior 14 — movement within each model's own history.</p></div>
-        <div class="method-card reveal"><span class="mc-w">20%</span><span class="sig-badge modeled">modeled</span><h3>Social buzz</h3><p>Mention volume &amp; engagement across social platforms.</p></div>
+        <div class="method-card reveal"><span class="mc-w">20%</span><span class="sig-badge part">partial</span><h3>Social buzz</h3><p>Bluesky mentions <em>live &amp; keyless</em>; YouTube api-ready; IG/TikTok modeled.</p></div>
         <div class="method-card reveal"><span class="mc-w">18%</span><span class="sig-badge live">live</span><h3>Search intensity</h3><p>Current interest relative to <em>that model's own</em> historical peak — never compared across models.</p></div>
-        <div class="method-card reveal"><span class="mc-w">12%</span><span class="sig-badge api">api-ready</span><h3>Community mood</h3><p>Transformer sentiment over Reddit sneaker chatter.</p></div>
+        <div class="method-card reveal"><span class="mc-w">12%</span><span class="sig-badge live">live</span><h3>Community mood</h3><p>Transformer sentiment over live Bluesky chatter; Reddit joins with a free key.</p></div>
       </div>
 
       <details class="tech-method reveal">
@@ -187,16 +189,17 @@
     <div class="footer-word">SoleSight</div>
     <p>AI-powered sneaker &amp; streetwear consumer intelligence — transformer
       NLP, machine-learning forecasting, LLM-ready insight generation · an
-      autonomous pipeline refreshes search demand &amp; forecasts nightly from
-      live Google&nbsp;Trends data · community &amp; resale signals go live with
-      API keys · social buzz is modeled.</p>
+      autonomous pipeline refreshes nightly: live Google&nbsp;Trends demand &amp;
+      forecasts, live Bluesky community chatter, live Wikipedia attention and
+      boutique availability · resale &amp; Reddit go live with free API keys ·
+      IG/TikTok buzz is modeled.</p>
   </footer>
 
   <!-- ───────────────── detail overlay ───────────────── -->
   <div class="sheet-backdrop" id="sheet-backdrop"></div>
   <aside class="sheet" id="sheet" aria-hidden="true"></aside>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=7"></script>
   <script src="ask.js?v=1"></script>
 </body>
 </html>

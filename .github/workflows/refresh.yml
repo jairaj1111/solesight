@@ -64,8 +64,19 @@ jobs:
         continue-on-error: true
         run: python -m scripts.run_pipeline --reddit
 
+      - name: Ingest social + community (Bluesky keyless; YouTube with key)
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --social
+
+      - name: Ingest Wikipedia attention
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --wiki
+
+      - name: Ingest boutique availability (best-effort)
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --boutiques
+
       - name: Score sentiment (lexicon fallback — no torch in CI)
-        if: env.REDDIT_CLIENT_ID != ''
         continue-on-error: true
         run: python -m scripts.run_pipeline --sentiment
 

@@ -128,6 +128,10 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Signal | Source | Status | Activate with |
 |---|---|---|---|
 | Search demand | Google Trends | **Live** (nightly) | nothing — no key needed |
+| Community chatter + sentiment | Bluesky public search | **Live** (nightly) | nothing — no key needed |
+| Cultural attention | Wikipedia pageviews | **Live** (nightly) | nothing — no key needed |
+| Boutique availability | Shopify public product feeds (6 stores) | **Live**, best-effort | nothing — no key needed |
+| Social buzz (YouTube) | YouTube Data API v3 | api-ready | free key → `YOUTUBE_API_KEY` |
 | Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
 | Community sentiment | Reddit API | Synthetic until keys set | free app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
 | Resale (ask-side) | eBay Browse API | Synthetic until keys set | free keyset at [developer.ebay.com](https://developer.ebay.com) → `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` |

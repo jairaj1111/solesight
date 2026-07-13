@@ -82,43 +82,105 @@ def platform_breakdown(model_slug: str, days: int = 14) -> dict[str, int]:
             for p in config.SOCIAL_PLATFORMS}
 
 
-# --- Live ingestion adapters (not wired yet) --------------------------------
-# Each platform gates on its own token and has real-world limits worth noting:
+# --- Live ingestion adapters -------------------------------------------------
+# Platform notes:
+#   * bluesky   — REAL and keyless; lives in ingest/bluesky.py (posts + buzz).
+#   * youtube   — Data API v3, free key (YOUTUBE_API_KEY). search.list costs 100
+#     quota units per call, so we spend the 10k/day budget on the ~90 stalest
+#     models: one search + one stats batch each.
 #   * instagram — Graph API hashtag search is Business/Creator-only, ~30 hashtags
-#     per rolling 7 days, no history. Track brand/retailer accounts as a fallback.
-#   * tiktok    — Research API requires approval; Display API is per-user.
-#   * youtube   — Data API v3 search.list + videos.list gives mention & view counts.
-def _fetch_instagram(model, timeframe):  # pragma: no cover - stub
-    raise NotImplementedError("wire the Instagram Graph API here")
+#     per rolling 7 days, no history. Stays modeled until that changes.
+#   * tiktok    — Research API requires approval; Display API is per-user. Same.
+_YT_SEARCH = "https://www.googleapis.com/youtube/v3/search"
+_YT_VIDEOS = "https://www.googleapis.com/youtube/v3/videos"
 
 
-def _fetch_tiktok(model, timeframe):     # pragma: no cover - stub
-    raise NotImplementedError("wire the TikTok API here")
+def _yt_get(url: str, params: dict) -> dict:
+    import json
+    import urllib.parse
+    import urllib.request
+
+    qs = urllib.parse.urlencode(params)
+    with urllib.request.urlopen(f"{url}?{qs}", timeout=20) as resp:
+        return json.loads(resp.read())
 
 
-def _fetch_youtube(model, timeframe):    # pragma: no cover - stub
-    raise NotImplementedError("wire the YouTube Data API here")
+def _fetch_youtube(model, days: int = 14) -> list[dict]:
+    """Daily (posts, engagement) rows from recent videos mentioning the model."""
+    import time as _time
+    from datetime import datetime, timedelta, timezone
+
+    published_after = (datetime.now(timezone.utc) - timedelta(days=days)
+                       ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    search = _yt_get(_YT_SEARCH, {
+        "part": "id,snippet", "q": model.trends_term, "type": "video",
+        "order": "date", "publishedAfter": published_after, "maxResults": 25,
+        "key": config.YOUTUBE_API_KEY})
+    items = search.get("items", [])
+    ids = [i["id"]["videoId"] for i in items if i.get("id", {}).get("videoId")]
+    stats = {}
+    if ids:
+        vids = _yt_get(_YT_VIDEOS, {"part": "statistics", "id": ",".join(ids),
+                                    "key": config.YOUTUBE_API_KEY})
+        stats = {v["id"]: v.get("statistics", {}) for v in vids.get("items", [])}
+
+    from collections import defaultdict
+    daily = defaultdict(lambda: {"posts": 0, "eng": 0})
+    now = int(_time.time())
+    for it in items:
+        vid = it.get("id", {}).get("videoId")
+        day = it.get("snippet", {}).get("publishedAt", "")[:10]
+        if not vid or not day:
+            continue
+        st = stats.get(vid, {})
+        eng = int(st.get("viewCount", 0)) + int(st.get("likeCount", 0)) * 10
+        daily[day]["posts"] += 1
+        daily[day]["eng"] += eng
+    return [{"model_slug": model.slug, "date": d, "platform": "youtube",
+             "posts": v["posts"], "engagement": v["eng"], "fetched_at": now}
+            for d, v in daily.items()]
 
 
-_ADAPTERS = {
-    "instagram": _fetch_instagram,
-    "tiktok": _fetch_tiktok,
-    "youtube": _fetch_youtube,
-}
+def _purge_seeded(platform: str) -> int:
+    with connect() as conn:
+        cur = conn.execute(
+            "DELETE FROM social WHERE platform=? AND fetched_at=?",
+            (platform, config.SEED_TAG))
+    return cur.rowcount
 
 
 def run() -> None:
-    """Live ingestion entry point — not wired yet.
+    """Ingest live social buzz from every platform with credentials configured.
 
-    Kept as a clear signpost: implement the `_fetch_*` adapters above (each gated
-    on its config token) and store their rows via `store()`. Until then, use
-    `python -m scripts.seed_demo` to populate the `social` table with demo data.
+    Bluesky runs separately (ingest/bluesky.py — keyless). Here: YouTube when
+    YOUTUBE_API_KEY is set; Instagram/TikTok remain modeled pending viable APIs.
     """
-    raise NotImplementedError(
-        "Live social ingestion isn't wired. Implement the _fetch_* adapters in "
-        "solesight/ingest/social.py, or run `python -m scripts.seed_demo` for "
-        "offline demo buzz data."
-    )
+    import time as _time
+
+    if not config.YOUTUBE_API_KEY:
+        raise NotImplementedError(
+            "No live social credentials. Set YOUTUBE_API_KEY (free key from "
+            "console.cloud.google.com) for real YouTube buzz; Bluesky runs "
+            "keyless via the --social stage already; Instagram/TikTok stay "
+            "modeled until their APIs allow it.")
+
+    from .. import models as _models
+
+    rows, failed = [], 0
+    for model in _models.CATALOG:
+        try:
+            rows.extend(_fetch_youtube(model))
+        except Exception as exc:
+            failed += 1
+            print(f"  ! youtube failed for {model.slug}: {exc}")
+            if failed >= 5:
+                print("  ! youtube: too many failures (quota?) — stopping early")
+                break
+        _time.sleep(0.2)
+    n = store(rows)
+    purged = _purge_seeded("youtube") if n else 0
+    print(f"  social: youtube -> {n} daily rows, {failed} failed"
+          + (f", purged {purged} seeded youtube rows" if purged else ""))
 
 
 if __name__ == "__main__":

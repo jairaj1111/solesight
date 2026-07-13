@@ -17,7 +17,7 @@ const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
 init();
 
 async function init() {
-  DATA = await fetch("data.json?v=3").then((r) => r.json());
+  DATA = await fetch("data.json?v=4").then((r) => r.json());
   document.documentElement.style.setProperty("--n", DATA.models.length);
   buildEyebrow();
   buildChips();
@@ -510,6 +510,11 @@ function openSheet(slug) {
     <div class="sheet-hype"><b>${m.hype ?? "—"}</b><span class="of">/ 100 hype</span>
       <span class="delta ${deltaClass(m.momentum)}" style="margin-left:auto">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")} search</span></div>
     <div class="sheet-photo">${img(m, "")}</div>
+
+    <div class="sheet-facts">
+      ${m.stores_stocking ? `<div class="sf"><b>${m.stores_stocking}</b><span>boutiques stocking${m.sellout_rate != null ? ` · ${Math.round(m.sellout_rate * 100)}% of sizes sold out` : ""}</span></div>` : ""}
+      ${m.wiki_views ? `<div class="sf"><b>${m.wiki_views.toLocaleString()}</b><span>Wikipedia views/day${m.wiki_momentum != null ? ` · ${fmtSigned(m.wiki_momentum, "%")}` : ""} (silhouette)</span></div>` : ""}
+    </div>
 
     <h4>Signal breakdown</h4>
     <div class="bars">

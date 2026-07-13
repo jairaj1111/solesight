@@ -45,7 +45,7 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 # --- Social ---
 # Platforms we track for "buzz" (mention volume + engagement). Each needs its own
 # API token when ingested live; offline demo data is produced by scripts/seed_demo.
-SOCIAL_PLATFORMS = ("instagram", "tiktok", "youtube")
+SOCIAL_PLATFORMS = ("bluesky", "instagram", "tiktok", "youtube")
 INSTAGRAM_TOKEN = os.getenv("INSTAGRAM_TOKEN", "")   # Graph API (Business/Creator)
 TIKTOK_TOKEN = os.getenv("TIKTOK_TOKEN", "")         # TikTok Research/Display API
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")   # YouTube Data API v3
