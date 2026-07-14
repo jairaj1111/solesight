@@ -77,6 +77,18 @@ CREATE TABLE IF NOT EXISTS attention (
     PRIMARY KEY (model_slug, date, source)
 );
 
+CREATE TABLE IF NOT EXISTS press (
+    model_slug    TEXT NOT NULL,
+    source        TEXT NOT NULL,          -- outlet name (Hypebeast, Sole Retriever…)
+    url           TEXT NOT NULL,
+    title         TEXT NOT NULL,
+    published     TEXT NOT NULL,          -- ISO date
+    fetched_at    INTEGER NOT NULL,
+    PRIMARY KEY (model_slug, url)
+);
+CREATE INDEX IF NOT EXISTS idx_press_model_time
+    ON press (model_slug, published);
+
 CREATE TABLE IF NOT EXISTS availability (
     model_slug    TEXT NOT NULL,
     date          TEXT NOT NULL,          -- ISO date (daily)

@@ -60,6 +60,7 @@ Trends                                                                          
 | Ingestion  | `solesight/ingest/reddit.py`        | Reddit chatter via PRAW                |
 | Ingestion  | `solesight/ingest/google_trends.py` | Search interest via pytrends           |
 | Ingestion  | `solesight/ingest/social.py`        | Social buzz (IG/TikTok/YouTube) + norm |
+| Ingestion  | `solesight/ingest/press.py`         | Sneaker press via Google News + RSS    |
 | Ingestion  | `solesight/ingest/resale.py`        | Resale price/volume (StockX/eBay)      |
 | NLP        | `solesight/nlp/sentiment.py`        | Transformer sentiment scoring          |
 | Forecast   | `solesight/forecast/prophet_model.py`| Prophet 30-day demand forecast        |
@@ -130,7 +131,8 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Search demand | Google Trends | **Live** (nightly) | nothing — no key needed |
 | Community chatter + sentiment | Bluesky public search | **Live** (nightly) | nothing — no key needed |
 | Cultural attention | Wikipedia pageviews | **Live** (nightly) | nothing — no key needed |
-| Boutique availability | Shopify public product feeds (6 stores) | **Live**, best-effort | nothing — no key needed |
+| Boutique availability | Shopify public product feeds (15 stores) | **Live**, best-effort | nothing — no key needed |
+| Press coverage | Google News RSS per model + Hypebeast / Sneaker News / Nice Kicks / SBD / Highsnobiety feeds | **Live** (nightly) | nothing — no key needed |
 | Social buzz (YouTube) | YouTube Data API v3 | **Live** (nightly) | done ✓ |
 | Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
 | Community sentiment | Reddit API | Synthetic until keys set | free app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |

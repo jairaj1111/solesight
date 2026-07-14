@@ -23,6 +23,7 @@ def main() -> None:
     p.add_argument("--social", action="store_true", help="ingest social buzz")
     p.add_argument("--resale", action="store_true", help="ingest resale prices")
     p.add_argument("--wiki", action="store_true", help="ingest Wikipedia attention")
+    p.add_argument("--press", action="store_true", help="ingest sneaker press coverage")
     p.add_argument("--boutiques", action="store_true", help="ingest boutique availability")
     p.add_argument("--sentiment", action="store_true", help="score sentiment")
     p.add_argument("--forecast", action="store_true", help="Prophet forecast")
@@ -35,7 +36,7 @@ def main() -> None:
 
     run_all = args.all or not any(
         [args.reddit, args.trends, args.social, args.resale, args.wiki,
-         args.boutiques, args.sentiment,
+         args.press, args.boutiques, args.sentiment,
          args.forecast, args.insights, args.offline_insights]
     )
     want_insights = run_all or args.insights or args.offline_insights
@@ -48,13 +49,13 @@ def main() -> None:
 
     if run_all or args.reddit:
         from solesight.ingest import reddit
-        print("[1/9] Reddit ingestion"); reddit.run()
+        print("[1/10] Reddit ingestion"); reddit.run()
     if run_all or args.trends:
         from solesight.ingest import google_trends
-        print("[2/9] Google Trends ingestion"); google_trends.run()
+        print("[2/10] Google Trends ingestion"); google_trends.run()
     if run_all or args.social:
         from solesight.ingest import bluesky, social
-        print("[3/9] Social + community ingestion (Bluesky, keyless)")
+        print("[3/10] Social + community ingestion (Bluesky, keyless)")
         try:
             bluesky.run()
         except Exception as exc:
@@ -62,28 +63,31 @@ def main() -> None:
         _try_stage(social)   # YouTube (key-gated); IG/TikTok stay modeled
     if run_all or args.wiki:
         from solesight.ingest import wikipedia
-        print("[4/9] Wikipedia attention"); _try_stage(wikipedia)
+        print("[4/10] Wikipedia attention"); _try_stage(wikipedia)
+    if run_all or args.press:
+        from solesight.ingest import press
+        print("[5/10] Sneaker press coverage (keyless RSS)"); _try_stage(press)
     if run_all or args.boutiques:
         from solesight.ingest import boutiques
-        print("[5/9] Boutique availability"); _try_stage(boutiques)
+        print("[6/10] Boutique availability"); _try_stage(boutiques)
     if run_all or args.resale:
         from solesight.ingest import resale
-        print("[6/9] Resale ingestion"); _try_stage(resale)
+        print("[7/10] Resale ingestion"); _try_stage(resale)
     if run_all or args.sentiment:
         from solesight.nlp import sentiment
-        print("[7/9] Sentiment scoring"); sentiment.run()
+        print("[8/10] Sentiment scoring"); sentiment.run()
     if run_all or args.forecast:
         from solesight.forecast import prophet_model
-        print("[8/9] Prophet forecasting"); prophet_model.run()
+        print("[9/10] Prophet forecasting"); prophet_model.run()
     if want_insights:
         if args.offline_insights or not config.OPENAI_API_KEY:
             from solesight.insights import rules
             why = ("forced by --offline-insights" if args.offline_insights
                    else "no OPENAI_API_KEY set")
-            print(f"[9/9] Insights: offline rule engine ({why})"); rules.run()
+            print(f"[10/10] Insights: offline rule engine ({why})"); rules.run()
         else:
             from solesight.insights import llm
-            print("[9/9] Insights: OpenAI"); llm.run()
+            print("[10/10] Insights: OpenAI"); llm.run()
 
     print("Done.")
 

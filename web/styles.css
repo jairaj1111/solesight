@@ -634,3 +634,16 @@ section[id] { scroll-margin-top: 84px; }
 .stk-sizes.gone { color: var(--neg); font-weight: 700; }
 .stk-sizes.low { color: #9a6a00; font-weight: 600; }
 .sf-none span { color: var(--ink-3); font-style: italic; }
+
+/* ── press coverage in the detail sheet ───────────────────── */
+.press-list { display: flex; flex-direction: column; gap: 9px; margin: 4px 0 2px; }
+.press-row { display: block; text-decoration: none; color: inherit;
+  padding: 9px 12px; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 10px; transition: border-color .15s ease; }
+.press-row:hover { border-color: var(--ink-3); }
+.press-title { display: block; font-size: 0.83rem; font-weight: 600;
+  color: var(--ink); line-height: 1.35; }
+.press-meta { display: block; margin-top: 3px; font-size: 0.7rem;
+  letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); }
+.press-count { font-size: 0.82rem; color: var(--ink-2); margin-bottom: 8px; }
+.press-count b { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }

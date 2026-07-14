@@ -16,7 +16,7 @@ from pathlib import Path
 
 from solesight import models
 from solesight.db import connect
-from solesight.ingest import resale
+from solesight.ingest import press, resale
 from solesight.insights import lifecycle, market, signals
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -122,6 +122,9 @@ def build() -> dict:
             "sales": s["resale_sales_14d"],
             "wiki_views": s["wiki_views_14d"],
             "wiki_momentum": s["wiki_momentum_pct"],
+            "press_14d": s["press_14d"],
+            "press_outlets": s["press_outlets_14d"],
+            "press": press.headlines(m.slug, 5),
             "stores_stocking": s["stores_stocking"],
             "sellout_rate": s["sellout_rate"],
             "boutique_price": s["boutique_price"],
@@ -160,7 +163,9 @@ def _pipeline_stats() -> dict:
         fc = conn.execute(
             """SELECT COUNT(*) n FROM forecasts WHERE generated_at=
                (SELECT MAX(generated_at) FROM forecasts)""").fetchone()["n"]
+        articles = conn.execute("SELECT COUNT(DISTINCT url) n FROM press").fetchone()["n"]
     return {"daily_observations": obs, "forecast_days": fc,
+            "press_articles": articles,
             "models": len(models.CATALOG),
             "brands": len({m.brand for m in models.CATALOG})}
 

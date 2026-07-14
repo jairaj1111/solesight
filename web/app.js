@@ -118,6 +118,7 @@ function renderFresh() {
     ["Models tracked", `${s.models} across ${s.brands} brands`],
     ["Daily observations", s.daily_observations.toLocaleString("en-US")],
     ["Forecast days generated", s.forecast_days.toLocaleString("en-US")],
+    ...(s.press_articles ? [["Press articles tracked", s.press_articles.toLocaleString("en-US")]] : []),
   ].map(([k, v]) => `<div class="fresh-item"><span>${k}</span><b>${v}</b></div>`).join("");
 }
 
@@ -557,6 +558,18 @@ function openSheet(slug) {
         ${m.sent_summary.praise ? `<div>Praised for <b>${esc(m.sent_summary.praise)}</b></div>` : ""}
         ${m.sent_summary.complaint ? `<div>Top complaint: <b>${esc(m.sent_summary.complaint)}</b></div>` : ""}
       </div>
+    </div>` : ""}
+
+    ${(m.press && m.press.length) ? `
+    <h4>In the press</h4>
+    <div class="press-count">${m.press_14d
+      ? `<b>${m.press_14d}</b> stor${m.press_14d === 1 ? "y" : "ies"} in the last 14 days${m.press_outlets > 1 ? ` across ${m.press_outlets} outlets` : ""} — live via Google News &amp; sneaker-blog RSS`
+      : `Latest coverage — live via Google News &amp; sneaker-blog RSS`}</div>
+    <div class="press-list">
+      ${m.press.map((p) => `<a class="press-row" href="${esc(p.url)}" target="_blank" rel="noopener">
+        <span class="press-title">${esc(p.title)}</span>
+        <span class="press-meta">${esc(p.source || "Google News")} · ${p.published}</span>
+      </a>`).join("")}
     </div>` : ""}
 
     <h4>Marketing readout</h4>
