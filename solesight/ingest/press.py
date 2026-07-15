@@ -19,6 +19,7 @@ that refuses is skipped and the section simply doesn't render for that model.
 from __future__ import annotations
 
 import os
+import re
 import time
 import urllib.parse
 import urllib.request
@@ -120,6 +121,56 @@ def _store(rows: list[dict]) -> int:
     return len(rows)
 
 
+# --- deterministic headline classification -----------------------------------
+# Sneaker headlines are formulaic enough that a rule table classifies them with
+# high precision, free, and explainably — same philosophy as the offline
+# sentiment lexicon. An LLM engine can slot in above this later (the insights
+# llm/rules pattern); this stays the keyless floor.
+_EVENT_RULES = [
+    ("restock", ("restock", "re-stock", "back in stock", "available again",
+                 "returning to shelves")),
+    ("collab", ("collab", "teams up", "team up", "partnership", "joins forces",
+                "links with", "link up")),
+    ("rumor", ("rumor", "rumour", "leak", "sample surfaces", "first look",
+               "teaser", "teases", "sneak peek", "spotted", "in the works",
+               "could be", "might be", "unreleased")),
+    ("market", ("resale", "resell", "sold out", "sells out", "sell out",
+                "record price", "most expensive", "aftermarket")),
+    ("release", ("release", "releasing", "drops", "dropping", "drop date",
+                 "launch", "arrives", "arriving", "coming soon", "on the way",
+                 "official look", "official images", "returns", "raffle",
+                 "where to buy", "how to buy", "gets a", "debuts", "is bringing",
+                 "brings back", "bringing back", "set to", "slated for",
+                 "comes to", "lands ", "landing ")),
+    ("review", ("review", "on-foot", "on foot", "wear test", "best sneakers",
+                "ranked", "top 10", "top ten", "outfit", "how to style",
+                "how to wear", "styling")),
+]
+_COLLAB_X = re.compile(r"[\w’'.]+ x [\w’'.]+", re.I)
+
+
+def classify_event(title: str) -> str:
+    t = title.lower()
+    for label, keys in _EVENT_RULES:
+        if label == "collab" and _COLLAB_X.search(title):
+            return "collab"
+        if any(k in t for k in keys):
+            return label
+    return "coverage"
+
+
+# Known sneaker/fashion outlets rank above the long tail when picking the few
+# headlines the UI shows (recency still wins; this only breaks same-day ties).
+_TIER1 = {"Hypebeast", "Complex", "Sneaker News", "Sole Retriever",
+          "Highsnobiety", "Sneaker Freaker", "Nice Kicks",
+          "Sneaker Bar Detroit", "WWD", "GQ", "Footwear News", "KicksOnFire",
+          "House of Heat°", "Esquire", "Boardroom", "Hypebae"}
+
+
+def _tier(source: str | None) -> int:
+    return 2 if source in _TIER1 else 1
+
+
 def _dedup_titles(rows: list) -> list:
     """The same story often arrives via a blog feed AND Google News — keep one."""
     seen, out = set(), []
@@ -132,29 +183,47 @@ def _dedup_titles(rows: list) -> list:
 
 
 def snapshot_fields(model_slug: str) -> dict:
-    """Trailing-14-day coverage rollup for one model."""
+    """Trailing-14-day coverage rollup: volume, breadth, growth, top theme."""
     since = (date.today() - timedelta(days=14)).isoformat()
+    prior_since = (date.today() - timedelta(days=28)).isoformat()
     with connect() as conn:
         rows = conn.execute(
             """SELECT title, source FROM press
                WHERE model_slug=? AND published>=?""",
             (model_slug, since)).fetchall()
+        prior = conn.execute(
+            """SELECT title, source FROM press
+               WHERE model_slug=? AND published>=? AND published<?""",
+            (model_slug, prior_since, since)).fetchall()
     deduped = _dedup_titles(rows)
+    prior_n = len(_dedup_titles(prior))
     outlets = {r["source"] for r in deduped if r["source"]}
+    momentum = (round((len(deduped) - prior_n) / prior_n * 100)
+                if prior_n else None)
+    events = [classify_event(r["title"]) for r in deduped]
+    top_event = max(set(events), key=events.count) if events else None
     return {"press_14d": len(deduped),
-            "press_outlets_14d": len(outlets)}
+            "press_outlets_14d": len(outlets),
+            "press_momentum_pct": momentum,
+            "press_top_event": top_event}
 
 
 def headlines(model_slug: str, limit: int = 5) -> list[dict]:
-    """Newest distinct headlines for one model (for the UI)."""
+    """Newest distinct headlines for one model (for the UI).
+
+    Recency first; known sneaker outlets beat the long tail on same-day ties.
+    """
     with connect() as conn:
         rows = conn.execute(
             """SELECT title, source, url, published FROM press
                WHERE model_slug=? ORDER BY published DESC LIMIT 40""",
             (model_slug,)).fetchall()
-    return [{"title": r["title"], "source": r["source"],
-             "url": r["url"], "published": r["published"]}
-            for r in _dedup_titles(rows)][:limit]
+    out = [{"title": r["title"], "source": r["source"],
+            "url": r["url"], "published": r["published"],
+            "event": classify_event(r["title"])}
+           for r in _dedup_titles(rows)]
+    out.sort(key=lambda r: (r["published"], _tier(r["source"])), reverse=True)
+    return out[:limit]
 
 
 def run() -> None:

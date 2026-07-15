@@ -124,6 +124,8 @@ def build() -> dict:
             "wiki_momentum": s["wiki_momentum_pct"],
             "press_14d": s["press_14d"],
             "press_outlets": s["press_outlets_14d"],
+            "press_momentum": s["press_momentum_pct"],
+            "press_event": s["press_top_event"],
             "press": press.headlines(m.slug, 5),
             "stores_stocking": s["stores_stocking"],
             "sellout_rate": s["sellout_rate"],

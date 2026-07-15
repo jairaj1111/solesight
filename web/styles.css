@@ -656,6 +656,14 @@ section[id] { scroll-margin-top: 84px; }
   letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); }
 .press-count { font-size: 0.82rem; color: var(--ink-2); margin-bottom: 8px; }
 .press-count b { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
+.press-count .delta { font-size: 0.78rem; }
+.press-tag { font-style: normal; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.07em; padding: 1px 7px; border-radius: 999px;
+  border: 1px solid var(--line-2); color: var(--ink-2); margin-left: 4px;
+  vertical-align: 1px; }
+.press-tag.pt-release, .press-tag.pt-collab { background: var(--acid);
+  border-color: var(--acid); color: var(--acid-ink); }
+.press-tag.pt-restock { border-color: var(--pos); color: var(--pos); }
 
 /* ── who it's for ─────────────────────────────────────────── */
 .fit { padding: 80px 6vw 30px; }

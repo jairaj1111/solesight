@@ -564,6 +564,12 @@ function priceLadder(m) {
       ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}</div>`;
 }
 
+const EVENT_LABELS = {
+  release: "release news", restock: "restock", collab: "collab",
+  rumor: "leaks & rumors", market: "resale market", review: "style & reviews",
+  coverage: "coverage",
+};
+
 function openSheet(slug) {
   const m = DATA.models.find((x) => x.slug === slug);
   if (!m) return;
@@ -626,12 +632,12 @@ function openSheet(slug) {
     ${(m.press && m.press.length) ? `
     <h4>In the press</h4>
     <div class="press-count">${m.press_14d
-      ? `<b>${m.press_14d}</b> stor${m.press_14d === 1 ? "y" : "ies"} in the last 14 days${m.press_outlets > 1 ? ` across ${m.press_outlets} outlets` : ""} — live via Google News &amp; sneaker-blog RSS`
-      : `Latest coverage — live via Google News &amp; sneaker-blog RSS`}</div>
+      ? `<b>${m.press_14d}</b> stor${m.press_14d === 1 ? "y" : "ies"} in 14 days${m.press_outlets > 1 ? ` · ${m.press_outlets} outlets` : ""}${m.press_momentum != null ? ` · <span class="delta ${deltaClass(m.press_momentum)}">${arrow(m.press_momentum)} ${fmtSigned(m.press_momentum, "%")} coverage</span>` : ""}${m.press_event && m.press_event !== "coverage" ? ` · mostly ${EVENT_LABELS[m.press_event] || m.press_event}` : ""}`
+      : `Latest coverage — live via Google News &amp; sneaker-press RSS`}</div>
     <div class="press-list">
       ${m.press.map((p) => `<a class="press-row" href="${esc(p.url)}" target="_blank" rel="noopener">
         <span class="press-title">${esc(p.title)}</span>
-        <span class="press-meta">${esc(p.source || "Google News")} · ${p.published}</span>
+        <span class="press-meta">${esc(p.source || "Google News")} · ${p.published}${p.event && p.event !== "coverage" ? ` <i class="press-tag pt-${p.event}">${EVENT_LABELS[p.event] || p.event}</i>` : ""}</span>
       </a>`).join("")}
     </div>` : ""}
 
