@@ -43,15 +43,25 @@ def store(rows: list[dict]) -> int:
     return len(rows)
 
 
-def load(model_slug: str) -> pd.DataFrame:
-    """Raw daily rows (date, source, last_sale, lowest_ask, sales_count)."""
+def load(model_slug: str, real_only_if_available: bool = True) -> pd.DataFrame:
+    """Raw daily rows (date, source, last_sale, lowest_ask, sales_count).
+
+    The moment a model has ANY real rows, seeded demo rows are excluded — a
+    synthetic StockX price must never blend into (or chart next to) a real eBay
+    ask. In a pure-demo database (no real rows anywhere) seeded rows still
+    serve, so the offline workflow keeps working.
+    """
     with connect() as conn:
         rows = conn.execute(
-            """SELECT date, source, last_sale, lowest_ask, sales_count FROM resale
+            """SELECT date, source, last_sale, lowest_ask, sales_count,
+                      fetched_at FROM resale
                WHERE model_slug=? ORDER BY date""",
             (model_slug,)).fetchall()
     df = pd.DataFrame([dict(r) for r in rows])
     if not df.empty:
+        if real_only_if_available and (df["fetched_at"] != config.SEED_TAG).any():
+            df = df[df["fetched_at"] != config.SEED_TAG]
+        df = df.drop(columns=["fetched_at"])
         df["date"] = pd.to_datetime(df["date"])
     return df
 

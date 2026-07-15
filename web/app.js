@@ -17,7 +17,7 @@ const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
 init();
 
 async function init() {
-  DATA = await fetch("data.json?v=4").then((r) => r.json());
+  DATA = await fetch("data.json?v=5").then((r) => r.json());
   document.documentElement.style.setProperty("--n", DATA.models.length);
   buildEyebrow();
   buildChips();
@@ -503,6 +503,48 @@ const STORE_NAMES = {
   "socialstatuspgh.com": "Social Status", "sneakerpolitics.com": "Sneaker Politics",
 };
 
+/* Price ladder: retail tick, boutique-shelf dots, eBay median-ask diamond
+   on one number line — the arbitrage view. Skips when there's nothing to place. */
+function priceLadder(m) {
+  const shelf = (m.stockists || []).filter((s) => s.price);
+  const ebay = m.resale_last;
+  if (!m.retail || (!shelf.length && !ebay)) return "";
+  const W = 500, H = 110, L = 14, R = 14, base = 70;
+  const vals = [m.retail, ...(ebay ? [ebay] : []), ...shelf.map((s) => s.price)];
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const pad = Math.max((hi - lo) * 0.08, 8);
+  const X = (v) => L + ((v - (lo - pad)) / ((hi + pad) - (lo - pad))) * (W - L - R);
+  let prevX = -99, lift = 0;
+  const placed = shelf.map((s) => ({ x: X(s.price), s })).sort((a, b) => a.x - b.x)
+    .map((d) => {
+      lift = d.x - prevX < 11 ? lift + 11 : 0;
+      prevX = d.x;
+      return { ...d, lift };
+    });
+  const dots = placed.map((d) => `<g><title>${esc(STORE_NAMES[d.s.store] || d.s.store)} — $${Math.round(d.s.price)}</title>
+        <circle cx="${d.x}" cy="${base - d.lift}" r="11" fill="transparent"/>
+        <circle cx="${d.x}" cy="${base - d.lift}" r="5" fill="var(--pos)" stroke="var(--paper)" stroke-width="2"/></g>`).join("");
+  const rx = X(m.retail);
+  const ex = ebay ? X(ebay) : 0;
+  // keep the eBay label clear of any dot stack near it
+  const liftNear = ebay ? Math.max(0, ...placed.filter((d) => Math.abs(d.x - ex) < 70).map((d) => d.lift)) : 0;
+  const ebaySvg = !ebay ? "" : `
+    <g><title>eBay median ask — $${Math.round(ebay)}</title>
+      <circle cx="${ex}" cy="${base}" r="12" fill="transparent"/>
+      <path d="M ${ex} ${base - 8} l 8 8 l -8 8 l -8 -8 Z" fill="var(--ebay)" stroke="var(--paper)" stroke-width="2"/></g>
+    <text x="${Math.min(Math.max(ex, 58), W - 58)}" y="${base - 18 - liftNear}" text-anchor="middle" class="pl-lab">EBAY ASK $${Math.round(ebay)}</text>`;
+  return `<h4>Where it trades</h4>
+    <svg class="chart pl" viewBox="0 0 ${W} ${H}">
+      <line x1="${L}" y1="${base}" x2="${W - R}" y2="${base}" stroke="var(--line-2)" stroke-width="2"/>
+      <line x1="${rx}" y1="${base - 12}" x2="${rx}" y2="${base + 12}" stroke="var(--ink-3)" stroke-width="2.5"/>
+      <text x="${Math.min(Math.max(rx, 44), W - 44)}" y="${base + 30}" text-anchor="middle" class="pl-lab">RETAIL $${m.retail}</text>
+      ${dots}${ebaySvg}
+    </svg>
+    <div class="legend"><span><i style="background:var(--ink-3)"></i>Retail</span>${shelf.length
+      ? `<span><i style="background:var(--pos)"></i>Boutique shelves (${shelf.length})</span>` : ""}${ebay
+      ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}</div>`;
+}
+
 function openSheet(slug) {
   const m = DATA.models.find((x) => x.slug === slug);
   if (!m) return;
@@ -538,6 +580,8 @@ function openSheet(slug) {
       </details>` : `<div class="sf sf-none"><b>0</b><span>of 15 tracked boutiques have it on shelves — sold through at retail or never a general release</span></div>`}
       ${m.wiki_views ? `<div class="sf"><b>${m.wiki_views.toLocaleString()}</b><span>Wikipedia views/day${m.wiki_momentum != null ? ` · ${fmtSigned(m.wiki_momentum, "%")}` : ""} (silhouette)</span></div>` : ""}
     </div>
+
+    ${priceLadder(m)}
 
     <h4>Signal breakdown</h4>
     <div class="bars">
@@ -578,11 +622,11 @@ function openSheet(slug) {
     <h4>Demand &amp; 30-day forecast</h4>
     ${demandChart(m)}
 
-    <h4>Resale · StockX vs eBay</h4>
+    <h4>Resale ${(m.resale_series || {}).stockx?.length ? "· StockX vs eBay" : "· live eBay asks"}</h4>
     ${resaleChart(m)}
     <div class="legend">
-      <span><i style="background:var(--stockx)"></i>StockX</span>
-      <span><i style="background:var(--ebay)"></i>eBay</span>
+      ${(m.resale_series || {}).stockx?.length ? `<span><i style="background:var(--stockx)"></i>StockX</span>` : ""}
+      ${(m.resale_series || {}).ebay?.length ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}
       <span><i style="background:var(--ink-3)"></i>Retail $${m.retail ?? "—"}</span>
     </div>
   `;
