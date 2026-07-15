@@ -675,6 +675,11 @@ section[id] { scroll-margin-top: 84px; }
 .sys-foot { margin-top: 22px; max-width: 860px; font-size: .84rem;
   color: var(--ink-2); line-height: 1.6; }
 .sys-foot b { color: var(--ink); }
+.sys-roster { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line);
+  max-width: 860px; font-size: .8rem; color: var(--ink-3); line-height: 1.7; }
+.sys-roster span { display: block; font-size: .64rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2);
+  margin-bottom: 5px; }
 
 /* ── limitations ──────────────────────────────────────────── */
 .limits { margin-top: 30px; padding: 26px 28px; border-radius: 16px;

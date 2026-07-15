@@ -140,6 +140,11 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Resale (sold) | StockX | Stubbed | partner-program approval |
 | Social buzz | IG / TikTok / YouTube | Modeled | per-platform API tokens (stubs documented in `ingest/social.py`) |
 
+The boutique network (all polled via public Shopify product feeds): **Kith,
+Undefeated, A Ma Manière, Union LA, Extra Butter, Nice Kicks, Packer, Notre,
+Xhibition, Bodega, Concepts, Feature, Lapstone & Hammer, Social Status,
+Sneaker Politics.**
+
 Set the keys locally in `.env`, and for the nightly refresh add them as
 **repository secrets** (Settings → Secrets and variables → Actions) with the
 same names. The moment real data flows for a source, its synthetic demo rows
