@@ -337,45 +337,6 @@ svg.chart { width: 100%; height: auto; display: block; }
   .row-spark, .row .col-hide { display: none; }
 }
 
-/* ─────────────── phone (iOS-friendly) ─────────────── */
-@media (max-width: 560px) {
-  .row { grid-template-columns: 26px 48px minmax(0, 1fr) 58px 50px;
-    gap: 10px; padding: 12px 10px; }
-  .row-rank { font-size: 1.15rem; }
-  .row-thumb { width: 48px; height: 40px; }
-  .row-name b { font-size: .88rem; }
-  .row-name span { font-size: .62rem; }
-  .row-metric b { font-size: .84rem; }
-  .row-hype b { font-size: 1.3rem; }
-  .row:hover { transform: none; }
-
-  .controls-head { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .sort { flex-wrap: wrap; gap: 8px; }
-  .seg button { padding: 8px 12px; font-size: .72rem; }
-
-  .hero-title { font-size: clamp(2.6rem, 15vw, 3.4rem); }
-  .hero-actions { flex-wrap: wrap; }
-  .sheet { width: 100vw; border-left: 0; }
-  .sheet-title { font-size: 2rem; }
-  .sheet-hype b { font-size: 3rem; }
-  .bar-row { grid-template-columns: 78px 1fr 34px; gap: 8px; }
-  .stk-row { grid-template-columns: minmax(0, 1fr) 40px 52px 68px; gap: 7px;
-    font-size: .72rem; }
-  .movers { grid-template-columns: 1fr; }
-  .method-grid { grid-template-columns: 1fr; }
-  .mkt-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
-  /* Ask SoleSight on phones: 16px input (stops iOS focus-zoom), edge-to-edge
-     panel, and home-indicator clearance */
-  .ask-fab { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
-  .ask-panel { left: 10px; right: 10px; width: auto;
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
-    height: min(560px, calc(100dvh - 130px)); }
-  .ask-inputrow input { font-size: 16px; }
-  .sheet { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
-  .tech-method pre { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .tm-col { min-width: 0; }
-}
 
 /* ─────────────── market intelligence ─────────────── */
 .section-sub {
@@ -747,4 +708,77 @@ section[id] { scroll-margin-top: 84px; }
 }
 @media (max-width: 560px) {
   .fit-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ─────────────── phone (iOS-friendly) ─────────────── */
+@media (max-width: 560px) {
+  .row { grid-template-columns: 26px 48px minmax(0, 1fr) 58px 50px;
+    gap: 10px; padding: 12px 10px; }
+  .row-rank { font-size: 1.15rem; }
+  .row-thumb { width: 48px; height: 40px; }
+  .row-name b { font-size: .88rem; }
+  .row-name span { font-size: .62rem; }
+  .row-metric b { font-size: .84rem; }
+  .row-hype b { font-size: 1.3rem; }
+  .row:hover { transform: none; }
+
+  .controls-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .sort { flex-wrap: wrap; gap: 8px; }
+  .seg button { padding: 8px 12px; font-size: .72rem; }
+
+  .hero-title { font-size: clamp(2.6rem, 15vw, 3.4rem); }
+  .hero-actions { flex-wrap: wrap; }
+  .sheet { width: 100vw; border-left: 0; }
+  .sheet-title { font-size: 2rem; }
+  .sheet-hype b { font-size: 3rem; }
+  .bar-row { grid-template-columns: 78px 1fr 34px; gap: 8px; }
+  .stk-row { grid-template-columns: minmax(0, 1fr) 40px 52px 68px; gap: 7px;
+    font-size: .72rem; }
+  .movers { grid-template-columns: 1fr; }
+  .method-grid { grid-template-columns: 1fr; }
+  .mkt-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Ask SoleSight on phones: 16px input (stops iOS focus-zoom), edge-to-edge
+     panel, and home-indicator clearance */
+  .ask-fab { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .ask-panel { left: 10px; right: 10px; width: auto;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    height: min(560px, calc(100dvh - 130px)); }
+  .ask-inputrow input { font-size: 16px; }
+  .sheet { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+  .tech-method pre { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tm-col { min-width: 0; }
+
+  /* editorial rhythm, tuned for a phone screen */
+  .hero { padding: 26px 20px 6px; gap: 26px; }
+  .hero-title { margin: 12px 0 16px; }
+  .hero-sub { font-size: .98rem; }
+  .hero-aud { font-size: .86rem; margin: 12px 0 4px; }
+  .hero-actions { margin-top: 22px; gap: 10px; }
+  .hero-actions .btn { flex: 1; justify-content: center;
+    padding: 13px 14px; font-size: .88rem; white-space: nowrap; }
+  .hero-feature { padding: 22px; }
+
+  .section-title { font-size: 1.85rem; }
+  .section-sub { font-size: .88rem; }
+  .movers-wrap, .method { margin-top: 56px; }
+  .case { padding: 52px 20px; }
+  .radar { padding: 52px 20px 20px; }
+  .fit, .sys { padding: 52px 20px 20px; }
+
+  /* stats: 2-up grid instead of a divider row */
+  .fresh { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 8px;
+    padding: 24px 20px; }
+  .fresh-item { padding: 0; }
+  .fresh-item + .fresh-item::before { display: none; }
+
+  /* filter chips: one app-style swipeable row */
+  .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch; margin-right: -20px; padding: 2px 20px 6px 0; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; padding: 8px 15px; }
+
+  .sheet-photo img { max-width: 68%; }
+  .press-title { font-size: .8rem; }
 }
