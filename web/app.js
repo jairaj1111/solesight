@@ -112,9 +112,10 @@ function renderFresh() {
   const s = DATA.stats;
   if (!s) return;
   const d = new Date(DATA.generated_at * 1000);
-  const when = d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  const when = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const live = document.querySelector(".nav-live");
+  if (live) live.innerHTML = `<span class="live-dot"></span> Refreshed ${when}`;
   $("#fresh-strip").innerHTML = [
-    ["Last updated", when],
     ["Models tracked", `${s.models} across ${s.brands} brands`],
     ["Daily observations", s.daily_observations.toLocaleString("en-US")],
     ["Forecast days generated", s.forecast_days.toLocaleString("en-US")],
