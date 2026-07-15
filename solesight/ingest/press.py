@@ -38,6 +38,7 @@ _MAX_AGE_DAYS = 45      # ignore stale archive items
 _PAUSE = 1.0            # polite gap between Google News queries
 
 # Sneaker press with public RSS. Editable data, like the catalog.
+# (Complex has no RSS — its stories arrive via the Google News sweep below.)
 FEEDS = [
     ("Hypebeast", "https://hypebeast.com/footwear/feed"),
     ("Hypebeast", "https://hypebeast.com/feed"),
@@ -45,6 +46,8 @@ FEEDS = [
     ("Nice Kicks", "https://www.nicekicks.com/feed/"),
     ("Sneaker Bar Detroit", "https://sneakerbardetroit.com/feed/"),
     ("Highsnobiety", "https://www.highsnobiety.com/feed/"),
+    ("Sole Retriever", "https://www.soleretriever.com/rss.xml"),
+    ("Sneaker Freaker", "https://www.sneakerfreaker.com/rss.xml"),
 ]
 
 _GNEWS = ("https://news.google.com/rss/search?q={q}"
