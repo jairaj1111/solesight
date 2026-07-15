@@ -528,6 +528,24 @@ function priceLadder(m) {
   const ex = ebay ? X(ebay) : 0;
   // keep the eBay label clear of any dot stack near it
   const liftNear = ebay ? Math.max(0, ...placed.filter((d) => Math.abs(d.x - ex) < 70).map((d) => d.lift)) : 0;
+  // name the stores that anchor the range (all of them when there are ≤3);
+  // the rest stay on hover and in the stockist list above
+  let toLabel = placed.length <= 3 ? placed
+    : [placed[0], placed[placed.length - 1]].filter((d, i, a) => a.indexOf(d) === i);
+  toLabel = toLabel.filter((d, i) => {
+    const prev = toLabel[i - 1];
+    return !prev || d.x - prev.x >= 110 || Math.abs(d.lift - prev.lift) >= 22;
+  });
+  const eLabY = base - 18 - liftNear;
+  const storeLabels = toLabel.map((d) => {
+    const y = base - d.lift - 13;
+    if (ebay && Math.abs(d.x - ex) < 95 && Math.abs(y - eLabY) < 13) return "";
+    const name = (STORE_NAMES[d.s.store] || d.s.store).toUpperCase();
+    const lab = `${name} $${Math.round(d.s.price)}`;
+    const half = lab.length * 2.9;
+    return `<text x="${Math.min(Math.max(d.x, half + 4), W - half - 4)}" y="${y}" text-anchor="middle"
+      class="pl-store">${esc(lab)}</text>`;
+  }).join("");
   const ebaySvg = !ebay ? "" : `
     <g><title>eBay median ask — $${Math.round(ebay)}</title>
       <circle cx="${ex}" cy="${base}" r="12" fill="transparent"/>
@@ -538,7 +556,7 @@ function priceLadder(m) {
       <line x1="${L}" y1="${base}" x2="${W - R}" y2="${base}" stroke="var(--line-2)" stroke-width="2"/>
       <line x1="${rx}" y1="${base - 12}" x2="${rx}" y2="${base + 12}" stroke="var(--ink-3)" stroke-width="2.5"/>
       <text x="${Math.min(Math.max(rx, 44), W - 44)}" y="${base + 30}" text-anchor="middle" class="pl-lab">RETAIL $${m.retail}</text>
-      ${dots}${ebaySvg}
+      ${dots}${storeLabels}${ebaySvg}
     </svg>
     <div class="legend"><span><i style="background:var(--ink-3)"></i>Retail</span>${shelf.length
       ? `<span><i style="background:var(--pos)"></i>Boutique shelves (${shelf.length})</span>` : ""}${ebay
