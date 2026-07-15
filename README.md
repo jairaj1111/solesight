@@ -147,6 +147,59 @@ are purged automatically. eBay rows reflect **asking prices** (median of live
 listings, top/bottom decile trimmed) until Marketplace Insights sold-data
 access is granted.
 
+## Engineering notes — problems this project actually solved
+
+- **Google Trends is relative, not absolute** — its 0–100 index is scaled per
+  query, so scores never compare raw volume across models: interest is measured
+  against each model's *own* peak, momentum within its own history. Ingest runs
+  stalest-first under a nightly cap (`TRENDS_MAX_PER_RUN`) so the catalog can
+  grow without tripping rate limits.
+- **Honesty as a design constraint** — early feedback flagged overclaiming as
+  the #1 credibility risk. Now every signal is badged (live / partial / modeled)
+  in the UI, and synthetic demo rows purge automatically the moment real data
+  flows for a source.
+- **Graceful degradation everywhere** — every adapter is key-gated and
+  best-effort: a missing key skips a stage cleanly, a blocked source ships a
+  smaller payload instead of a failed run. The nightly job has no torch, so
+  sentiment falls back to a dependency-free lexicon scorer in CI.
+- **Bot defenses, worked around politely** — Shopify's TLS fingerprinting 429s
+  `curl` but admits plain Python `urllib`; Bluesky's CDN host blocks some
+  networks (the adapter tries both hosts); Google News search feeds attract SEO
+  spam, filtered by outlet-script and keyword-stuffing heuristics.
+- **Sparse and missing data** — Hype Score weights renormalize over whatever
+  signals exist, so a model with no resale data is scored fairly on the rest
+  rather than implicitly zeroed.
+- **Self-deploying automation** — pushes made with the default `GITHUB_TOKEN`
+  don't trigger sibling workflows, so the refresh workflow deploys Pages
+  itself after committing the night's data.
+
+## Why these tools
+
+- **Prophet** — sneaker demand is strongly seasonal around releases, and
+  per-model history is short; Prophet stays robust on small daily series and
+  ships honest uncertainty intervals, which the site draws.
+- **RoBERTa** (`cardiffnlp/twitter-roberta-base-sentiment-latest`) — community
+  chatter is noisy short-form text, exactly the domain this checkpoint was
+  fine-tuned on.
+- **SQLite + one static `data.json`** — zero infrastructure is a feature: no
+  servers, no databases to operate, $0/month, and the data store's commit
+  history doubles as a public audit log.
+- **GitHub Actions** — a free, observable scheduler; every nightly run's logs
+  are public proof the pipeline is real.
+
+## Roadmap
+
+- [x] 8 live data feeds (Trends, forecasts, Bluesky, Wikipedia, press,
+      boutiques, eBay resale, YouTube) — all free
+- [x] Launch Radar demand-event detection + lifecycle stages
+- [x] Ask SoleSight — agentic analyst (Claude tool-use, BYOK)
+- [ ] Reddit community signal (adapter ready — awaiting free API keys)
+- [ ] Backtest study: do hype/momentum scores predict forward outcomes?
+      (earns Wikipedia/press/boutiques their Hype Score weights)
+- [ ] Sold-price resale via partner APIs (StockX / eBay Marketplace Insights)
+- [ ] Launch Radar alerts (email / Discord webhook)
+- [ ] Public read API over the nightly payload
+
 ## Dashboard
 
 ```bash
