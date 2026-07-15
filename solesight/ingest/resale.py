@@ -125,11 +125,14 @@ def _fetch_ebay(model) -> dict | None:
 
     from datetime import date as _date
 
+    # conditionIds 1000 = "New" (with box, unworn) — eBay's deadstock. Used
+    # pairs would otherwise drag the median below what the market asks for DS.
     query = urllib.parse.urlencode({
         "q": model.trends_term,
         "category_ids": _EBAY_CATEGORY,
         "limit": "50",
-        "filter": "buyingOptions:{FIXED_PRICE},priceCurrency:USD",
+        "filter": "buyingOptions:{FIXED_PRICE},priceCurrency:USD,"
+                  "conditionIds:{1000}",
     })
     req = urllib.request.Request(f"{_EBAY_SEARCH}?{query}", headers={
         "Authorization": f"Bearer {_ebay_token()}",

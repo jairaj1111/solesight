@@ -124,4 +124,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-# trigger: verifying live API keys
+# trigger: verifying deadstock-only eBay asks
