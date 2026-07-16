@@ -48,6 +48,14 @@ def snapshot(model_slug: str) -> dict:
                WHERE model_slug=? AND sentiment IS NOT NULL""",
             (model_slug,)).fetchone()
 
+    # --- THE CORE PATTERN (used for every signal below) ---------------------
+    # "How is this shoe trending?" = compare the last 14 days to the 14 before.
+    #   recent   = average over the most recent 14 days
+    #   prior    = average over the 14 days before that
+    #   momentum = percent change between them  (+ = rising, - = cooling)
+    # `if ... else None` just means: if we don't have enough days of data yet,
+    # leave it blank instead of guessing. You'll see this same 3-step shape
+    # repeated for buzz, resale, wiki and press — learn it once here.
     recent = float(trends["interest"].tail(14).mean()) if not trends.empty else None
     prior = (float(trends["interest"].tail(28).head(14).mean())
              if len(trends) >= 28 else None)
@@ -123,7 +131,10 @@ def snapshot(model_slug: str) -> dict:
     }
 
 
-# Weights for the composite Hype Score (renormalized over available signals).
+# How much each signal counts toward the final score. They add up to 1.0.
+# Resale weighs most (0.26) because real money is the strongest vote; sentiment
+# least (0.12) because chatter is the noisiest. Tweaking these numbers is
+# literally re-tuning the product's opinion of what "hype" means.
 _HYPE_WEIGHTS = {
     "interest": 0.18, "momentum": 0.24, "buzz": 0.20,
     "sentiment": 0.12, "resale": 0.26,
@@ -131,25 +142,36 @@ _HYPE_WEIGHTS = {
 
 
 def _clamp01_100(x: float) -> float:
+    # Force any number to stay inside the 0-100 range (e.g. 137 -> 100, -5 -> 0).
     return max(0.0, min(100.0, x))
 
 
 def _hype_score(interest, momentum, buzz, sentiment, premium) -> float | None:
     """Blend the five signals into a single 0-100 hype index.
 
-    Each component is mapped onto a 0-100 scale, then combined as a weighted
-    average over whichever signals are present (weights renormalized), so a model
-    missing (say) resale data still gets a sensible score from the rest.
+    Two steps: (1) put every signal on the same 0-100 scale so they're
+    comparable, then (2) take a weighted average of whichever ones we actually
+    have. A shoe missing resale data is scored fairly on the rest, never zeroed.
     """
+    # STEP 1 — rescale each raw signal onto 0-100 (or None if we don't have it):
     comps = {
+        # interest & buzz already arrive on a 0-100 scale, so pass them through.
         "interest": interest if interest is None else _clamp01_100(interest),
+        # momentum is a % change: 0% -> 50 (neutral), +30% -> 74, -30% -> 26.
         "momentum": None if momentum is None else _clamp01_100(50 + momentum * 0.8),
         "buzz": buzz if buzz is None else _clamp01_100(buzz),
+        # sentiment comes in as -1..+1, so shift it to 0..100.
         "sentiment": None if sentiment is None
         else _clamp01_100((sentiment + 1) / 2 * 100),
+        # resale premium: 0.8x retail -> 0, 2.6x retail -> 100, linear between.
         "resale": None if premium is None
         else _clamp01_100((premium - 0.8) / (2.6 - 0.8) * 100),
     }
+    # STEP 2 — weighted average, but ONLY over signals that exist (v is not None).
+    # `num` = sum of (weight x value); `den` = sum of the weights we used.
+    # Dividing by `den` (not by the full 1.0) is the "renormalize" trick: the
+    # present signals' weights re-add to 100%, so missing data doesn't drag the
+    # score down. This one line is the "weights renormalize" claim in the pitch.
     num = sum(_HYPE_WEIGHTS[k] * v for k, v in comps.items() if v is not None)
     den = sum(_HYPE_WEIGHTS[k] for k, v in comps.items() if v is not None)
     return round(num / den, 1) if den else None

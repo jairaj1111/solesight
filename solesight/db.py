@@ -13,6 +13,16 @@ from typing import Iterator
 
 from . import config
 
+# The entire database is defined by the SQL string below. A few things worth
+# knowing if you're reading SQL for the first time:
+#   * CREATE TABLE IF NOT EXISTS  -> "make this table, but don't error if it's
+#       already there" — that's why the app can run this every startup safely.
+#   * TEXT / INTEGER / REAL       -> column types: words / whole numbers /
+#       decimals. NOT NULL means the cell can't be left blank.
+#   * PRIMARY KEY (a, b, ...)     -> the combo of these columns must be unique;
+#       it's what stops duplicate rows (e.g. one price per model+date+source).
+# Each table below = one data source. Read them top to bottom like a list of
+# labeled spreadsheets.
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS reddit_posts (
     id            TEXT NOT NULL,          -- reddit post id
