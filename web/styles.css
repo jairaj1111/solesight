@@ -507,6 +507,38 @@ section[id] { scroll-margin-top: 84px; }
 .case-card, .method-card, .tech-method { transition: border-color .3s var(--ease); }
 .case-card:hover, .tech-method[open] { border-color: var(--line-2); }
 
+/* ── backtest: does it predict? ───────────────────────────── */
+.bt { max-width: var(--maxw); margin: 0 auto; padding: 70px clamp(20px, 5vw, 56px) 30px; }
+.bt-grid { display: grid; grid-template-columns: 300px 1fr; gap: 28px;
+  align-items: center; margin-top: 26px; padding: 30px;
+  border: 1px solid var(--line-2); border-radius: 18px; background: var(--paper-2); }
+.bt-hero { text-align: center; padding: 10px 0; }
+.bt-big { font-family: var(--serif); font-size: 5rem; line-height: .85; color: var(--ink); }
+.bt-cap { font-size: .9rem; color: var(--ink-2); margin-top: 10px; line-height: 1.45; }
+.bt-cap b { color: var(--ink); }
+.bt-bar-row { display: grid; grid-template-columns: 1fr 46px; align-items: center;
+  gap: 12px; margin-bottom: 12px; }
+.bt-bar-row > span { grid-column: 1 / -1; font-size: .78rem; color: var(--ink-2);
+  margin-bottom: -6px; }
+.bt-track { height: 12px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.bt-fill { height: 100%; border-radius: 999px; background: var(--ink-3); }
+.bt-fill.acid { background: linear-gradient(90deg, var(--acid), #a9d92a); }
+.bt-bar-row b { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.bt-lift { font-size: .82rem; font-weight: 600; color: var(--pos); margin-top: 4px; }
+.bt-foot { display: flex; flex-wrap: wrap; gap: 28px; margin: 22px 2px 0; }
+.bt-foot span { font-size: .8rem; color: var(--ink-3); }
+.bt-foot b { font-family: var(--serif); font-size: 1.3rem; color: var(--ink);
+  margin-right: 4px; vertical-align: -1px; }
+.bt-note { font-size: .82rem; color: var(--ink-3); line-height: 1.6; margin: 16px 2px 0;
+  max-width: 820px; }
+.bt-note b { color: var(--ink-2); }
+@media (max-width: 760px) {
+  .bt-grid { grid-template-columns: 1fr; gap: 22px; padding: 24px; }
+  .bt-hero { border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+  .bt-big { font-size: 3.6rem; }
+  .bt-foot { gap: 18px; }
+}
+
 /* ── launch radar ─────────────────────────────────────────── */
 .radar { max-width: var(--maxw); margin: 0 auto; padding: 70px clamp(20px, 5vw, 56px) 30px; }
 .radar-stages { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0; }

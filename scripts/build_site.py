@@ -17,7 +17,7 @@ from pathlib import Path
 from solesight import models
 from solesight.db import connect
 from solesight.ingest import press, resale
-from solesight.insights import lifecycle, market, signals
+from solesight.insights import backtest, lifecycle, market, signals
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
@@ -154,6 +154,7 @@ def build() -> dict:
                        "categories": market.category_rollups(snaps)},
             "stats": _pipeline_stats(),
             "radar": lifecycle.radar(),
+            "backtest": backtest.run(),
             "case_study": _case_study("aj4-white-cement"),
             "models": records}
 

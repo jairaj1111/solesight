@@ -26,6 +26,7 @@ async function init() {
   renderFresh();
   renderRadar();
   renderCase();
+  renderBacktest();
   renderWorkedExample();
   render();
   wireControls();
@@ -154,6 +155,46 @@ function renderCase() {
         <p><b>What happens next.</b> ${forecastLine}</p>
       </div>
     </div>`;
+}
+
+/* ---------------- backtest: does the signal predict? ---------------- */
+function renderBacktest() {
+  const b = DATA.backtest;
+  const el = $("#predict");
+  if (!el) return;
+  if (!b || !b.ready) {           // not enough history yet — say so, don't fake it
+    $("#bt-body").innerHTML = `<p class="bt-note">Backtest accrues as history
+      builds — ${b ? b.samples : 0} samples so far, needs a few hundred. Check back.</p>`;
+    return;
+  }
+  $("#bt-body").innerHTML = `
+    <div class="bt-grid reveal">
+      <div class="bt-hero">
+        <div class="bt-big">${b.hit_rate}%</div>
+        <div class="bt-cap">of rising-flagged shoes still held their gain
+          <b>${b.horizon_days} days later</b></div>
+      </div>
+      <div class="bt-compare">
+        <div class="bt-bar-row"><span>SoleSight "rising" calls</span>
+          <div class="bt-track"><div class="bt-fill acid" style="width:${b.hit_rate}%"></div></div>
+          <b>${b.hit_rate}%</b></div>
+        <div class="bt-bar-row"><span>Base rate (any shoe, chance)</span>
+          <div class="bt-track"><div class="bt-fill" style="width:${b.base_rate}%"></div></div>
+          <b>${b.base_rate}%</b></div>
+        <div class="bt-lift">▲ +${b.lift} points over chance ·
+          correlation ${b.correlation}</div>
+      </div>
+    </div>
+    <div class="bt-foot">
+      <span><b>${b.samples.toLocaleString("en-US")}</b> historical checks</span>
+      <span><b>${b.rising_calls.toLocaleString("en-US")}</b> rising calls tested</span>
+      <span><b>${b.models}</b> models · full search history</span>
+    </div>
+    <p class="bt-note">Method: for every model and every day with enough history,
+      compare 14-day momentum against whether demand stayed above its pre-spike
+      baseline ${b.horizon_days} days later. This validates the <b>search-demand</b>
+      signal — the score's heaviest input. The resale-premium backtest activates
+      once ${b.horizon_days} days of resale history accrue${b.resale_ready ? " — now live" : ` (currently ${b.resale_days})`}.</p>`;
 }
 
 /* ---------------- worked example (live numbers, real formula) ---------------- */
