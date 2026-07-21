@@ -60,13 +60,6 @@ EBAY_CLIENT_ID = os.getenv("EBAY_CLIENT_ID", os.getenv("EBAY_APP_ID", ""))
 EBAY_CLIENT_SECRET = os.getenv("EBAY_CLIENT_SECRET", "")
 STOCKX_API_KEY = os.getenv("STOCKX_API_KEY", "")     # StockX partner API
 
-# --- Spotify (artist heat) ---
-# Free client-credentials keyset from developer.spotify.com. Powers the
-# "artist heat" signal for musician-collab silhouettes (Travis Scott, Yeezy…):
-# an artist's Spotify popularity + follower count as a cultural-demand proxy.
-SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "")
-SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "")
-
 # Synthetic rows written by scripts/seed_demo.py carry this fetched_at sentinel,
 # so live ingestion can purge demo data the moment real data starts flowing.
 SEED_TAG = 970000000

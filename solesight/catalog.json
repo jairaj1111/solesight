@@ -1,1173 +1,1165 @@
 [
-  {
-    "slug": "aj1-chicago",
-    "name": "Air Jordan 1 Chicago",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 1 Chicago",
-    "keywords": [
-      "jordan 1 chicago",
-      "aj1 chicago",
-      "chicago 1"
-    ],
-    "retail": 180,
-    "image": "Air-Jordan-1-Retro-Chicago-2015"
-  },
-  {
-    "slug": "aj1-bred",
-    "name": "Air Jordan 1 Bred",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 1 Bred",
-    "keywords": [
-      "jordan 1 bred",
-      "aj1 bred",
-      "bred toe"
-    ],
-    "retail": 180,
-    "image": "Air-Jordan-1-Retro-Bred-2016"
-  },
-  {
-    "slug": "aj4-bred",
-    "name": "Air Jordan 4 Bred",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 4 Bred",
-    "keywords": [
-      "jordan 4 bred",
-      "aj4 bred"
-    ],
-    "retail": 215,
-    "image": "Air-Jordan-4-Retro-Bred-2019"
-  },
-  {
-    "slug": "aj3-black-cement",
-    "name": "Air Jordan 3 Black Cement",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 3 Black Cement",
-    "keywords": [
-      "jordan 3 black cement",
-      "aj3 cement"
-    ],
-    "retail": 210,
-    "image": "Air-Jordan-3-Retro-Black-Cement-2018"
-  },
-  {
-    "slug": "aj11-concord",
-    "name": "Air Jordan 11 Concord",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 11 Concord",
-    "keywords": [
-      "jordan 11 concord",
-      "aj11 concord"
-    ],
-    "retail": 235,
-    "image": "Air-Jordan-11-Retro-Concord-2018"
-  },
-  {
-    "slug": "dunk-low-panda",
-    "name": "Nike Dunk Low Panda",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Dunk Low Panda",
-    "keywords": [
-      "dunk low panda",
-      "panda dunk",
-      "panda dunks"
-    ],
-    "retail": 115,
-    "image": "Nike-Dunk-Low-Retro-White-Black-2021"
-  },
-  {
-    "slug": "dunk-low-unc",
-    "name": "Nike Dunk Low UNC",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Dunk Low UNC",
-    "keywords": [
-      "dunk low unc",
-      "unc dunk"
-    ],
-    "retail": 115,
-    "image": "Nike-Dunk-Low-UNC-2021"
-  },
-  {
-    "slug": "dunk-low-syracuse",
-    "name": "Nike Dunk Low Syracuse",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Dunk Low Syracuse",
-    "keywords": [
-      "dunk syracuse"
-    ],
-    "retail": 110,
-    "image": "Nike-Dunk-Low-SP-Syracuse"
-  },
-  {
-    "slug": "nike-af1-white",
-    "name": "Nike Air Force 1 '07 White",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Air Force 1 White",
-    "keywords": [
-      "air force 1",
-      "af1 white",
-      "triple white af1"
-    ],
-    "retail": 115,
-    "image": "Nike-Air-Force-1-Low-White-07"
-  },
-  {
-    "slug": "travis-scott-aj1-low",
-    "name": "Travis Scott x Air Jordan 1 Low",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Travis Scott Jordan 1 Low",
-    "keywords": [
-      "travis scott jordan 1",
-      "ts aj1",
-      "cactus jack 1"
-    ],
-    "retail": 150,
-    "image": "Air-Jordan-1-Retro-Low-Travis-Scott",
-    "artist": "Travis Scott"
-  },
-  {
-    "slug": "nb-550-white-green",
-    "name": "New Balance 550 White Green",
-    "brand": "New Balance",
-    "category": "lifestyle",
-    "trends_term": "New Balance 550 White Green",
-    "keywords": [
-      "nb 550",
-      "new balance 550"
-    ],
-    "retail": 120,
-    "image": "New-Balance-550-White-Green"
-  },
-  {
-    "slug": "nb-990v5",
-    "name": "New Balance 990v5",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 990v5",
-    "keywords": [
-      "990v5",
-      "nb 990"
-    ],
-    "retail": 185,
-    "image": "New-Balance-990v5-Grey"
-  },
-  {
-    "slug": "nb-2002r",
-    "name": "New Balance 2002R",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 2002R",
-    "keywords": [
-      "2002r",
-      "nb 2002"
-    ],
-    "retail": 150,
-    "image": "New-Balance-2002R-Rain-Cloud"
-  },
-  {
-    "slug": "yeezy-350-v2",
-    "name": "adidas Yeezy Boost 350 V2",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "Yeezy Boost 350 V2",
-    "keywords": [
-      "yeezy 350",
-      "350 v2",
-      "boost 350"
-    ],
-    "retail": 230,
-    "image": "adidas-Yeezy-Boost-350-V2-Zebra",
-    "artist": "Ye"
-  },
-  {
-    "slug": "yeezy-slide",
-    "name": "adidas Yeezy Slide",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "Yeezy Slide",
-    "keywords": [
-      "yeezy slide",
-      "yeezy slides"
-    ],
-    "retail": 70,
-    "image": "adidas-Yeezy-Slide-Pure",
-    "artist": "Ye"
-  },
-  {
-    "slug": "samba-og",
-    "name": "adidas Samba OG",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas Samba OG",
-    "keywords": [
-      "adidas samba",
-      "samba og"
-    ],
-    "retail": 100,
-    "image": "adidas-Samba-OG-Cloud-White-Core-Black"
-  },
-  {
-    "slug": "adidas-gazelle",
-    "name": "adidas Gazelle",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas Gazelle",
-    "keywords": [
-      "adidas gazelle",
-      "gazelle"
-    ],
-    "retail": 100,
-    "image": "adidas-Gazelle-Indoor-College-Navy-Gum"
-  },
-  {
-    "slug": "nike-vomero-5",
-    "name": "Nike Zoom Vomero 5",
-    "brand": "Nike",
-    "category": "running",
-    "trends_term": "Nike Vomero 5",
-    "keywords": [
-      "vomero 5",
-      "zoom vomero"
-    ],
-    "retail": 160,
-    "image": "Nike-Zoom-Vomero-5-SP-Vast-Grey"
-  },
-  {
-    "slug": "asics-gel-1130",
-    "name": "ASICS Gel-1130",
-    "brand": "ASICS",
-    "category": "running",
-    "trends_term": "ASICS Gel 1130",
-    "keywords": [
-      "gel-1130",
-      "gel 1130",
-      "asics 1130"
-    ],
-    "retail": 100,
-    "image": "ASICS-Gel-1130-White-Clay-Canyon"
-  },
-  {
-    "slug": "asics-gt-2160",
-    "name": "ASICS GT-2160",
-    "brand": "ASICS",
-    "category": "running",
-    "trends_term": "ASICS GT 2160",
-    "keywords": [
-      "gt-2160",
-      "gt 2160"
-    ],
-    "retail": 110,
-    "image": "ASICS-GT-2160-White-Black"
-  },
-  {
-    "slug": "sb-dunk-low-jarritos",
-    "name": "Nike SB Dunk Low Jarritos",
-    "brand": "Nike",
-    "category": "skate",
-    "trends_term": "Nike SB Dunk Jarritos",
-    "keywords": [
-      "sb dunk jarritos",
-      "jarritos dunk"
-    ],
-    "retail": 125,
-    "image": "Nike-SB-Dunk-Low-Jarritos"
-  },
-  {
-    "slug": "aj4-military-black",
-    "name": "Air Jordan 4 Military Black",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 4 Military Black",
-    "keywords": [
-      "jordan 4 military",
-      "aj4 military"
-    ],
-    "retail": 215,
-    "image": "Air-Jordan-4-Retro-Military-Black"
-  },
-  {
-    "slug": "nike-kobe-6-grinch",
-    "name": "Nike Kobe 6 Protro Grinch",
-    "brand": "Nike",
-    "category": "basketball",
-    "trends_term": "Nike Kobe 6 Grinch",
-    "keywords": [
-      "kobe 6 grinch",
-      "grinch kobe"
-    ],
-    "retail": 190,
-    "image": "Nike-Kobe-6-Protro-Grinch"
-  },
-  {
-    "slug": "aj1-royal",
-    "name": "Air Jordan 1 Royal",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 1 Royal",
-    "keywords": [
-      "jordan 1 royal",
-      "aj1 royal"
-    ],
-    "retail": 180,
-    "image": "Air-Jordan-1-Retro-High-OG-Royal-Reimagined"
-  },
-  {
-    "slug": "aj1-shadow",
-    "name": "Air Jordan 1 Shadow",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 1 Shadow",
-    "keywords": [
-      "jordan 1 shadow",
-      "aj1 shadow"
-    ],
-    "retail": 180,
-    "image": "Air-Jordan-1-Retro-High-Shadow-2018"
-  },
-  {
-    "slug": "aj1-lost-and-found",
-    "name": "Air Jordan 1 Lost & Found",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 1 Lost and Found",
-    "keywords": [
-      "lost and found",
-      "lost & found 1"
-    ],
-    "retail": 180,
-    "image": "Air-Jordan-1-Retro-High-OG-Lost-and-Found-PS"
-  },
-  {
-    "slug": "travis-scott-aj1-high",
-    "name": "Travis Scott x Air Jordan 1 Mocha",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Travis Scott Jordan 1 Mocha",
-    "keywords": [
-      "travis scott mocha",
-      "ts jordan 1 high"
-    ],
-    "retail": 175,
-    "image": "Air-Jordan-1-Retro-High-Travis-Scott",
-    "artist": "Travis Scott"
-  },
-  {
-    "slug": "aj4-white-cement",
-    "name": "Air Jordan 4 White Cement",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 4 White Cement",
-    "keywords": [
-      "jordan 4 white cement",
-      "aj4 cement"
-    ],
-    "retail": 215,
-    "image": "Air-Jordan-4-Retro-White-Cement-2025"
-  },
-  {
-    "slug": "aj4-thunder",
-    "name": "Air Jordan 4 Thunder",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 4 Thunder",
-    "keywords": [
-      "jordan 4 thunder",
-      "aj4 thunder"
-    ],
-    "retail": 215,
-    "image": "Air-Jordan-4-Retro-Thunder-2023"
-  },
-  {
-    "slug": "aj5-fire-red",
-    "name": "Air Jordan 5 Fire Red",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 5 Fire Red",
-    "keywords": [
-      "jordan 5 fire red",
-      "aj5 fire red"
-    ],
-    "retail": 200,
-    "image": "Air-Jordan-5-Retro-Fire-Red-Silver-Tongue-2020"
-  },
-  {
-    "slug": "aj6-infrared",
-    "name": "Air Jordan 6 Infrared",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 6 Infrared",
-    "keywords": [
-      "jordan 6 infrared",
-      "aj6 infrared"
-    ],
-    "retail": 200,
-    "image": "Air-Jordan-6-Retro-Black-Infrared-2019"
-  },
-  {
-    "slug": "aj11-cherry",
-    "name": "Air Jordan 11 Cherry",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 11 Cherry",
-    "keywords": [
-      "jordan 11 cherry",
-      "aj11 cherry"
-    ],
-    "retail": 230,
-    "image": "Air-Jordan-11-Retro-Cherry-2022"
-  },
-  {
-    "slug": "aj12-flu-game",
-    "name": "Air Jordan 12 Flu Game",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Air Jordan 12 Flu Game",
-    "keywords": [
-      "jordan 12 flu game",
-      "flu game 12"
-    ],
-    "retail": 200,
-    "image": "Air-Jordan-12-Retro-Flu-Game-2025"
-  },
-  {
-    "slug": "jumpman-jack-ts",
-    "name": "Travis Scott Jumpman Jack",
-    "brand": "Jordan",
-    "category": "basketball",
-    "trends_term": "Jumpman Jack Travis Scott",
-    "keywords": [
-      "jumpman jack"
-    ],
-    "retail": 160,
-    "image": "Air-Jordan-Jumpman-Jack-TR-Travis-Scott-University-Red",
-    "artist": "Travis Scott"
-  },
-  {
-    "slug": "air-max-1",
-    "name": "Nike Air Max 1",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Air Max 1",
-    "keywords": [
-      "air max 1",
-      "am1"
-    ],
-    "retail": 150,
-    "image": "Nike-Air-Max-1-86-Big-Bubble-Red"
-  },
-  {
-    "slug": "air-max-90",
-    "name": "Nike Air Max 90",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Air Max 90",
-    "keywords": [
-      "air max 90",
-      "am90"
-    ],
-    "retail": 130,
-    "image": "Nike-Air-Max-90-Infrared-2020"
-  },
-  {
-    "slug": "air-max-95",
-    "name": "Nike Air Max 95",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Air Max 95",
-    "keywords": [
-      "air max 95",
-      "am95"
-    ],
-    "retail": 175,
-    "image": "Nike-Air-Max-95-OG-Neon-2020"
-  },
-  {
-    "slug": "air-max-97-silver",
-    "name": "Nike Air Max 97 Silver Bullet",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Air Max 97 Silver Bullet",
-    "keywords": [
-      "air max 97",
-      "silver bullet"
-    ],
-    "retail": 185,
-    "image": "Nike-Air-Max-97-OG-Silver-Bullet-2022"
-  },
-  {
-    "slug": "air-max-dn",
-    "name": "Nike Air Max Dn",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Air Max Dn",
-    "keywords": [
-      "air max dn"
-    ],
-    "retail": 160,
-    "image": "Nike-Air-Max-Dn-White-Metallic-Silver"
-  },
-  {
-    "slug": "nike-p6000",
-    "name": "Nike P-6000",
-    "brand": "Nike",
-    "category": "running",
-    "trends_term": "Nike P-6000",
-    "keywords": [
-      "p-6000",
-      "p6000"
-    ],
-    "retail": 110,
-    "image": "Nike-P-6000-Metallic-Silver"
-  },
-  {
-    "slug": "nike-shox-tl",
-    "name": "Nike Shox TL",
-    "brand": "Nike",
-    "category": "running",
-    "trends_term": "Nike Shox TL",
-    "keywords": [
-      "shox tl",
-      "nike shox"
-    ],
-    "retail": 170,
-    "image": "Nike-Shox-TL-Triple-Black"
-  },
-  {
-    "slug": "nike-cortez",
-    "name": "Nike Cortez",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Cortez",
-    "keywords": [
-      "nike cortez",
-      "cortez leather"
-    ],
-    "retail": 90,
-    "image": null
-  },
-  {
-    "slug": "nike-killshot-2",
-    "name": "Nike Killshot 2",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Killshot 2",
-    "keywords": [
-      "killshot 2",
-      "killshot"
-    ],
-    "retail": 90,
-    "image": "Nike-Killshot-2-Leather-Sail"
-  },
-  {
-    "slug": "blazer-mid-77",
-    "name": "Nike Blazer Mid '77",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Blazer Mid 77",
-    "keywords": [
-      "blazer mid 77",
-      "blazer mid"
-    ],
-    "retail": 105,
-    "image": "Nike-Blazer-Mid-77-Vintage-White-Black"
-  },
-  {
-    "slug": "dunk-low-grey-fog",
-    "name": "Nike Dunk Low Grey Fog",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Dunk Low Grey Fog",
-    "keywords": [
-      "grey fog dunk",
-      "dunk grey fog"
-    ],
-    "retail": 115,
-    "image": "Nike-Dunk-Low-Grey-Fog"
-  },
-  {
-    "slug": "nike-mac-attack",
-    "name": "Nike Mac Attack",
-    "brand": "Nike",
-    "category": "lifestyle",
-    "trends_term": "Nike Mac Attack",
-    "keywords": [
-      "mac attack"
-    ],
-    "retail": 120,
-    "image": "Nike-Mac-Attack-Red-Crush"
-  },
-  {
-    "slug": "kobe-4-protro",
-    "name": "Nike Kobe 4 Protro",
-    "brand": "Nike",
-    "category": "basketball",
-    "trends_term": "Nike Kobe 4 Protro",
-    "keywords": [
-      "kobe 4 protro",
-      "kobe 4"
-    ],
-    "retail": 190,
-    "image": "Nike-Kobe-4-Protro-Gift-of-Mamba"
-  },
-  {
-    "slug": "kobe-8-protro",
-    "name": "Nike Kobe 8 Protro",
-    "brand": "Nike",
-    "category": "basketball",
-    "trends_term": "Nike Kobe 8 Protro",
-    "keywords": [
-      "kobe 8 protro",
-      "kobe 8"
-    ],
-    "retail": 190,
-    "image": "Nike-Kobe-8-Protro-Court-Purple"
-  },
-  {
-    "slug": "nike-gt-cut-3",
-    "name": "Nike GT Cut 3",
-    "brand": "Nike",
-    "category": "basketball",
-    "trends_term": "Nike GT Cut 3",
-    "keywords": [
-      "gt cut 3",
-      "gt cut"
-    ],
-    "retail": 190,
-    "image": null
-  },
-  {
-    "slug": "nike-pegasus-41",
-    "name": "Nike Pegasus 41",
-    "brand": "Nike",
-    "category": "running",
-    "trends_term": "Nike Pegasus 41",
-    "keywords": [
-      "pegasus 41"
-    ],
-    "retail": 140,
-    "image": "Nike-Air-Zoom-Pegasus-41-White-Black"
-  },
-  {
-    "slug": "campus-00s",
-    "name": "adidas Campus 00s",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas Campus 00s",
-    "keywords": [
-      "campus 00s",
-      "adidas campus"
-    ],
-    "retail": 110,
-    "image": "adidas-Campus-00s-Core-Black"
-  },
-  {
-    "slug": "handball-spezial",
-    "name": "adidas Handball Spezial",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas Handball Spezial",
-    "keywords": [
-      "handball spezial",
-      "spezial"
-    ],
-    "retail": 100,
-    "image": "adidas-Handball-Spezial-Light-Blue"
-  },
-  {
-    "slug": "adidas-superstar",
-    "name": "adidas Superstar",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas Superstar",
-    "keywords": [
-      "adidas superstar",
-      "shell toe"
-    ],
-    "retail": 100,
-    "image": "adidas-Superstar-Cloud-White-Core-Black"
-  },
-  {
-    "slug": "forum-low",
-    "name": "adidas Forum Low",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas Forum Low",
-    "keywords": [
-      "forum low",
-      "adidas forum"
-    ],
-    "retail": 100,
-    "image": "adidas-Forum-Low-White-Green"
-  },
-  {
-    "slug": "ultraboost-1",
-    "name": "adidas Ultraboost 1.0",
-    "brand": "adidas",
-    "category": "running",
-    "trends_term": "adidas Ultraboost",
-    "keywords": [
-      "ultraboost",
-      "ultra boost"
-    ],
-    "retail": 190,
-    "image": "adidas-Ultra-Boost-Core-Black"
-  },
-  {
-    "slug": "adidas-ae-1",
-    "name": "adidas AE 1",
-    "brand": "adidas",
-    "category": "basketball",
-    "trends_term": "adidas AE 1",
-    "keywords": [
-      "ae 1",
-      "anthony edwards shoe"
-    ],
-    "retail": 120,
-    "image": "adidas-AE-1-Stormtrooper"
-  },
-  {
-    "slug": "yeezy-700-wave-runner",
-    "name": "adidas Yeezy 700 Wave Runner",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "Yeezy 700 Wave Runner",
-    "keywords": [
-      "yeezy 700",
-      "wave runner"
-    ],
-    "retail": 300,
-    "image": "adidas-Yeezy-Wave-Runner-700-Solid-Grey",
-    "artist": "Ye"
-  },
-  {
-    "slug": "yeezy-foam-runner",
-    "name": "adidas Yeezy Foam Runner",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "Yeezy Foam Runner",
-    "keywords": [
-      "foam runner",
-      "yeezy foam"
-    ],
-    "retail": 90,
-    "image": "adidas-Yeezy-Foam-RNNR-Onyx",
-    "artist": "Ye"
-  },
-  {
-    "slug": "yeezy-500",
-    "name": "adidas Yeezy 500",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "Yeezy 500",
-    "keywords": [
-      "yeezy 500"
-    ],
-    "retail": 210,
-    "image": "adidas-Yeezy-500-Blush",
-    "artist": "Ye"
-  },
-  {
-    "slug": "adidas-sl72",
-    "name": "adidas SL 72",
-    "brand": "adidas",
-    "category": "lifestyle",
-    "trends_term": "adidas SL 72",
-    "keywords": [
-      "sl 72",
-      "sl72"
-    ],
-    "retail": 100,
-    "image": null
-  },
-  {
-    "slug": "nb-530",
-    "name": "New Balance 530",
-    "brand": "New Balance",
-    "category": "lifestyle",
-    "trends_term": "New Balance 530",
-    "keywords": [
-      "nb 530",
-      "new balance 530"
-    ],
-    "retail": 100,
-    "image": "New-Balance-530-White-Silver-Navy"
-  },
-  {
-    "slug": "nb-574",
-    "name": "New Balance 574",
-    "brand": "New Balance",
-    "category": "lifestyle",
-    "trends_term": "New Balance 574",
-    "keywords": [
-      "nb 574",
-      "new balance 574"
-    ],
-    "retail": 90,
-    "image": "New-Balance-574-Grey"
-  },
-  {
-    "slug": "nb-990v4",
-    "name": "New Balance 990v4",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 990v4",
-    "keywords": [
-      "990v4"
-    ],
-    "retail": 185,
-    "image": "New-Balance-990v4-Grey"
-  },
-  {
-    "slug": "nb-990v6",
-    "name": "New Balance 990v6",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 990v6",
-    "keywords": [
-      "990v6"
-    ],
-    "retail": 200,
-    "image": "New-Balance-990v6-Grey"
-  },
-  {
-    "slug": "nb-992",
-    "name": "New Balance 992",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 992",
-    "keywords": [
-      "nb 992",
-      "new balance 992"
-    ],
-    "retail": 185,
-    "image": "New-Balance-992-Grey"
-  },
-  {
-    "slug": "nb-993",
-    "name": "New Balance 993",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 993",
-    "keywords": [
-      "nb 993",
-      "new balance 993"
-    ],
-    "retail": 200,
-    "image": "New-Balance-993-MIU-Grey"
-  },
-  {
-    "slug": "nb-1906r",
-    "name": "New Balance 1906R",
-    "brand": "New Balance",
-    "category": "running",
-    "trends_term": "New Balance 1906R",
-    "keywords": [
-      "1906r",
-      "nb 1906"
-    ],
-    "retail": 155,
-    "image": "New-Balance-1906R-Silver-Metallic-Sea-Salt"
-  },
-  {
-    "slug": "nb-9060",
-    "name": "New Balance 9060",
-    "brand": "New Balance",
-    "category": "lifestyle",
-    "trends_term": "New Balance 9060",
-    "keywords": [
-      "nb 9060",
-      "9060s"
-    ],
-    "retail": 150,
-    "image": "New-Balance-9060-Sea-Salt-White"
-  },
-  {
-    "slug": "gel-kayano-14",
-    "name": "ASICS Gel-Kayano 14",
-    "brand": "ASICS",
-    "category": "running",
-    "trends_term": "ASICS Gel Kayano 14",
-    "keywords": [
-      "kayano 14",
-      "gel-kayano 14"
-    ],
-    "retail": 160,
-    "image": "ASICS-Gel-Kayano-14-JJJJound-Silver-Black"
-  },
-  {
-    "slug": "asics-gel-nyc",
-    "name": "ASICS Gel-NYC",
-    "brand": "ASICS",
-    "category": "running",
-    "trends_term": "ASICS Gel NYC",
-    "keywords": [
-      "gel-nyc",
-      "gel nyc"
-    ],
-    "retail": 130,
-    "image": "ASICS-Gel-NYC-Cream-Arctic-Sky"
-  },
-  {
-    "slug": "gel-lyte-iii",
-    "name": "ASICS Gel-Lyte III",
-    "brand": "ASICS",
-    "category": "lifestyle",
-    "trends_term": "ASICS Gel Lyte III",
-    "keywords": [
-      "gel lyte 3",
-      "gel-lyte iii"
-    ],
-    "retail": 120,
-    "image": "ASICS-Gel-Lyte-III-OG-White-Black"
-  },
-  {
-    "slug": "asics-novablast-4",
-    "name": "ASICS Novablast 4",
-    "brand": "ASICS",
-    "category": "running",
-    "trends_term": "ASICS Novablast 4",
-    "keywords": [
-      "novablast"
-    ],
-    "retail": 140,
-    "image": "ASICS-Novablast-4-Black-Thunder-Blue"
-  },
-  {
-    "slug": "puma-suede",
-    "name": "Puma Suede Classic",
-    "brand": "Puma",
-    "category": "lifestyle",
-    "trends_term": "Puma Suede",
-    "keywords": [
-      "puma suede"
-    ],
-    "retail": 75,
-    "image": "Puma-Suede-Classic-XXI-Black-White"
-  },
-  {
-    "slug": "puma-palermo",
-    "name": "Puma Palermo",
-    "brand": "Puma",
-    "category": "lifestyle",
-    "trends_term": "Puma Palermo",
-    "keywords": [
-      "puma palermo",
-      "palermo og"
-    ],
-    "retail": 80,
-    "image": "Puma-Palermo-Archive-Green"
-  },
-  {
-    "slug": "puma-speedcat",
-    "name": "Puma Speedcat OG",
-    "brand": "Puma",
-    "category": "lifestyle",
-    "trends_term": "Puma Speedcat",
-    "keywords": [
-      "speedcat",
-      "puma f1 shoe"
-    ],
-    "retail": 100,
-    "image": "Puma-Speedcat-OG-Black-White"
-  },
-  {
-    "slug": "puma-mb03",
-    "name": "Puma MB.03",
-    "brand": "Puma",
-    "category": "basketball",
-    "trends_term": "Puma MB.03",
-    "keywords": [
-      "mb.03",
-      "lamelo shoe",
-      "mb03"
-    ],
-    "retail": 125,
-    "image": "Puma-LaMelo-Ball-MB03-Toxic"
-  },
-  {
-    "slug": "reebok-club-c-85",
-    "name": "Reebok Club C 85",
-    "brand": "Reebok",
-    "category": "lifestyle",
-    "trends_term": "Reebok Club C 85",
-    "keywords": [
-      "club c 85",
-      "reebok club c"
-    ],
-    "retail": 80,
-    "image": "Reebok-Club-C-85-White-Green"
-  },
-  {
-    "slug": "reebok-question-mid",
-    "name": "Reebok Question Mid",
-    "brand": "Reebok",
-    "category": "basketball",
-    "trends_term": "Reebok Question Mid",
-    "keywords": [
-      "reebok question",
-      "question mid"
-    ],
-    "retail": 150,
-    "image": "Reebok-Question-Mid-Why-Not-Us"
-  },
-  {
-    "slug": "reebok-classic-leather",
-    "name": "Reebok Classic Leather",
-    "brand": "Reebok",
-    "category": "lifestyle",
-    "trends_term": "Reebok Classic Leather",
-    "keywords": [
-      "reebok classic leather"
-    ],
-    "retail": 80,
-    "image": "Reebok-Classic-Leather-White"
-  },
-  {
-    "slug": "salomon-xt6",
-    "name": "Salomon XT-6",
-    "brand": "Salomon",
-    "category": "running",
-    "trends_term": "Salomon XT-6",
-    "keywords": [
-      "xt-6",
-      "xt6",
-      "salomon xt"
-    ],
-    "retail": 200,
-    "image": "Salomon-S-Lab-XT-6-Adv-Triple-Black"
-  },
-  {
-    "slug": "salomon-acs-pro",
-    "name": "Salomon ACS Pro",
-    "brand": "Salomon",
-    "category": "running",
-    "trends_term": "Salomon ACS Pro",
-    "keywords": [
-      "acs pro"
-    ],
-    "retail": 240,
-    "image": "Salomon-ACS-Pro-Black"
-  },
-  {
-    "slug": "vans-old-skool",
-    "name": "Vans Old Skool",
-    "brand": "Vans",
-    "category": "skate",
-    "trends_term": "Vans Old Skool",
-    "keywords": [
-      "old skool",
-      "vans old school"
-    ],
-    "retail": 70,
-    "image": "Vans-Old-Skool-Black-White"
-  },
-  {
-    "slug": "vans-sk8-hi",
-    "name": "Vans Sk8-Hi",
-    "brand": "Vans",
-    "category": "skate",
-    "trends_term": "Vans Sk8-Hi",
-    "keywords": [
-      "sk8-hi",
-      "sk8 hi"
-    ],
-    "retail": 75,
-    "image": "Vans-Sk8-Hi-Black-White"
-  },
-  {
-    "slug": "vans-knu-skool",
-    "name": "Vans Knu Skool",
-    "brand": "Vans",
-    "category": "skate",
-    "trends_term": "Vans Knu Skool",
-    "keywords": [
-      "knu skool"
-    ],
-    "retail": 75,
-    "image": "Vans-Knu-Skool-Black-White"
-  },
-  {
-    "slug": "chuck-70-hi",
-    "name": "Converse Chuck 70 Hi",
-    "brand": "Converse",
-    "category": "lifestyle",
-    "trends_term": "Converse Chuck 70",
-    "keywords": [
-      "chuck 70",
-      "chuck taylor 70"
-    ],
-    "retail": 85,
-    "image": null
-  },
-  {
-    "slug": "converse-one-star-pro",
-    "name": "Converse One Star Pro",
-    "brand": "Converse",
-    "category": "skate",
-    "trends_term": "Converse One Star Pro",
-    "keywords": [
-      "one star pro"
-    ],
-    "retail": 75,
-    "image": null
-  },
-  {
-    "slug": "on-cloudmonster",
-    "name": "On Cloudmonster",
-    "brand": "On",
-    "category": "running",
-    "trends_term": "On Cloudmonster",
-    "keywords": [
-      "cloudmonster"
-    ],
-    "retail": 170,
-    "image": "On-Running-Cloudmonster-Undyed-White"
-  },
-  {
-    "slug": "on-cloudtilt",
-    "name": "On Cloudtilt",
-    "brand": "On",
-    "category": "running",
-    "trends_term": "On Cloudtilt",
-    "keywords": [
-      "cloudtilt"
-    ],
-    "retail": 160,
-    "image": null
-  },
-  {
-    "slug": "hoka-clifton-9",
-    "name": "Hoka Clifton 9",
-    "brand": "Hoka",
-    "category": "running",
-    "trends_term": "Hoka Clifton 9",
-    "keywords": [
-      "clifton 9",
-      "hoka clifton"
-    ],
-    "retail": 145,
-    "image": "Hoka-One-One-Clifton-9-Black-White"
-  },
-  {
-    "slug": "hoka-bondi-8",
-    "name": "Hoka Bondi 8",
-    "brand": "Hoka",
-    "category": "running",
-    "trends_term": "Hoka Bondi 8",
-    "keywords": [
-      "bondi 8",
-      "hoka bondi"
-    ],
-    "retail": 165,
-    "image": "Hoka-One-One-Bondi-8-Shifting-Sand"
-  }
+ {
+  "slug": "aj1-chicago",
+  "name": "Air Jordan 1 Chicago",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 1 Chicago",
+  "keywords": [
+   "jordan 1 chicago",
+   "aj1 chicago",
+   "chicago 1"
+  ],
+  "retail": 180,
+  "image": "Air-Jordan-1-Retro-Chicago-2015"
+ },
+ {
+  "slug": "aj1-bred",
+  "name": "Air Jordan 1 Bred",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 1 Bred",
+  "keywords": [
+   "jordan 1 bred",
+   "aj1 bred",
+   "bred toe"
+  ],
+  "retail": 180,
+  "image": "Air-Jordan-1-Retro-Bred-2016"
+ },
+ {
+  "slug": "aj4-bred",
+  "name": "Air Jordan 4 Bred",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 4 Bred",
+  "keywords": [
+   "jordan 4 bred",
+   "aj4 bred"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-4-Retro-Bred-2019"
+ },
+ {
+  "slug": "aj3-black-cement",
+  "name": "Air Jordan 3 Black Cement",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 3 Black Cement",
+  "keywords": [
+   "jordan 3 black cement",
+   "aj3 cement"
+  ],
+  "retail": 210,
+  "image": "Air-Jordan-3-Retro-Black-Cement-2018"
+ },
+ {
+  "slug": "aj11-concord",
+  "name": "Air Jordan 11 Concord",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 11 Concord",
+  "keywords": [
+   "jordan 11 concord",
+   "aj11 concord"
+  ],
+  "retail": 235,
+  "image": "Air-Jordan-11-Retro-Concord-2018"
+ },
+ {
+  "slug": "dunk-low-panda",
+  "name": "Nike Dunk Low Panda",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Dunk Low Panda",
+  "keywords": [
+   "dunk low panda",
+   "panda dunk",
+   "panda dunks"
+  ],
+  "retail": 115,
+  "image": "Nike-Dunk-Low-Retro-White-Black-2021"
+ },
+ {
+  "slug": "dunk-low-unc",
+  "name": "Nike Dunk Low UNC",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Dunk Low UNC",
+  "keywords": [
+   "dunk low unc",
+   "unc dunk"
+  ],
+  "retail": 115,
+  "image": "Nike-Dunk-Low-UNC-2021"
+ },
+ {
+  "slug": "dunk-low-syracuse",
+  "name": "Nike Dunk Low Syracuse",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Dunk Low Syracuse",
+  "keywords": [
+   "dunk syracuse"
+  ],
+  "retail": 110,
+  "image": "Nike-Dunk-Low-SP-Syracuse"
+ },
+ {
+  "slug": "nike-af1-white",
+  "name": "Nike Air Force 1 '07 White",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Air Force 1 White",
+  "keywords": [
+   "air force 1",
+   "af1 white",
+   "triple white af1"
+  ],
+  "retail": 115,
+  "image": "Nike-Air-Force-1-Low-White-07"
+ },
+ {
+  "slug": "travis-scott-aj1-low",
+  "name": "Travis Scott x Air Jordan 1 Low",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Travis Scott Jordan 1 Low",
+  "keywords": [
+   "travis scott jordan 1",
+   "ts aj1",
+   "cactus jack 1"
+  ],
+  "retail": 150,
+  "image": "Air-Jordan-1-Retro-Low-Travis-Scott"
+ },
+ {
+  "slug": "nb-550-white-green",
+  "name": "New Balance 550 White Green",
+  "brand": "New Balance",
+  "category": "lifestyle",
+  "trends_term": "New Balance 550 White Green",
+  "keywords": [
+   "nb 550",
+   "new balance 550"
+  ],
+  "retail": 120,
+  "image": "New-Balance-550-White-Green"
+ },
+ {
+  "slug": "nb-990v5",
+  "name": "New Balance 990v5",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 990v5",
+  "keywords": [
+   "990v5",
+   "nb 990"
+  ],
+  "retail": 185,
+  "image": "New-Balance-990v5-Grey"
+ },
+ {
+  "slug": "nb-2002r",
+  "name": "New Balance 2002R",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 2002R",
+  "keywords": [
+   "2002r",
+   "nb 2002"
+  ],
+  "retail": 150,
+  "image": "New-Balance-2002R-Rain-Cloud"
+ },
+ {
+  "slug": "yeezy-350-v2",
+  "name": "adidas Yeezy Boost 350 V2",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "Yeezy Boost 350 V2",
+  "keywords": [
+   "yeezy 350",
+   "350 v2",
+   "boost 350"
+  ],
+  "retail": 230,
+  "image": "adidas-Yeezy-Boost-350-V2-Zebra"
+ },
+ {
+  "slug": "yeezy-slide",
+  "name": "adidas Yeezy Slide",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "Yeezy Slide",
+  "keywords": [
+   "yeezy slide",
+   "yeezy slides"
+  ],
+  "retail": 70,
+  "image": "adidas-Yeezy-Slide-Pure"
+ },
+ {
+  "slug": "samba-og",
+  "name": "adidas Samba OG",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Samba OG",
+  "keywords": [
+   "adidas samba",
+   "samba og"
+  ],
+  "retail": 100,
+  "image": "adidas-Samba-OG-Cloud-White-Core-Black"
+ },
+ {
+  "slug": "adidas-gazelle",
+  "name": "adidas Gazelle",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Gazelle",
+  "keywords": [
+   "adidas gazelle",
+   "gazelle"
+  ],
+  "retail": 100,
+  "image": "adidas-Gazelle-Indoor-College-Navy-Gum"
+ },
+ {
+  "slug": "nike-vomero-5",
+  "name": "Nike Zoom Vomero 5",
+  "brand": "Nike",
+  "category": "running",
+  "trends_term": "Nike Vomero 5",
+  "keywords": [
+   "vomero 5",
+   "zoom vomero"
+  ],
+  "retail": 160,
+  "image": "Nike-Zoom-Vomero-5-SP-Vast-Grey"
+ },
+ {
+  "slug": "asics-gel-1130",
+  "name": "ASICS Gel-1130",
+  "brand": "ASICS",
+  "category": "running",
+  "trends_term": "ASICS Gel 1130",
+  "keywords": [
+   "gel-1130",
+   "gel 1130",
+   "asics 1130"
+  ],
+  "retail": 100,
+  "image": "ASICS-Gel-1130-White-Clay-Canyon"
+ },
+ {
+  "slug": "asics-gt-2160",
+  "name": "ASICS GT-2160",
+  "brand": "ASICS",
+  "category": "running",
+  "trends_term": "ASICS GT 2160",
+  "keywords": [
+   "gt-2160",
+   "gt 2160"
+  ],
+  "retail": 110,
+  "image": "ASICS-GT-2160-White-Black"
+ },
+ {
+  "slug": "sb-dunk-low-jarritos",
+  "name": "Nike SB Dunk Low Jarritos",
+  "brand": "Nike",
+  "category": "skate",
+  "trends_term": "Nike SB Dunk Jarritos",
+  "keywords": [
+   "sb dunk jarritos",
+   "jarritos dunk"
+  ],
+  "retail": 125,
+  "image": "Nike-SB-Dunk-Low-Jarritos"
+ },
+ {
+  "slug": "aj4-military-black",
+  "name": "Air Jordan 4 Military Black",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 4 Military Black",
+  "keywords": [
+   "jordan 4 military",
+   "aj4 military"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-4-Retro-Military-Black"
+ },
+ {
+  "slug": "nike-kobe-6-grinch",
+  "name": "Nike Kobe 6 Protro Grinch",
+  "brand": "Nike",
+  "category": "basketball",
+  "trends_term": "Nike Kobe 6 Grinch",
+  "keywords": [
+   "kobe 6 grinch",
+   "grinch kobe"
+  ],
+  "retail": 190,
+  "image": "Nike-Kobe-6-Protro-Grinch"
+ },
+ {
+  "slug": "aj1-royal",
+  "name": "Air Jordan 1 Royal",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 1 Royal",
+  "keywords": [
+   "jordan 1 royal",
+   "aj1 royal"
+  ],
+  "retail": 180,
+  "image": "Air-Jordan-1-Retro-High-OG-Royal-Reimagined"
+ },
+ {
+  "slug": "aj1-shadow",
+  "name": "Air Jordan 1 Shadow",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 1 Shadow",
+  "keywords": [
+   "jordan 1 shadow",
+   "aj1 shadow"
+  ],
+  "retail": 180,
+  "image": "Air-Jordan-1-Retro-High-Shadow-2018"
+ },
+ {
+  "slug": "aj1-lost-and-found",
+  "name": "Air Jordan 1 Lost & Found",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 1 Lost and Found",
+  "keywords": [
+   "lost and found",
+   "lost & found 1"
+  ],
+  "retail": 180,
+  "image": "Air-Jordan-1-Retro-High-OG-Lost-and-Found-PS"
+ },
+ {
+  "slug": "travis-scott-aj1-high",
+  "name": "Travis Scott x Air Jordan 1 Mocha",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Travis Scott Jordan 1 Mocha",
+  "keywords": [
+   "travis scott mocha",
+   "ts jordan 1 high"
+  ],
+  "retail": 175,
+  "image": "Air-Jordan-1-Retro-High-Travis-Scott"
+ },
+ {
+  "slug": "aj4-white-cement",
+  "name": "Air Jordan 4 White Cement",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 4 White Cement",
+  "keywords": [
+   "jordan 4 white cement",
+   "aj4 cement"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-4-Retro-White-Cement-2025"
+ },
+ {
+  "slug": "aj4-thunder",
+  "name": "Air Jordan 4 Thunder",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 4 Thunder",
+  "keywords": [
+   "jordan 4 thunder",
+   "aj4 thunder"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-4-Retro-Thunder-2023"
+ },
+ {
+  "slug": "aj5-fire-red",
+  "name": "Air Jordan 5 Fire Red",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 5 Fire Red",
+  "keywords": [
+   "jordan 5 fire red",
+   "aj5 fire red"
+  ],
+  "retail": 200,
+  "image": "Air-Jordan-5-Retro-Fire-Red-Silver-Tongue-2020"
+ },
+ {
+  "slug": "aj6-infrared",
+  "name": "Air Jordan 6 Infrared",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 6 Infrared",
+  "keywords": [
+   "jordan 6 infrared",
+   "aj6 infrared"
+  ],
+  "retail": 200,
+  "image": "Air-Jordan-6-Retro-Black-Infrared-2019"
+ },
+ {
+  "slug": "aj11-cherry",
+  "name": "Air Jordan 11 Cherry",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 11 Cherry",
+  "keywords": [
+   "jordan 11 cherry",
+   "aj11 cherry"
+  ],
+  "retail": 230,
+  "image": "Air-Jordan-11-Retro-Cherry-2022"
+ },
+ {
+  "slug": "aj12-flu-game",
+  "name": "Air Jordan 12 Flu Game",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 12 Flu Game",
+  "keywords": [
+   "jordan 12 flu game",
+   "flu game 12"
+  ],
+  "retail": 200,
+  "image": "Air-Jordan-12-Retro-Flu-Game-2025"
+ },
+ {
+  "slug": "jumpman-jack-ts",
+  "name": "Travis Scott Jumpman Jack",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Jumpman Jack Travis Scott",
+  "keywords": [
+   "jumpman jack"
+  ],
+  "retail": 160,
+  "image": "Air-Jordan-Jumpman-Jack-TR-Travis-Scott-University-Red"
+ },
+ {
+  "slug": "air-max-1",
+  "name": "Nike Air Max 1",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Air Max 1",
+  "keywords": [
+   "air max 1",
+   "am1"
+  ],
+  "retail": 150,
+  "image": "Nike-Air-Max-1-86-Big-Bubble-Red"
+ },
+ {
+  "slug": "air-max-90",
+  "name": "Nike Air Max 90",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Air Max 90",
+  "keywords": [
+   "air max 90",
+   "am90"
+  ],
+  "retail": 130,
+  "image": "Nike-Air-Max-90-Infrared-2020"
+ },
+ {
+  "slug": "air-max-95",
+  "name": "Nike Air Max 95",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Air Max 95",
+  "keywords": [
+   "air max 95",
+   "am95"
+  ],
+  "retail": 175,
+  "image": "Nike-Air-Max-95-OG-Neon-2020"
+ },
+ {
+  "slug": "air-max-97-silver",
+  "name": "Nike Air Max 97 Silver Bullet",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Air Max 97 Silver Bullet",
+  "keywords": [
+   "air max 97",
+   "silver bullet"
+  ],
+  "retail": 185,
+  "image": "Nike-Air-Max-97-OG-Silver-Bullet-2022"
+ },
+ {
+  "slug": "air-max-dn",
+  "name": "Nike Air Max Dn",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Air Max Dn",
+  "keywords": [
+   "air max dn"
+  ],
+  "retail": 160,
+  "image": "Nike-Air-Max-Dn-White-Metallic-Silver"
+ },
+ {
+  "slug": "nike-p6000",
+  "name": "Nike P-6000",
+  "brand": "Nike",
+  "category": "running",
+  "trends_term": "Nike P-6000",
+  "keywords": [
+   "p-6000",
+   "p6000"
+  ],
+  "retail": 110,
+  "image": "Nike-P-6000-Metallic-Silver"
+ },
+ {
+  "slug": "nike-shox-tl",
+  "name": "Nike Shox TL",
+  "brand": "Nike",
+  "category": "running",
+  "trends_term": "Nike Shox TL",
+  "keywords": [
+   "shox tl",
+   "nike shox"
+  ],
+  "retail": 170,
+  "image": "Nike-Shox-TL-Triple-Black"
+ },
+ {
+  "slug": "nike-cortez",
+  "name": "Nike Cortez",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Cortez",
+  "keywords": [
+   "nike cortez",
+   "cortez leather"
+  ],
+  "retail": 90,
+  "image": null
+ },
+ {
+  "slug": "nike-killshot-2",
+  "name": "Nike Killshot 2",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Killshot 2",
+  "keywords": [
+   "killshot 2",
+   "killshot"
+  ],
+  "retail": 90,
+  "image": "Nike-Killshot-2-Leather-Sail"
+ },
+ {
+  "slug": "blazer-mid-77",
+  "name": "Nike Blazer Mid '77",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Blazer Mid 77",
+  "keywords": [
+   "blazer mid 77",
+   "blazer mid"
+  ],
+  "retail": 105,
+  "image": "Nike-Blazer-Mid-77-Vintage-White-Black"
+ },
+ {
+  "slug": "dunk-low-grey-fog",
+  "name": "Nike Dunk Low Grey Fog",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Dunk Low Grey Fog",
+  "keywords": [
+   "grey fog dunk",
+   "dunk grey fog"
+  ],
+  "retail": 115,
+  "image": "Nike-Dunk-Low-Grey-Fog"
+ },
+ {
+  "slug": "nike-mac-attack",
+  "name": "Nike Mac Attack",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Mac Attack",
+  "keywords": [
+   "mac attack"
+  ],
+  "retail": 120,
+  "image": "Nike-Mac-Attack-Red-Crush"
+ },
+ {
+  "slug": "kobe-4-protro",
+  "name": "Nike Kobe 4 Protro",
+  "brand": "Nike",
+  "category": "basketball",
+  "trends_term": "Nike Kobe 4 Protro",
+  "keywords": [
+   "kobe 4 protro",
+   "kobe 4"
+  ],
+  "retail": 190,
+  "image": "Nike-Kobe-4-Protro-Gift-of-Mamba"
+ },
+ {
+  "slug": "kobe-8-protro",
+  "name": "Nike Kobe 8 Protro",
+  "brand": "Nike",
+  "category": "basketball",
+  "trends_term": "Nike Kobe 8 Protro",
+  "keywords": [
+   "kobe 8 protro",
+   "kobe 8"
+  ],
+  "retail": 190,
+  "image": "Nike-Kobe-8-Protro-Court-Purple"
+ },
+ {
+  "slug": "nike-gt-cut-3",
+  "name": "Nike GT Cut 3",
+  "brand": "Nike",
+  "category": "basketball",
+  "trends_term": "Nike GT Cut 3",
+  "keywords": [
+   "gt cut 3",
+   "gt cut"
+  ],
+  "retail": 190,
+  "image": null
+ },
+ {
+  "slug": "nike-pegasus-41",
+  "name": "Nike Pegasus 41",
+  "brand": "Nike",
+  "category": "running",
+  "trends_term": "Nike Pegasus 41",
+  "keywords": [
+   "pegasus 41"
+  ],
+  "retail": 140,
+  "image": "Nike-Air-Zoom-Pegasus-41-White-Black"
+ },
+ {
+  "slug": "campus-00s",
+  "name": "adidas Campus 00s",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Campus 00s",
+  "keywords": [
+   "campus 00s",
+   "adidas campus"
+  ],
+  "retail": 110,
+  "image": "adidas-Campus-00s-Core-Black"
+ },
+ {
+  "slug": "handball-spezial",
+  "name": "adidas Handball Spezial",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Handball Spezial",
+  "keywords": [
+   "handball spezial",
+   "spezial"
+  ],
+  "retail": 100,
+  "image": "adidas-Handball-Spezial-Light-Blue"
+ },
+ {
+  "slug": "adidas-superstar",
+  "name": "adidas Superstar",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Superstar",
+  "keywords": [
+   "adidas superstar",
+   "shell toe"
+  ],
+  "retail": 100,
+  "image": "adidas-Superstar-Cloud-White-Core-Black"
+ },
+ {
+  "slug": "forum-low",
+  "name": "adidas Forum Low",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Forum Low",
+  "keywords": [
+   "forum low",
+   "adidas forum"
+  ],
+  "retail": 100,
+  "image": "adidas-Forum-Low-White-Green"
+ },
+ {
+  "slug": "ultraboost-1",
+  "name": "adidas Ultraboost 1.0",
+  "brand": "adidas",
+  "category": "running",
+  "trends_term": "adidas Ultraboost",
+  "keywords": [
+   "ultraboost",
+   "ultra boost"
+  ],
+  "retail": 190,
+  "image": "adidas-Ultra-Boost-Core-Black"
+ },
+ {
+  "slug": "adidas-ae-1",
+  "name": "adidas AE 1",
+  "brand": "adidas",
+  "category": "basketball",
+  "trends_term": "adidas AE 1",
+  "keywords": [
+   "ae 1",
+   "anthony edwards shoe"
+  ],
+  "retail": 120,
+  "image": "adidas-AE-1-Stormtrooper"
+ },
+ {
+  "slug": "yeezy-700-wave-runner",
+  "name": "adidas Yeezy 700 Wave Runner",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "Yeezy 700 Wave Runner",
+  "keywords": [
+   "yeezy 700",
+   "wave runner"
+  ],
+  "retail": 300,
+  "image": "adidas-Yeezy-Wave-Runner-700-Solid-Grey"
+ },
+ {
+  "slug": "yeezy-foam-runner",
+  "name": "adidas Yeezy Foam Runner",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "Yeezy Foam Runner",
+  "keywords": [
+   "foam runner",
+   "yeezy foam"
+  ],
+  "retail": 90,
+  "image": "adidas-Yeezy-Foam-RNNR-Onyx"
+ },
+ {
+  "slug": "yeezy-500",
+  "name": "adidas Yeezy 500",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "Yeezy 500",
+  "keywords": [
+   "yeezy 500"
+  ],
+  "retail": 210,
+  "image": "adidas-Yeezy-500-Blush"
+ },
+ {
+  "slug": "adidas-sl72",
+  "name": "adidas SL 72",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas SL 72",
+  "keywords": [
+   "sl 72",
+   "sl72"
+  ],
+  "retail": 100,
+  "image": null
+ },
+ {
+  "slug": "nb-530",
+  "name": "New Balance 530",
+  "brand": "New Balance",
+  "category": "lifestyle",
+  "trends_term": "New Balance 530",
+  "keywords": [
+   "nb 530",
+   "new balance 530"
+  ],
+  "retail": 100,
+  "image": "New-Balance-530-White-Silver-Navy"
+ },
+ {
+  "slug": "nb-574",
+  "name": "New Balance 574",
+  "brand": "New Balance",
+  "category": "lifestyle",
+  "trends_term": "New Balance 574",
+  "keywords": [
+   "nb 574",
+   "new balance 574"
+  ],
+  "retail": 90,
+  "image": "New-Balance-574-Grey"
+ },
+ {
+  "slug": "nb-990v4",
+  "name": "New Balance 990v4",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 990v4",
+  "keywords": [
+   "990v4"
+  ],
+  "retail": 185,
+  "image": "New-Balance-990v4-Grey"
+ },
+ {
+  "slug": "nb-990v6",
+  "name": "New Balance 990v6",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 990v6",
+  "keywords": [
+   "990v6"
+  ],
+  "retail": 200,
+  "image": "New-Balance-990v6-Grey"
+ },
+ {
+  "slug": "nb-992",
+  "name": "New Balance 992",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 992",
+  "keywords": [
+   "nb 992",
+   "new balance 992"
+  ],
+  "retail": 185,
+  "image": "New-Balance-992-Grey"
+ },
+ {
+  "slug": "nb-993",
+  "name": "New Balance 993",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 993",
+  "keywords": [
+   "nb 993",
+   "new balance 993"
+  ],
+  "retail": 200,
+  "image": "New-Balance-993-MIU-Grey"
+ },
+ {
+  "slug": "nb-1906r",
+  "name": "New Balance 1906R",
+  "brand": "New Balance",
+  "category": "running",
+  "trends_term": "New Balance 1906R",
+  "keywords": [
+   "1906r",
+   "nb 1906"
+  ],
+  "retail": 155,
+  "image": "New-Balance-1906R-Silver-Metallic-Sea-Salt"
+ },
+ {
+  "slug": "nb-9060",
+  "name": "New Balance 9060",
+  "brand": "New Balance",
+  "category": "lifestyle",
+  "trends_term": "New Balance 9060",
+  "keywords": [
+   "nb 9060",
+   "9060s"
+  ],
+  "retail": 150,
+  "image": "New-Balance-9060-Sea-Salt-White"
+ },
+ {
+  "slug": "gel-kayano-14",
+  "name": "ASICS Gel-Kayano 14",
+  "brand": "ASICS",
+  "category": "running",
+  "trends_term": "ASICS Gel Kayano 14",
+  "keywords": [
+   "kayano 14",
+   "gel-kayano 14"
+  ],
+  "retail": 160,
+  "image": "ASICS-Gel-Kayano-14-JJJJound-Silver-Black"
+ },
+ {
+  "slug": "asics-gel-nyc",
+  "name": "ASICS Gel-NYC",
+  "brand": "ASICS",
+  "category": "running",
+  "trends_term": "ASICS Gel NYC",
+  "keywords": [
+   "gel-nyc",
+   "gel nyc"
+  ],
+  "retail": 130,
+  "image": "ASICS-Gel-NYC-Cream-Arctic-Sky"
+ },
+ {
+  "slug": "gel-lyte-iii",
+  "name": "ASICS Gel-Lyte III",
+  "brand": "ASICS",
+  "category": "lifestyle",
+  "trends_term": "ASICS Gel Lyte III",
+  "keywords": [
+   "gel lyte 3",
+   "gel-lyte iii"
+  ],
+  "retail": 120,
+  "image": "ASICS-Gel-Lyte-III-OG-White-Black"
+ },
+ {
+  "slug": "asics-novablast-4",
+  "name": "ASICS Novablast 4",
+  "brand": "ASICS",
+  "category": "running",
+  "trends_term": "ASICS Novablast 4",
+  "keywords": [
+   "novablast"
+  ],
+  "retail": 140,
+  "image": "ASICS-Novablast-4-Black-Thunder-Blue"
+ },
+ {
+  "slug": "puma-suede",
+  "name": "Puma Suede Classic",
+  "brand": "Puma",
+  "category": "lifestyle",
+  "trends_term": "Puma Suede",
+  "keywords": [
+   "puma suede"
+  ],
+  "retail": 75,
+  "image": "Puma-Suede-Classic-XXI-Black-White"
+ },
+ {
+  "slug": "puma-palermo",
+  "name": "Puma Palermo",
+  "brand": "Puma",
+  "category": "lifestyle",
+  "trends_term": "Puma Palermo",
+  "keywords": [
+   "puma palermo",
+   "palermo og"
+  ],
+  "retail": 80,
+  "image": "Puma-Palermo-Archive-Green"
+ },
+ {
+  "slug": "puma-speedcat",
+  "name": "Puma Speedcat OG",
+  "brand": "Puma",
+  "category": "lifestyle",
+  "trends_term": "Puma Speedcat",
+  "keywords": [
+   "speedcat",
+   "puma f1 shoe"
+  ],
+  "retail": 100,
+  "image": "Puma-Speedcat-OG-Black-White"
+ },
+ {
+  "slug": "puma-mb03",
+  "name": "Puma MB.03",
+  "brand": "Puma",
+  "category": "basketball",
+  "trends_term": "Puma MB.03",
+  "keywords": [
+   "mb.03",
+   "lamelo shoe",
+   "mb03"
+  ],
+  "retail": 125,
+  "image": "Puma-LaMelo-Ball-MB03-Toxic"
+ },
+ {
+  "slug": "reebok-club-c-85",
+  "name": "Reebok Club C 85",
+  "brand": "Reebok",
+  "category": "lifestyle",
+  "trends_term": "Reebok Club C 85",
+  "keywords": [
+   "club c 85",
+   "reebok club c"
+  ],
+  "retail": 80,
+  "image": "Reebok-Club-C-85-White-Green"
+ },
+ {
+  "slug": "reebok-question-mid",
+  "name": "Reebok Question Mid",
+  "brand": "Reebok",
+  "category": "basketball",
+  "trends_term": "Reebok Question Mid",
+  "keywords": [
+   "reebok question",
+   "question mid"
+  ],
+  "retail": 150,
+  "image": "Reebok-Question-Mid-Why-Not-Us"
+ },
+ {
+  "slug": "reebok-classic-leather",
+  "name": "Reebok Classic Leather",
+  "brand": "Reebok",
+  "category": "lifestyle",
+  "trends_term": "Reebok Classic Leather",
+  "keywords": [
+   "reebok classic leather"
+  ],
+  "retail": 80,
+  "image": "Reebok-Classic-Leather-White"
+ },
+ {
+  "slug": "salomon-xt6",
+  "name": "Salomon XT-6",
+  "brand": "Salomon",
+  "category": "running",
+  "trends_term": "Salomon XT-6",
+  "keywords": [
+   "xt-6",
+   "xt6",
+   "salomon xt"
+  ],
+  "retail": 200,
+  "image": "Salomon-S-Lab-XT-6-Adv-Triple-Black"
+ },
+ {
+  "slug": "salomon-acs-pro",
+  "name": "Salomon ACS Pro",
+  "brand": "Salomon",
+  "category": "running",
+  "trends_term": "Salomon ACS Pro",
+  "keywords": [
+   "acs pro"
+  ],
+  "retail": 240,
+  "image": "Salomon-ACS-Pro-Black"
+ },
+ {
+  "slug": "vans-old-skool",
+  "name": "Vans Old Skool",
+  "brand": "Vans",
+  "category": "skate",
+  "trends_term": "Vans Old Skool",
+  "keywords": [
+   "old skool",
+   "vans old school"
+  ],
+  "retail": 70,
+  "image": "Vans-Old-Skool-Black-White"
+ },
+ {
+  "slug": "vans-sk8-hi",
+  "name": "Vans Sk8-Hi",
+  "brand": "Vans",
+  "category": "skate",
+  "trends_term": "Vans Sk8-Hi",
+  "keywords": [
+   "sk8-hi",
+   "sk8 hi"
+  ],
+  "retail": 75,
+  "image": "Vans-Sk8-Hi-Black-White"
+ },
+ {
+  "slug": "vans-knu-skool",
+  "name": "Vans Knu Skool",
+  "brand": "Vans",
+  "category": "skate",
+  "trends_term": "Vans Knu Skool",
+  "keywords": [
+   "knu skool"
+  ],
+  "retail": 75,
+  "image": "Vans-Knu-Skool-Black-White"
+ },
+ {
+  "slug": "chuck-70-hi",
+  "name": "Converse Chuck 70 Hi",
+  "brand": "Converse",
+  "category": "lifestyle",
+  "trends_term": "Converse Chuck 70",
+  "keywords": [
+   "chuck 70",
+   "chuck taylor 70"
+  ],
+  "retail": 85,
+  "image": null
+ },
+ {
+  "slug": "converse-one-star-pro",
+  "name": "Converse One Star Pro",
+  "brand": "Converse",
+  "category": "skate",
+  "trends_term": "Converse One Star Pro",
+  "keywords": [
+   "one star pro"
+  ],
+  "retail": 75,
+  "image": null
+ },
+ {
+  "slug": "on-cloudmonster",
+  "name": "On Cloudmonster",
+  "brand": "On",
+  "category": "running",
+  "trends_term": "On Cloudmonster",
+  "keywords": [
+   "cloudmonster"
+  ],
+  "retail": 170,
+  "image": "On-Running-Cloudmonster-Undyed-White"
+ },
+ {
+  "slug": "on-cloudtilt",
+  "name": "On Cloudtilt",
+  "brand": "On",
+  "category": "running",
+  "trends_term": "On Cloudtilt",
+  "keywords": [
+   "cloudtilt"
+  ],
+  "retail": 160,
+  "image": null
+ },
+ {
+  "slug": "hoka-clifton-9",
+  "name": "Hoka Clifton 9",
+  "brand": "Hoka",
+  "category": "running",
+  "trends_term": "Hoka Clifton 9",
+  "keywords": [
+   "clifton 9",
+   "hoka clifton"
+  ],
+  "retail": 145,
+  "image": "Hoka-One-One-Clifton-9-Black-White"
+ },
+ {
+  "slug": "hoka-bondi-8",
+  "name": "Hoka Bondi 8",
+  "brand": "Hoka",
+  "category": "running",
+  "trends_term": "Hoka Bondi 8",
+  "keywords": [
+   "bondi 8",
+   "hoka bondi"
+  ],
+  "retail": 165,
+  "image": "Hoka-One-One-Bondi-8-Shifting-Sand"
+ }
 ]

@@ -134,7 +134,6 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Boutique availability | Shopify public product feeds (15 stores) | **Live**, best-effort | nothing — no key needed |
 | Press coverage | Google News RSS per model + Hypebeast / Sneaker News / Nice Kicks / SBD / Highsnobiety feeds | **Live** (nightly) | nothing — no key needed |
 | Social buzz (YouTube) | YouTube Data API v3 | **Live** (nightly) | done ✓ |
-| Artist heat (collabs) | Spotify Web API — artist popularity + followers | API-ready | free app at [developer.spotify.com](https://developer.spotify.com/) → `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` |
 | Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
 | Community sentiment | Reddit API | Synthetic until keys set | free app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
 | Resale (ask-side) | eBay Browse API — median deadstock (new/unworn) asks, decile-trimmed | **Live** (nightly) | done ✓ |

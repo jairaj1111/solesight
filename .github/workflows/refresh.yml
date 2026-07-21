@@ -39,8 +39,6 @@ jobs:
       EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
       EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
       # Scale guard: refresh at most N (stalest-first) models per nightly run,
       # so the catalog can grow without Google Trends rate-limit bursts.
       TRENDS_MAX_PER_RUN: "60"
@@ -78,11 +76,6 @@ jobs:
       - name: Ingest sneaker press coverage (Google News + blog RSS, keyless)
         continue-on-error: true
         run: python -m scripts.run_pipeline --press
-
-      - name: Ingest Spotify artist heat (live once SPOTIFY_* secrets are set)
-        if: env.SPOTIFY_CLIENT_ID != ''
-        continue-on-error: true
-        run: python -m scripts.run_pipeline --spotify
 
       - name: Ingest boutique availability (best-effort)
         continue-on-error: true
