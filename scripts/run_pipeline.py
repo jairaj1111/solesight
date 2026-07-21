@@ -24,6 +24,7 @@ def main() -> None:
     p.add_argument("--resale", action="store_true", help="ingest resale prices")
     p.add_argument("--wiki", action="store_true", help="ingest Wikipedia attention")
     p.add_argument("--press", action="store_true", help="ingest sneaker press coverage")
+    p.add_argument("--spotify", action="store_true", help="ingest Spotify artist heat")
     p.add_argument("--boutiques", action="store_true", help="ingest boutique availability")
     p.add_argument("--sentiment", action="store_true", help="score sentiment")
     p.add_argument("--forecast", action="store_true", help="Prophet forecast")
@@ -36,7 +37,7 @@ def main() -> None:
 
     run_all = args.all or not any(
         [args.reddit, args.trends, args.social, args.resale, args.wiki,
-         args.press, args.boutiques, args.sentiment,
+         args.press, args.spotify, args.boutiques, args.sentiment,
          args.forecast, args.insights, args.offline_insights]
     )
     want_insights = run_all or args.insights or args.offline_insights
@@ -67,6 +68,9 @@ def main() -> None:
     if run_all or args.press:
         from solesight.ingest import press
         print("[5/10] Sneaker press coverage (keyless RSS)"); _try_stage(press)
+    if run_all or args.spotify:
+        from solesight.ingest import spotify
+        print("[5b/10] Spotify artist heat (key-gated)"); _try_stage(spotify)
     if run_all or args.boutiques:
         from solesight.ingest import boutiques
         print("[6/10] Boutique availability"); _try_stage(boutiques)

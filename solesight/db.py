@@ -87,6 +87,15 @@ CREATE TABLE IF NOT EXISTS attention (
     PRIMARY KEY (model_slug, date, source)
 );
 
+CREATE TABLE IF NOT EXISTS artist_heat (
+    artist        TEXT NOT NULL,          -- Spotify artist name
+    date          TEXT NOT NULL,          -- ISO date (daily)
+    popularity    INTEGER NOT NULL,       -- Spotify popularity 0-100
+    followers     INTEGER NOT NULL,       -- Spotify follower count
+    fetched_at    INTEGER NOT NULL,
+    PRIMARY KEY (artist, date)
+);
+
 CREATE TABLE IF NOT EXISTS press (
     model_slug    TEXT NOT NULL,
     source        TEXT NOT NULL,          -- outlet name (Hypebeast, Sole Retriever…)

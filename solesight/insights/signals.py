@@ -16,7 +16,7 @@ import pandas as pd
 
 from .. import models
 from ..db import connect
-from ..ingest import boutiques, press, resale, social, wikipedia
+from ..ingest import boutiques, press, resale, social, spotify, wikipedia
 
 
 def _latest_forecast(conn, slug: str) -> pd.DataFrame:
@@ -120,6 +120,7 @@ def snapshot(model_slug: str) -> dict:
         "wiki_views_14d": wiki_recent,
         "wiki_momentum_pct": wiki_momentum,
         **press.snapshot_fields(model_slug),
+        **spotify.snapshot_fields(model_slug),
         **boutiques.snapshot_fields(model_slug),
         "retail_price": retail,
         "resale_last_sale": r_recent,
