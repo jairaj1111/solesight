@@ -539,6 +539,19 @@ section[id] { scroll-margin-top: 84px; }
   .bt-foot { gap: 18px; }
 }
 
+/* ── discovery: bubbling up ───────────────────────────────── */
+.discovery { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); }
+.disc-head h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; }
+.disc-head h3 span { font-family: var(--sans); font-size: .82rem; color: var(--ink-3);
+  font-weight: 500; letter-spacing: 0; }
+.disc-head p { font-size: .84rem; color: var(--ink-2); max-width: 640px; margin: 6px 0 16px; }
+.disc-list { display: flex; flex-wrap: wrap; gap: 10px; }
+.disc-chip { padding: 10px 14px; border-radius: 12px; background: var(--paper);
+  border: 1px solid var(--line-2); border-left: 3px solid var(--acid); }
+.disc-chip b { display: block; font-size: .9rem; font-weight: 600; }
+.disc-chip span { font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-3); }
+
 /* ── launch radar ─────────────────────────────────────────── */
 .radar { max-width: var(--maxw); margin: 0 auto; padding: 70px clamp(20px, 5vw, 56px) 30px; }
 .radar-stages { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0; }

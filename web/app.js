@@ -106,6 +106,26 @@ function renderRadar() {
     </div>`;
   }).join("");
   bindCards("#radar-events .radar-event");
+  renderDiscovery();
+}
+
+/* ---------------- discovery: hyped shoes not yet tracked ---------------- */
+function renderDiscovery() {
+  const d = DATA.discovery;
+  const el = $("#discovery");
+  if (!el || !d || !d.length) { if (el) el.innerHTML = ""; return; }
+  el.innerHTML = `
+    <div class="disc-head">
+      <h3>Bubbling up <span>— heating in the press, not yet indexed</span></h3>
+      <p>Un-tracked silhouettes the press feeds keep naming. The index nominates
+        its own next entries — real editorial attention, not opinion.</p>
+    </div>
+    <div class="disc-list">
+      ${d.map((c) => `<div class="disc-chip">
+        <b>${esc(c.name)}</b>
+        <span>${c.mentions} mention${c.mentions === 1 ? "" : "s"}${c.outlets > 1 ? ` · ${c.outlets} outlets` : ""}</span>
+      </div>`).join("")}
+    </div>`;
 }
 
 /* ---------------- pipeline freshness (real numbers only) ---------------- */

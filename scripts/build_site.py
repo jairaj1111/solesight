@@ -17,7 +17,7 @@ from pathlib import Path
 from solesight import models
 from solesight.db import connect
 from solesight.ingest import press, resale
-from solesight.insights import backtest, lifecycle, market, signals
+from solesight.insights import backtest, discovery, lifecycle, market, signals
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
@@ -155,8 +155,18 @@ def build() -> dict:
             "stats": _pipeline_stats(),
             "radar": lifecycle.radar(),
             "backtest": backtest.run(),
+            "discovery": _discovery_safe(),
             "case_study": _case_study("aj4-white-cement"),
             "models": records}
+
+
+def _discovery_safe() -> list:
+    """Discovery re-fetches live feeds; never let a network blip fail the build."""
+    try:
+        return discovery.run()
+    except Exception as exc:
+        print(f"  ! discovery skipped: {str(exc)[:60]}")
+        return []
 
 
 def _pipeline_stats() -> dict:
