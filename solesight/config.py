@@ -27,12 +27,21 @@ REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT", "solesight:v0.1")
 # brand/silhouette communities (whose posts match specific models far more
 # cleanly than the generic feeds). Reddit throttles RSS, so the keyless
 # adapter is best-effort and skips any sub that 404s or 429s on a given night.
+# Curated for SIGNAL, not size: every sub here regularly names specific models
+# (so posts match the catalog) and covers the discovery → consideration →
+# confirmation funnel. Ordered by priority; run() day-rotates the front so each
+# takes its turn before Reddit's RSS throttle kicks in. Deliberately excludes
+# training/fashion subs that rarely name shoe models — they'd burn throttle
+# budget on zero matches.
 REDDIT_SUBREDDITS = [
-    # general hubs
-    "Sneakers", "SneakerMarket", "Repsneakers", "streetwear",
-    # brand / silhouette communities
-    "Nike", "Jordans", "adidas", "Yeezys", "asics", "reebok",
-    "newbalance", "Converse", "Vans", "RunningShoeGeeks",
+    # discovery — where slept-on models surface first
+    "moresneakers", "RunningShoeGeeks",
+    # brand / model communities — cleanest per-model sentiment
+    "Newbalance", "asics", "Saucony", "Salomon", "Hoka",
+    "Nike", "Jordans", "adidas", "Yeezys", "PUMA", "reebok",
+    "Converse", "Vans",
+    # confirmation / general hubs
+    "Sneakers", "SneakerMarket", "streetwear",
 ]
 
 # Listings scanned per subreddit and how many posts to pull from each.
