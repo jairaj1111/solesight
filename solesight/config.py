@@ -23,14 +23,16 @@ REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID", "")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET", "")
 REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT", "solesight:v0.1")
 
-# Subreddits we scan for sneaker/streetwear chatter.
+# Subreddits scanned for sneaker/streetwear chatter — general hubs plus
+# brand/silhouette communities (whose posts match specific models far more
+# cleanly than the generic feeds). Reddit throttles RSS, so the keyless
+# adapter is best-effort and skips any sub that 404s or 429s on a given night.
 REDDIT_SUBREDDITS = [
-    "Sneakers",
-    "SneakerMarket",
-    "Repsneakers",
-    "streetwear",
-    "Nike",
-    "Jordans",
+    # general hubs
+    "Sneakers", "SneakerMarket", "Repsneakers", "streetwear",
+    # brand / silhouette communities
+    "Nike", "Jordans", "adidas", "Yeezys", "asics", "reebok",
+    "newbalance", "Converse", "Vans", "RunningShoeGeeks",
 ]
 
 # Listings scanned per subreddit and how many posts to pull from each.

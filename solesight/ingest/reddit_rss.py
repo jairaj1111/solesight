@@ -70,7 +70,13 @@ def run() -> None:
     now = int(time.time())
     all_rows: list[dict] = []
     blocked = 0
-    subs = config.REDDIT_SUBREDDITS
+    # Reddit throttles after a few RSS hits, so the first subs in the list win
+    # and the tail never gets scanned. Rotate the order by day-of-year so every
+    # subreddit takes its turn at the front over the course of a week.
+    subs = list(config.REDDIT_SUBREDDITS)
+    if subs:
+        offset = time.gmtime(now).tm_yday % len(subs)
+        subs = subs[offset:] + subs[:offset]
     for sub in subs:
         try:
             posts = _fetch_sub(sub)
