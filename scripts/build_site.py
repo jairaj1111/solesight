@@ -118,6 +118,7 @@ def build() -> dict:
             "platforms": s["social_platform_engagement"],
             "resale_last": _round(s["resale_last_sale"], 0),
             "resale_premium": _round(s["resale_premium"], 2),
+            "premium_regions": s["resale_premium_by_region"],
             "resale_momentum": _round(s["resale_momentum_pct"], 0),
             "sales": s["resale_sales_14d"],
             "wiki_views": s["wiki_views_14d"],

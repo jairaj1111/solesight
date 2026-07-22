@@ -689,6 +689,16 @@ section[id] { scroll-margin-top: 84px; }
 .pl-store { font-size: 9px; font-weight: 700; letter-spacing: .06em;
   fill: var(--pos); }
 
+/* cross-market premium (US vs UK vs DE) */
+.xmarket { margin-top: 14px; padding: 14px 16px; border-radius: 12px;
+  background: var(--paper); border: 1px solid var(--line); }
+.xm-lab { font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+.xm-row { display: flex; gap: 22px; }
+.xm-cell b { font-family: var(--serif); font-size: 1.6rem; line-height: 1; display: block; }
+.xm-cell span { font-size: .72rem; color: var(--ink-2); }
+.xm-note { font-size: .68rem; color: var(--ink-3); margin-top: 10px; }
+
 /* ── press coverage in the detail sheet ───────────────────── */
 .press-list { display: flex; flex-direction: column; gap: 9px; margin: 4px 0 2px; }
 .press-row { display: block; text-decoration: none; color: inherit;

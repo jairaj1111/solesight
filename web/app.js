@@ -17,7 +17,7 @@ const esc = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
 init();
 
 async function init() {
-  DATA = await fetch("data.json?v=6").then((r) => r.json());
+  DATA = await fetch("data.json?v=7").then((r) => r.json());
   document.documentElement.style.setProperty("--n", DATA.models.length);
   buildEyebrow();
   buildChips();
@@ -622,7 +622,23 @@ function priceLadder(m) {
     </svg>
     <div class="legend"><span><i style="background:var(--ink-3)"></i>Retail</span>${shelf.length
       ? `<span><i style="background:var(--pos)"></i>Boutique shelves (${shelf.length})</span>` : ""}${ebay
-      ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}</div>`;
+      ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}</div>
+    ${intlPremium(m)}`;
+}
+
+/* Cross-market premium — US vs UK vs DE eBay asks (all USD-converted). */
+function intlPremium(m) {
+  const r = m.premium_regions || {};
+  const flags = { us: "🇺🇸 US", uk: "🇬🇧 UK", de: "🇩🇪 DE" };
+  const have = ["us", "uk", "de"].filter((k) => r[k] != null);
+  if (have.length < 2) return "";        // need at least two markets to compare
+  const cells = have.map((k) =>
+    `<div class="xm-cell"><b>${r[k]}×</b><span>${flags[k]}</span></div>`).join("");
+  return `<div class="xmarket">
+    <div class="xm-lab">Cross-market premium</div>
+    <div class="xm-row">${cells}</div>
+    <div class="xm-note">Deadstock ask ÷ retail, each market's eBay converted to USD</div>
+  </div>`;
 }
 
 const EVENT_LABELS = {

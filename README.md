@@ -138,6 +138,7 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
 | Community sentiment | Reddit API | Synthetic until keys set | free app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
 | Resale (ask-side) | eBay Browse API — median deadstock (new/unworn) asks, decile-trimmed | **Live** (nightly) | done ✓ |
+| Resale (international) | eBay UK + DE marketplaces, USD-converted via ECB/Frankfurter | **Live** (nightly) | done ✓ (same eBay key) |
 | Resale (sold) | StockX | Stubbed | partner-program approval |
 | Social buzz | IG / TikTok / YouTube | Modeled | per-platform API tokens (stubs documented in `ingest/social.py`) |
 

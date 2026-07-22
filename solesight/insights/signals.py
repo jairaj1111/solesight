@@ -124,6 +124,7 @@ def snapshot(model_slug: str) -> dict:
         "retail_price": retail,
         "resale_last_sale": r_recent,
         "resale_premium": r_premium,
+        "resale_premium_by_region": resale.premiums_by_region(model_slug, retail),
         "resale_momentum_pct": r_momentum,
         "resale_sales_14d": r_sales,
         "hype_score": _hype_score(recent, momentum, buzz_recent,
