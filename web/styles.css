@@ -743,6 +743,35 @@ section[id] { scroll-margin-top: 84px; }
   letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2);
   margin-bottom: 5px; }
 
+/* signal provenance table */
+.prov-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 400;
+  margin-top: 40px; }
+.prov-sub { font-size: .86rem; color: var(--ink-2); max-width: 680px; margin: 6px 0 18px; }
+.prov { border: 1px solid var(--line-2); border-radius: 14px; overflow: hidden;
+  background: var(--paper); }
+.prov-row { display: grid; grid-template-columns: 1.1fr 2.4fr 1.4fr .7fr;
+  gap: 16px; padding: 14px 18px; border-top: 1px solid var(--line);
+  align-items: center; font-size: .84rem; }
+.prov-row:first-child { border-top: 0; }
+.prov-head { background: var(--paper-2); font-size: .66rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.prov-row > span:first-child b { font-weight: 600; }
+.prov-row > span:first-child i { font-style: normal; font-family: var(--serif);
+  font-size: 1.05rem; color: var(--ink-3); margin-left: 4px; }
+.prov-row span { color: var(--ink-2); }
+.prov-row code { font-size: .76rem; background: var(--canvas);
+  border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; color: var(--ink-2); }
+.prov-note { font-size: .82rem; color: var(--ink-3); line-height: 1.6;
+  margin: 16px 2px 0; max-width: 820px; }
+
+@media (max-width: 760px) {
+  .prov-head { display: none; }
+  .prov-row { grid-template-columns: 1fr; gap: 5px; padding: 16px; }
+  .prov-row > span:first-child i { font-size: 1rem; }
+  .prov-row span:nth-child(2) { color: var(--ink); }
+  .prov-row code { display: inline-block; }
+}
+
 /* ── limitations ──────────────────────────────────────────── */
 .limits { margin-top: 30px; padding: 26px 28px; border-radius: 16px;
   background: var(--paper); border: 1px solid var(--line); }

@@ -16,7 +16,7 @@
   <meta property="og:image" content="https://jairaj1111.github.io/solesight/og.png" />
   <meta property="og:url" content="https://jairaj1111.github.io/solesight/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body>
   <!-- ambient grain + glow -->
@@ -214,6 +214,49 @@
         Nice Kicks · Packer · Notre · Xhibition · Bodega · Concepts · Feature ·
         Lapstone &amp; Hammer · Social Status · Sneaker Politics — shelf
         availability polled nightly from each store's public product feed.</p>
+
+      <!-- signal provenance — every score input traced to its source -->
+      <h3 class="prov-title">Signal provenance — every number, traced</h3>
+      <p class="prov-sub">The Hype Score is five weighted signals. Here's exactly
+        where each one comes from and how live it is — nothing black-box.</p>
+      <div class="prov">
+        <div class="prov-row prov-head">
+          <span>Component</span><span>Data source</span><span>Stored / fetched</span><span>Status</span>
+        </div>
+        <div class="prov-row">
+          <span><b>Resale premium</b> <i>.26</i></span>
+          <span>eBay Browse API — deadstock (new/unworn) asks, decile-trimmed median ÷ retail MSRP</span>
+          <span><code>resale</code> ← resale.py</span>
+          <span><em class="sig-badge live">live</em></span>
+        </div>
+        <div class="prov-row">
+          <span><b>Search momentum</b> <i>.24</i></span>
+          <span>Google Trends — recent 14 days vs. the prior 14</span>
+          <span><code>trends</code> ← google_trends.py</span>
+          <span><em class="sig-badge live">live</em></span>
+        </div>
+        <div class="prov-row">
+          <span><b>Search interest</b> <i>.18</i></span>
+          <span>Google Trends — same rows, level vs. the model's own peak</span>
+          <span><code>trends</code></span>
+          <span><em class="sig-badge live">live</em></span>
+        </div>
+        <div class="prov-row">
+          <span><b>Social buzz</b> <i>.20</i></span>
+          <span>Bluesky + YouTube live · Instagram/TikTok modeled (no viable API)</span>
+          <span><code>social</code> ← bluesky.py, social.py</span>
+          <span><em class="sig-badge part">partial</em></span>
+        </div>
+        <div class="prov-row">
+          <span><b>Community mood</b> <i>.12</i></span>
+          <span>Bluesky + Mastodon + YouTube comments, scored by RoBERTa · Reddit joins with a free key</span>
+          <span><code>reddit_posts</code> ← sentiment.py</span>
+          <span><em class="sig-badge live">live</em></span>
+        </div>
+      </div>
+      <p class="prov-note">Context signals shown across the site — Wikipedia
+        attention, press coverage &amp; momentum, boutique sell-through — stay
+        <em>out</em> of the score until the backtest earns them a weight.</p>
     </section>
 
     <!-- ───────────────── method ───────────────── -->

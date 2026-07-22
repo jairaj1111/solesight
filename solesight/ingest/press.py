@@ -49,6 +49,7 @@ FEEDS = [
     ("Highsnobiety", "https://www.highsnobiety.com/feed/"),
     ("Sole Retriever", "https://www.soleretriever.com/rss.xml"),
     ("Sneaker Freaker", "https://www.sneakerfreaker.com/rss.xml"),
+    ("JustFreshKicks", "https://justfreshkicks.com/feed/"),
 ]
 
 _GNEWS = ("https://news.google.com/rss/search?q={q}"
