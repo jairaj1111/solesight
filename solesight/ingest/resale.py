@@ -280,23 +280,36 @@ def _fetch_ebay_region(model, marketplace: str, currency: str, source: str) -> d
 
 def run_international() -> None:
     """Fetch UK + DE deadstock asks (USD-converted) for the cross-market spread."""
+    import json as _json
     import time as _time
+    from pathlib import Path as _Path
     if not (config.EBAY_CLIENT_ID and config.EBAY_CLIENT_SECRET):
         return
     from .. import models as _models
+    debug = {"fx_gbp": _usd_rate("GBP"), "fx_eur": _usd_rate("EUR")}
     for source, marketplace, currency in _MARKETPLACES:
-        rows, failed = [], 0
+        rows, failed, sample_err, got_items = [], 0, None, 0
         for model in _models.CATALOG:
             try:
                 row = _fetch_ebay_region(model, marketplace, currency, source)
                 if row:
                     rows.append(row)
-            except Exception:
+                    got_items += 1
+            except Exception as exc:
                 failed += 1
+                if sample_err is None:
+                    sample_err = f"{type(exc).__name__}: {str(exc)[:160]}"
             _time.sleep(0.4)
         n = store(rows)
+        debug[source] = {"stored": n, "failed": failed, "matched": got_items,
+                         "sample_error": sample_err}
         print(f"  resale: {source} -> {n} model-rows stored (USD-converted), "
-              f"{failed} failed")
+              f"{failed} failed" + (f" · e.g. {sample_err}" if sample_err else ""))
+    # TEMP diagnostic (committed so it can be inspected after a CI run).
+    try:
+        _Path("web/intl_debug.json").write_text(_json.dumps(debug, indent=2))
+    except Exception:
+        pass
 
 
 def _purge_seeded(source: str) -> int:
