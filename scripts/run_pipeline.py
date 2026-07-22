@@ -54,13 +54,18 @@ def main() -> None:
         from solesight.ingest import google_trends
         print("[2/10] Google Trends ingestion"); google_trends.run()
     if run_all or args.social:
-        from solesight.ingest import bluesky, social
-        print("[3/10] Social + community ingestion (Bluesky, keyless)")
+        from solesight.ingest import bluesky, mastodon, social, tumblr
+        print("[3/10] Social + community ingestion (Bluesky/Mastodon keyless)")
         try:
             bluesky.run()
         except Exception as exc:
             print(f"  ! bluesky failed: {exc}")
-        _try_stage(social)   # YouTube (key-gated); IG/TikTok stay modeled
+        try:
+            mastodon.run()
+        except Exception as exc:
+            print(f"  ! mastodon failed: {exc}")
+        _try_stage(tumblr)   # Tumblr (key-gated)
+        _try_stage(social)   # YouTube buzz + comments (key-gated); IG/TikTok modeled
     if run_all or args.wiki:
         from solesight.ingest import wikipedia
         print("[4/10] Wikipedia attention"); _try_stage(wikipedia)

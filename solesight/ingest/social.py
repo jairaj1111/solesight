@@ -105,8 +105,8 @@ def _yt_get(url: str, params: dict) -> dict:
         return json.loads(resp.read())
 
 
-def _fetch_youtube(model, days: int = 14) -> list[dict]:
-    """Daily (posts, engagement) rows from recent videos mentioning the model."""
+def _fetch_youtube(model, days: int = 14) -> tuple[list[dict], list[str]]:
+    """Daily buzz rows + the video ids found (reused for comment sentiment)."""
     import time as _time
     from datetime import datetime, timedelta, timezone
 
@@ -136,9 +136,47 @@ def _fetch_youtube(model, days: int = 14) -> list[dict]:
         eng = int(st.get("viewCount", 0)) + int(st.get("likeCount", 0)) * 10
         daily[day]["posts"] += 1
         daily[day]["eng"] += eng
-    return [{"model_slug": model.slug, "date": d, "platform": "youtube",
+    rows = [{"model_slug": model.slug, "date": d, "platform": "youtube",
              "posts": v["posts"], "engagement": v["eng"], "fetched_at": now}
             for d, v in daily.items()]
+    return rows, ids
+
+
+_YT_COMMENTS = "https://www.googleapis.com/youtube/v3/commentThreads"
+
+
+def _fetch_youtube_comments(model, video_ids: list[str], now: int,
+                            max_videos: int = 2, per_video: int = 10) -> list[dict]:
+    """Top comments on a model's videos → community posts (scored by sentiment).
+
+    commentThreads costs 1 quota unit/call (vs 100 for search), so this is cheap.
+    Comments on a video we found by searching the model name are about that model,
+    so no re-matching is needed.
+    """
+    from . import _community
+
+    rows = []
+    for vid in video_ids[:max_videos]:
+        try:
+            data = _yt_get(_YT_COMMENTS, {
+                "part": "snippet", "videoId": vid, "order": "relevance",
+                "maxResults": per_video, "textFormat": "plainText",
+                "key": config.YOUTUBE_API_KEY})
+        except Exception:
+            continue          # comments disabled on the video, etc. — skip
+        for th in data.get("items", []):
+            sn = (th.get("snippet", {}).get("topLevelComment", {})
+                    .get("snippet", {}))
+            text = _community.strip_html(sn.get("textDisplay", ""))
+            if not text:
+                continue
+            rows.append({
+                "id": "yt_" + th.get("id", "")[-28:], "model_slug": model.slug,
+                "subreddit": "youtube", "title": text[:300], "body": "",
+                "score": int(sn.get("likeCount") or 0), "num_comments": 0,
+                "created_utc": now, "fetched_at": now,
+            })
+    return rows
 
 
 def _purge_seeded(platform: str) -> int:
@@ -165,11 +203,15 @@ def run() -> None:
             "modeled until their APIs allow it.")
 
     from .. import models as _models
+    from . import _community
 
-    rows, failed = [], 0
+    rows, comment_rows, failed = [], [], 0
+    now = int(_time.time())
     for model in _models.CATALOG:
         try:
-            rows.extend(_fetch_youtube(model))
+            buzz, ids = _fetch_youtube(model)
+            rows.extend(buzz)
+            comment_rows.extend(_fetch_youtube_comments(model, ids, now))
         except Exception as exc:
             failed += 1
             print(f"  ! youtube failed for {model.slug}: {exc}")
@@ -179,7 +221,12 @@ def run() -> None:
         _time.sleep(0.2)
     n = store(rows)
     purged = _purge_seeded("youtube") if n else 0
-    print(f"  social: youtube -> {n} daily rows, {failed} failed"
+    # comments feed community mood via the shared post table + sentiment pipeline
+    n_comments = _community.store_posts(comment_rows)
+    if n_comments:
+        _community.purge_seeded_posts()
+    print(f"  social: youtube -> {n} daily buzz rows, {n_comments} comments, "
+          f"{failed} failed"
           + (f", purged {purged} seeded youtube rows" if purged else ""))
 
 

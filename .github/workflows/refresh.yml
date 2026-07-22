@@ -39,6 +39,7 @@ jobs:
       EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
       EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      TUMBLR_API_KEY: ${{ secrets.TUMBLR_API_KEY }}
       # Scale guard: refresh at most N (stalest-first) models per nightly run,
       # so the catalog can grow without Google Trends rate-limit bursts.
       TRENDS_MAX_PER_RUN: "60"

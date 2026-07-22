@@ -49,6 +49,7 @@ SOCIAL_PLATFORMS = ("bluesky", "instagram", "tiktok", "youtube")
 INSTAGRAM_TOKEN = os.getenv("INSTAGRAM_TOKEN", "")   # Graph API (Business/Creator)
 TIKTOK_TOKEN = os.getenv("TIKTOK_TOKEN", "")         # TikTok Research/Display API
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")   # YouTube Data API v3
+TUMBLR_API_KEY = os.getenv("TUMBLR_API_KEY", "")     # Tumblr API v2 (free OAuth consumer key)
 
 # --- Resale ---
 # Marketplaces we track for resale price/volume. eBay has a real free API
