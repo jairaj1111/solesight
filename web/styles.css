@@ -661,6 +661,19 @@ section[id] { scroll-margin-top: 84px; }
 .sf { display: flex; align-items: baseline; gap: 8px; font-size: 0.82rem; color: var(--ink-2); }
 .sf b { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
 
+/* ── where-to-buy links in the detail sheet ───────────────── */
+.buy-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 8px; }
+.buy-btn { display: inline-flex; align-items: center; gap: 4px;
+  padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line-2);
+  background: var(--paper-2); color: var(--ink); font-size: 0.78rem;
+  font-weight: 600; text-decoration: none; white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s; }
+.buy-btn:hover { border-color: var(--ink-3); }
+.buy-btn.real { background: var(--acid); border-color: var(--acid);
+  color: var(--acid-ink); }
+.buy-note { font-size: 0.74rem; color: var(--ink-3); line-height: 1.5;
+  margin: 0 0 4px; }
+
 /* ── stockist expander in the detail sheet ────────────────── */
 .sf-details summary { cursor: pointer; list-style: none; }
 .sf-details summary::-webkit-details-marker { display: none; }

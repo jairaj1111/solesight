@@ -647,6 +647,31 @@ const EVENT_LABELS = {
   coverage: "coverage",
 };
 
+/* Where to buy — a real listing when we have one (eBay's cheapest live ask,
+   pulled straight from the Browse API), else a deep-link to each
+   marketplace's search for this exact model. Works for every shoe, and the
+   natural home for affiliate links later. */
+const BUY_MARKETS = [
+  ["StockX", (q) => `https://stockx.com/search?s=${q}`],
+  ["GOAT", (q) => `https://www.goat.com/search?query=${q}`],
+  ["Stadium Goods", (q) => `https://www.stadiumgoods.com/en-us/shopping?q=${q}`],
+  ["Flight Club", (q) => `https://www.flightclub.com/catalogsearch/result?query=${q}`],
+];
+
+function buyLinks(m) {
+  const q = encodeURIComponent(m.name);
+  const ebayHref = m.ebay_url || `https://www.ebay.com/sch/i.html?_nkw=${q}`;
+  const ebayBtn = `<a class="buy-btn${m.ebay_url ? " real" : ""}" href="${ebayHref}" target="_blank" rel="noopener">eBay${m.ebay_url ? " · lowest ask" : ""} ↗</a>`;
+  const btns = ebayBtn + BUY_MARKETS.map(([name, url]) =>
+    `<a class="buy-btn" href="${url(q)}" target="_blank" rel="noopener">${name} ↗</a>`).join("");
+  const shelves = (m.stockists || []).filter((s) => s.avail > 0).length;
+  return `<h4>Where to buy</h4>
+    <div class="buy-row">${btns}</div>
+    <p class="buy-note">${m.ebay_url ? "eBay links straight to today's cheapest live listing. Other" : "Search"} deep-links go to each marketplace.${shelves
+      ? ` Boutique names in “which stores?” above link to the ${shelves} shop${shelves === 1 ? "" : "s"} with it in stock.`
+      : ""} SoleSight isn't a retailer — these point you to live listings.</p>`;
+}
+
 function openSheet(slug) {
   const m = DATA.models.find((x) => x.slug === slug);
   if (!m) return;
@@ -674,7 +699,7 @@ function openSheet(slug) {
           const pct = s.total ? s.avail / s.total : 0;
           const cls = pct === 0 ? "gone" : pct < 0.34 ? "low" : "ok";
           return `<div class="stk-row">
-            <span class="stk-name">${STORE_NAMES[s.store] || s.store}</span>
+            <a class="stk-name" href="${s.url || `https://${s.store}/search?q=${encodeURIComponent(m.name)}`}" target="_blank" rel="noopener">${STORE_NAMES[s.store] || s.store} ↗</a>
             <span class="stk-price">${s.price ? "$" + Math.round(s.price) : ""}</span>
             <span class="stk-bar"><i class="${cls}" style="width:${Math.round(pct * 100)}%"></i></span>
             <span class="stk-sizes ${cls}">${pct === 0 ? "sold out" : s.avail + "/" + s.total + " sizes"}</span>
@@ -684,6 +709,8 @@ function openSheet(slug) {
     </div>
 
     ${priceLadder(m)}
+
+    ${buyLinks(m)}
 
     <h4>Signal breakdown</h4>
     <div class="bars">

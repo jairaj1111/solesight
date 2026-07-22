@@ -85,9 +85,12 @@ def _match_rows(domain: str, products: list[dict], now: int) -> list[dict]:
                 price = float(variants[0].get("price") or 0) or None
             except (TypeError, ValueError):
                 price = None
+            handle = p.get("handle")
             cand = {"model_slug": m.slug, "date": today, "store": domain,
                     "price": price, "variants_total": len(variants),
-                    "variants_available": avail, "fetched_at": now}
+                    "variants_available": avail,
+                    "url": f"https://{domain}/products/{handle}" if handle else None,
+                    "fetched_at": now}
             # prefer the listing with the most sizes (usually the GR release)
             if best is None or cand["variants_total"] > best["variants_total"]:
                 best = cand
@@ -103,13 +106,14 @@ def store_rows(rows: list[dict]) -> int:
         conn.executemany(
             """INSERT INTO availability
                    (model_slug, date, store, price, variants_total,
-                    variants_available, fetched_at)
+                    variants_available, url, fetched_at)
                VALUES (:model_slug, :date, :store, :price, :variants_total,
-                       :variants_available, :fetched_at)
+                       :variants_available, :url, :fetched_at)
                ON CONFLICT(model_slug, date, store) DO UPDATE SET
                    price=excluded.price,
                    variants_total=excluded.variants_total,
                    variants_available=excluded.variants_available,
+                   url=excluded.url,
                    fetched_at=excluded.fetched_at""",
             rows)
     return len(rows)

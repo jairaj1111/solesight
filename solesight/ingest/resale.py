@@ -30,15 +30,16 @@ def store(rows: list[dict]) -> int:
         conn.executemany(
             """INSERT INTO resale
                    (model_slug, date, source, last_sale, lowest_ask, sales_count,
-                    fetched_at)
+                    listing_url, fetched_at)
                VALUES (:model_slug, :date, :source, :last_sale, :lowest_ask,
-                       :sales_count, :fetched_at)
+                       :sales_count, :listing_url, :fetched_at)
                ON CONFLICT(model_slug, date, source) DO UPDATE SET
                    last_sale   = excluded.last_sale,
                    lowest_ask  = excluded.lowest_ask,
                    sales_count = excluded.sales_count,
+                   listing_url = excluded.listing_url,
                    fetched_at  = excluded.fetched_at""",
-            rows,
+            [{**r, "listing_url": r.get("listing_url")} for r in rows],
         )
     return len(rows)
 
@@ -172,20 +173,23 @@ def _fetch_ebay(model) -> dict | None:
     })
     with urllib.request.urlopen(req, timeout=25) as resp:
         items = json.loads(resp.read()).get("itemSummaries", [])
-    prices = sorted(float(i["price"]["value"]) for i in items
-                    if i.get("price", {}).get("value"))
-    if len(prices) < 3:          # too thin to be a signal
+    priced = sorted(
+        ((float(i["price"]["value"]), i.get("itemWebUrl")) for i in items
+         if i.get("price", {}).get("value")),
+        key=lambda pu: pu[0])
+    if len(priced) < 3:          # too thin to be a signal
         return None
     # Trim the top/bottom decile: fakes, kids' sizes and typo listings live there.
-    k = max(1, len(prices) // 10)
-    core = prices[k:-k] or prices
+    k = max(1, len(priced) // 10)
+    core = priced[k:-k] or priced
     return {
         "model_slug": model.slug,
         "date": _date.today().isoformat(),
         "source": "ebay",
-        "last_sale": round(statistics.median(core), 2),
-        "lowest_ask": round(core[0], 2),
-        "sales_count": len(prices),
+        "last_sale": round(statistics.median(p for p, _ in core), 2),
+        "lowest_ask": round(core[0][0], 2),
+        "sales_count": len(priced),
+        "listing_url": core[0][1],   # real listing for the lowest ask
         "fetched_at": int(_time.time()),
     }
 
@@ -258,22 +262,25 @@ def _fetch_ebay_region(model, marketplace: str, currency: str, source: str) -> d
     })
     with urllib.request.urlopen(req, timeout=25) as resp:
         items = json.loads(resp.read()).get("itemSummaries", [])
-    prices = sorted(float(i["price"]["value"]) for i in items
-                    if i.get("price", {}).get("value"))
-    if len(prices) < 3:
+    priced = sorted(
+        ((float(i["price"]["value"]), i.get("itemWebUrl")) for i in items
+         if i.get("price", {}).get("value")),
+        key=lambda pu: pu[0])
+    if len(priced) < 3:
         return None
     rate = _usd_rate(currency)
     if not rate:
         return None
-    k = max(1, len(prices) // 10)
-    core = prices[k:-k] or prices
+    k = max(1, len(priced) // 10)
+    core = priced[k:-k] or priced
     return {
         "model_slug": model.slug,
         "date": _date.today().isoformat(),
         "source": source,
-        "last_sale": round(statistics.median(core) * rate, 2),   # native -> USD
-        "lowest_ask": round(core[0] * rate, 2),
-        "sales_count": len(prices),
+        "last_sale": round(statistics.median(p for p, _ in core) * rate, 2),  # native -> USD
+        "lowest_ask": round(core[0][0] * rate, 2),
+        "sales_count": len(priced),
+        "listing_url": core[0][1],   # real listing for the lowest ask
         "fetched_at": int(_time.time()),
     }
 

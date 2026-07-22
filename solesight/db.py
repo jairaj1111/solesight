@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS availability (
     price         REAL,                   -- current ask (USD)
     variants_total     INTEGER NOT NULL,  -- sizes listed
     variants_available INTEGER NOT NULL,  -- sizes in stock
+    url           TEXT,                   -- real product page (store's own site)
     fetched_at    INTEGER NOT NULL,
     PRIMARY KEY (model_slug, date, store)
 );
@@ -117,6 +118,7 @@ CREATE TABLE IF NOT EXISTS resale (
     last_sale     REAL NOT NULL,          -- avg sale price that day (USD)
     lowest_ask    REAL,                   -- lowest ask / active listing (USD)
     sales_count   INTEGER NOT NULL,       -- sales that day
+    listing_url   TEXT,                   -- real listing for the lowest ask above
     fetched_at    INTEGER NOT NULL,
     PRIMARY KEY (model_slug, date, source)
 );
@@ -146,7 +148,25 @@ def connect(db_path: Path | None = None) -> Iterator[sqlite3.Connection]:
         conn.close()
 
 
+# Columns added after a table's initial release. CREATE TABLE IF NOT EXISTS is a
+# no-op on an existing table, so new columns need an explicit ALTER TABLE here —
+# applied once, cheaply, on every init_db() call.
+_MIGRATIONS = {
+    "availability": [("url", "TEXT")],
+    "resale": [("listing_url", "TEXT")],
+}
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    for table, columns in _MIGRATIONS.items():
+        existing = {row["name"] for row in conn.execute(f"PRAGMA table_info({table})")}
+        for name, coltype in columns:
+            if name not in existing:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {coltype}")
+
+
 def init_db(db_path: Path | None = None) -> None:
-    """Create all tables if they don't exist."""
+    """Create all tables if they don't exist, and migrate older ones in place."""
     with connect(db_path) as conn:
         conn.executescript(SCHEMA)
+        _migrate(conn)
