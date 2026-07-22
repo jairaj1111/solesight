@@ -54,16 +54,14 @@ def main() -> None:
         from solesight.ingest import google_trends
         print("[2/10] Google Trends ingestion"); google_trends.run()
     if run_all or args.social:
-        from solesight.ingest import bluesky, mastodon, social, tumblr
-        print("[3/10] Social + community ingestion (Bluesky/Mastodon keyless)")
-        try:
-            bluesky.run()
-        except Exception as exc:
-            print(f"  ! bluesky failed: {exc}")
-        try:
-            mastodon.run()
-        except Exception as exc:
-            print(f"  ! mastodon failed: {exc}")
+        from solesight.ingest import bluesky, mastodon, reddit_rss, social, tumblr
+        print("[3/10] Social + community ingestion (Bluesky/Mastodon/Reddit keyless)")
+        for name, mod in (("bluesky", bluesky), ("mastodon", mastodon),
+                          ("reddit-rss", reddit_rss)):
+            try:
+                mod.run()
+            except Exception as exc:
+                print(f"  ! {name} failed: {exc}")
         _try_stage(tumblr)   # Tumblr (key-gated)
         _try_stage(social)   # YouTube buzz + comments (key-gated); IG/TikTok modeled
     if run_all or args.wiki:

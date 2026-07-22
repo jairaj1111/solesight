@@ -129,14 +129,14 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Signal | Source | Status | Activate with |
 |---|---|---|---|
 | Search demand | Google Trends | **Live** (nightly) | nothing — no key needed |
-| Community chatter + sentiment | Bluesky + Mastodon (keyless) + YouTube comments | **Live** (nightly) | nothing — no key needed |
+| Community chatter + sentiment | Bluesky + Mastodon + Reddit (subreddit RSS) + YouTube comments — all keyless | **Live** (nightly) | nothing — no key needed |
 | Community (Tumblr) | Tumblr API v2 tagged posts | API-ready | free key at [tumblr.com/oauth/apps](https://www.tumblr.com/oauth/apps) → `TUMBLR_API_KEY` |
 | Cultural attention | Wikipedia pageviews | **Live** (nightly) | nothing — no key needed |
 | Boutique availability | Shopify public product feeds (15 stores) | **Live**, best-effort | nothing — no key needed |
 | Press coverage | Google News RSS per model + Hypebeast / Sneaker News / Nice Kicks / SBD / Highsnobiety feeds | **Live** (nightly) | nothing — no key needed |
 | Social buzz (YouTube) | YouTube Data API v3 | **Live** (nightly) | done ✓ |
 | Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
-| Community sentiment | Reddit API | Synthetic until keys set | free app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
+| Community (Reddit, richer) | Reddit API via PRAW — adds scores/comments on top of the keyless RSS feed | Optional upgrade | app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) (approval queue) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
 | Resale (ask-side) | eBay Browse API — median deadstock (new/unworn) asks, decile-trimmed | **Live** (nightly) | done ✓ |
 | Resale (international) | eBay UK + DE marketplaces, USD-converted via ECB/Frankfurter | **Live** (nightly) | done ✓ (same eBay key) |
 | Resale (sold) | StockX | Stubbed | partner-program approval |
