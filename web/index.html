@@ -180,14 +180,14 @@
     <!-- ───────────── system ───────────── -->
     <section class="sys" id="system">
       <h2 class="section-title">How it's <em>built</em></h2>
-      <p class="section-sub">An end-to-end system: eight live data feeds, one
+      <p class="section-sub">An end-to-end system: nine live data feeds, one
         autonomous nightly pipeline, zero servers — the platform publishes
         itself while its builder sleeps.</p>
       <div class="sys-flow">
         <div class="sys-step reveal"><span class="sys-n">01</span><h3>Collect</h3>
-          <p>Google Trends, eBay, Bluesky, YouTube, Google News + sneaker
-            press, Wikipedia and 15 boutique feeds — every adapter degrades
-            gracefully if a source refuses.</p></div>
+          <p>Google Trends, eBay (US · UK · DE), Bluesky, Mastodon, YouTube,
+            Google News + sneaker press, Wikipedia and 15 boutique feeds —
+            every adapter degrades gracefully if a source refuses.</p></div>
         <div class="sys-step reveal"><span class="sys-n">02</span><h3>Store</h3>
           <p>One SQLite database, committed back to the repo nightly — the
             commit history is a public, auditable heartbeat.</p></div>
@@ -225,7 +225,7 @@
         </div>
         <div class="prov-row">
           <span><b>Resale premium</b> <i>.26</i></span>
-          <span>eBay Browse API — deadstock (new/unworn) asks, decile-trimmed median ÷ retail MSRP</span>
+          <span>eBay Browse API — deadstock (new/unworn) asks ÷ retail MSRP · US, UK &amp; DE markets, USD-converted</span>
           <span><code>resale</code> ← resale.py</span>
           <span><em class="sig-badge live">live</em></span>
         </div>
