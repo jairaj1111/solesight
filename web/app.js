@@ -532,6 +532,7 @@ function countUp(el) {
 }
 
 /* ---------------- sparkline ---------------- */
+let sparkGradId = 0;
 function spark(series) {
   if (!series || series.length < 2) return "";
   const vs = series.map((p) => p.v), min = Math.min(...vs), max = Math.max(...vs) || 1;
@@ -539,9 +540,21 @@ function spark(series) {
   const pts = series.map((p, i) => {
     const x = pad + (i / (series.length - 1)) * (W - 2 * pad);
     const y = H - pad - ((p.v - min) / (max - min || 1)) * (H - 2 * pad);
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join(" ");
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}"><polyline class="spark-line" points="${pts}"/></svg>`;
+    return [x, y];
+  });
+  const last = pts[pts.length - 1];
+  const line = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const area = `${pts[0][0].toFixed(1)},${H - pad} ${line} ${last[0].toFixed(1)},${H - pad}`;
+  const gid = `sg${sparkGradId++}`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}">
+    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--acid-ink)" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="var(--acid-ink)" stop-opacity="0"/>
+    </linearGradient></defs>
+    <polygon points="${area}" fill="url(#${gid})"/>
+    <polyline class="spark-line" points="${line}"/>
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.4" fill="var(--ink)"/>
+  </svg>`;
 }
 
 /* ---------------- detail sheet ---------------- */
@@ -797,18 +810,30 @@ function resaleChart(m) {
   const W = 500, H = 170, L = 6, R = 6, T = 10, B = 14;
   const vals = [...sx, ...eb].map((p) => p.v).concat(m.retail || []);
   const min = Math.min(...vals) * 0.96, max = Math.max(...vals) * 1.04;
+  const pointsFor = (arr) => arr.map((p, i) => {
+    const x = L + (i / (arr.length - 1)) * (W - L - R);
+    const y = T + (1 - (p.v - min) / (max - min || 1)) * (H - T - B);
+    return [x, y];
+  });
   const line = (arr, color) => {
     if (!arr.length) return "";
-    const pts = arr.map((p, i) => {
-      const x = L + (i / (arr.length - 1)) * (W - L - R);
-      const y = T + (1 - (p.v - min) / (max - min || 1)) * (H - T - B);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(" ");
+    const pts = pointsFor(arr).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
     return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`;
   };
   let retailY = null;
   if (m.retail) retailY = T + (1 - (m.retail - min) / (max - min || 1)) * (H - T - B);
+  let area = "";
+  if (eb.length) {
+    const pts = pointsFor(eb);
+    const poly = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+    area = `<defs><linearGradient id="rc-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--ebay)" stop-opacity=".16"/>
+        <stop offset="100%" stop-color="var(--ebay)" stop-opacity="0"/>
+      </linearGradient></defs>
+      <polygon points="${pts[0][0].toFixed(1)},${H - B} ${poly} ${pts[pts.length - 1][0].toFixed(1)},${H - B}" fill="url(#rc-grad)"/>`;
+  }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}">
+    ${area}
     ${retailY != null ? `<line x1="${L}" x2="${W - R}" y1="${retailY}" y2="${retailY}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4 4"/>` : ""}
     ${line(eb, "var(--ebay)")}
     ${line(sx, "var(--stockx)")}
