@@ -19,6 +19,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 concurrency:
   group: refresh
@@ -58,40 +59,49 @@ jobs:
         run: python -m scripts.init_db
 
       - name: Ingest Google Trends (real data; tolerate rate-limit nights)
+        id: trends
         continue-on-error: true
         run: python -m scripts.run_pipeline --trends
 
       - name: Ingest Reddit chatter (live once REDDIT_* secrets are set)
+        id: reddit
         if: env.REDDIT_CLIENT_ID != ''
         continue-on-error: true
         run: python -m scripts.run_pipeline --reddit
 
       - name: Ingest social + community (Bluesky keyless; YouTube with key)
+        id: social
         continue-on-error: true
         run: python -m scripts.run_pipeline --social
 
       - name: Ingest Wikipedia attention
+        id: wiki
         continue-on-error: true
         run: python -m scripts.run_pipeline --wiki
 
       - name: Ingest sneaker press coverage (Google News + blog RSS, keyless)
+        id: press
         continue-on-error: true
         run: python -m scripts.run_pipeline --press
 
       - name: Ingest boutique availability (best-effort)
+        id: boutiques
         continue-on-error: true
         run: python -m scripts.run_pipeline --boutiques
 
       - name: Score sentiment (lexicon fallback — no torch in CI)
+        id: sentiment
         continue-on-error: true
         run: python -m scripts.run_pipeline --sentiment
 
       - name: Ingest eBay resale (live once EBAY_* secrets are set)
+        id: resale
         if: env.EBAY_CLIENT_ID != ''
         continue-on-error: true
         run: python -m scripts.run_pipeline --resale
 
       - name: Refit Prophet forecasts
+        id: forecast
         continue-on-error: true
         run: python -m scripts.run_pipeline --forecast
 
@@ -124,5 +134,55 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # continue-on-error above means a stage crashing outright never fails this
+      # job, so GitHub's own "workflow failed" email never fires either — this
+      # step is the only thing standing between a broken adapter and nobody
+      # noticing. Zero new infra: it just files/updates a GitHub issue, which
+      # already emails the repo watchers.
+      - name: Report pipeline health
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          declare -A OUTCOMES=(
+            [trends]="${{ steps.trends.outcome }}"
+            [reddit]="${{ steps.reddit.outcome }}"
+            [social]="${{ steps.social.outcome }}"
+            [wiki]="${{ steps.wiki.outcome }}"
+            [press]="${{ steps.press.outcome }}"
+            [boutiques]="${{ steps.boutiques.outcome }}"
+            [sentiment]="${{ steps.sentiment.outcome }}"
+            [resale]="${{ steps.resale.outcome }}"
+            [forecast]="${{ steps.forecast.outcome }}"
+          )
+          failed=()
+          for name in "${!OUTCOMES[@]}"; do
+            [ "${OUTCOMES[$name]}" = "failure" ] && failed+=("$name")
+          done
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing=$(gh issue list --repo "${{ github.repository }}" \
+            --search "Nightly pipeline failing in:title" --state open \
+            --json number --jq '.[0].number')
+          # jq prints the JSON literal "null" (a non-empty string!) when no
+          # issue matches — treat that the same as "none found".
+          [ "$existing" = "null" ] && existing=""
+
+          if [ ${#failed[@]} -eq 0 ]; then
+            if [ -n "$existing" ]; then
+              gh issue close "$existing" --repo "${{ github.repository }}" \
+                --comment "Back to green: $run_url"
+            fi
+          else
+            body="Stage(s) raised beyond their own best-effort error handling tonight: **${failed[*]}**.
+
+          That means an actual bug, not just a quiet best-effort skip (those already log and move on). Worth a look: $run_url"
+            if [ -n "$existing" ]; then
+              gh issue comment "$existing" --repo "${{ github.repository }}" --body "$body"
+            else
+              gh issue create --repo "${{ github.repository }}" \
+                --title "Nightly pipeline failing" --body "$body"
+            fi
+          fi
 
 # trigger: verifying deadstock-only eBay asks
