@@ -334,7 +334,15 @@ function buildHero() {
       <div class="hf-stat"><b>${m.buzz ?? "—"}</b><span>Buzz</span></div>
       <div class="hf-stat"><b>$${m.resale_last ?? "—"}</b><span>Last sale</span></div>
     </div>`;
-  $("#hero-feature").onclick = () => { if (!SPIN_DRAGGED) openSheet(m.slug); };
+  const hf = $("#hero-feature");
+  hf.setAttribute("role", "button");
+  hf.setAttribute("tabindex", "0");
+  hf.onclick = () => { if (!SPIN_DRAGGED) openSheet(m.slug); };
+  hf.onkeydown = (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    openSheet(m.slug);
+  };
   countUp($("#hero-feature [data-count]"));
   if (m.has_360) init360(m.slug);
 }
@@ -503,7 +511,16 @@ function renderMarket() {
 }
 
 function bindCards(sel) {
-  $$(sel).forEach((el) => (el.onclick = () => openSheet(el.dataset.slug)));
+  $$(sel).forEach((el) => {
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.onclick = () => openSheet(el.dataset.slug);
+    el.onkeydown = (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      el.click();
+    };
+  });
 }
 
 function img(m, cls) {
@@ -572,10 +589,23 @@ function wireSheet() {
   $("#sheet-backdrop").onclick = closeSheet;
   document.addEventListener("keydown", (e) => e.key === "Escape" && closeSheet());
 }
+let SHEET_OPENER = null;
 function closeSheet() {
   $("#sheet").classList.remove("on");
   $("#sheet").setAttribute("aria-hidden", "true");
   $("#sheet-backdrop").classList.remove("on");
+  setBackgroundInert(false);
+  if (SHEET_OPENER) { SHEET_OPENER.focus(); SHEET_OPENER = null; }
+}
+
+// While the detail sheet is open, everything behind the backdrop is
+// unreachable by mouse anyway — `inert` keeps keyboard/screen-reader focus
+// out of it too, so Tab can't "escape" into content hidden behind the scrim.
+function setBackgroundInert(on) {
+  $$("body > *").forEach((el) => {
+    if (el.id === "sheet" || el.id === "sheet-backdrop") return;
+    if (on) el.setAttribute("inert", ""); else el.removeAttribute("inert");
+  });
 }
 const STORE_NAMES = {
   "kith.com": "Kith", "undefeated.com": "Undefeated",
@@ -708,9 +738,9 @@ function openSheet(slug) {
   const mom = m.momentum == null ? null : Math.max(0, Math.min(100, 50 + m.momentum * 0.8));
 
   $("#sheet").innerHTML = `
-    <button class="sheet-close" onclick="(${closeSheet.toString()})()">×</button>
+    <button class="sheet-close" aria-label="Close" onclick="(${closeSheet.toString()})()">×</button>
     <div class="sheet-eyebrow">Rank #${m.rank} · ${esc(m.brand)} ${stageBadge(m.stage)}</div>
-    <div class="sheet-title">${esc(m.name)}</div>
+    <h2 class="sheet-title" id="sheet-title">${esc(m.name)}</h2>
     <div class="sheet-hype"><b>${m.hype ?? "—"}</b><span class="of">/ 100 hype</span>
       <span class="delta ${deltaClass(m.momentum)}" style="margin-left:auto">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")} search</span></div>
     <div class="sheet-photo">${img(m, "")}</div>
@@ -785,6 +815,9 @@ function openSheet(slug) {
   $("#sheet").classList.add("on");
   $("#sheet").setAttribute("aria-hidden", "false");
   $("#sheet-backdrop").classList.add("on");
+  setBackgroundInert(true);
+  SHEET_OPENER = document.activeElement;
+  $("#sheet").focus();
   requestAnimationFrame(() =>
     $$("#sheet .bar-fill").forEach((f) => (f.style.width = f.dataset.w + "%")));
 }

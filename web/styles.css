@@ -11,7 +11,7 @@
   --paper-2:  #F6F2E8;   /* secondary surface */
   --ink:      #16150F;   /* near-black warm */
   --ink-2:    #5C574C;   /* muted */
-  --ink-3:    #8E8877;   /* faint / captions */
+  --ink-3:    #706B5E;   /* faint / captions — darkened from #8E8877 for WCAG AA contrast on canvas */
   --line:     #E2DBCB;   /* hairline */
   --line-2:   #D3CAB6;
 
@@ -507,6 +507,23 @@ svg.chart { width: 100%; height: auto; display: block; }
 @keyframes tk-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
 
+/* ── accessibility ─────────────────────────────────────────── */
+.skip-link { position: absolute; left: -999px; top: 0; z-index: 200;
+  background: var(--ink); color: var(--canvas); padding: 12px 20px;
+  border-radius: 0 0 10px 0; font-weight: 600; font-size: .88rem; }
+.skip-link:focus { left: 0; }
+
+/* content behind the open detail sheet is marked inert (see app.js) —
+   dim it slightly so the visual state matches the a11y state */
+[inert] { filter: saturate(.9); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+}
+
 /* ── general polish ────────────────────────────────────────── */
 ::selection { background: var(--acid); color: var(--acid-ink); }
 section[id] { scroll-margin-top: 84px; }
@@ -519,9 +536,13 @@ section[id] { scroll-margin-top: 84px; }
   outline: 2px solid var(--acid-ink); outline-offset: 2px; border-radius: 4px;
 }
 .chip:focus-visible, .buy-btn:focus-visible, .seg button:focus-visible,
-.pod:focus-visible, .row:focus-visible, .mover:focus-visible {
+.pod:focus-visible, .row:focus-visible, .mover:focus-visible,
+.hero-feature:focus-visible, .radar-event:focus-visible {
   outline-color: var(--ink); outline-offset: 3px;
 }
+/* the sheet itself takes focus on open (for screen readers); it doesn't
+   need a visible ring around the whole panel */
+.sheet:focus-visible { outline: none; }
 
 /* tactile press feedback on every clickable pill/button */
 .btn, .chip, .seg button, .buy-btn, .ask-chip, .ask-fab,

@@ -25,14 +25,16 @@ function askInit() {
       <div class="ask-head">
         <div><b>Ask SoleSight</b><span class="ask-engine" id="ask-engine"></span></div>
         <div class="ask-head-btns">
-          <button id="ask-key-btn" title="Connect an Anthropic API key">⚙</button>
+          <button id="ask-key-btn" title="Connect an Anthropic API key"
+                  aria-label="Connect an Anthropic API key">⚙</button>
           <button id="ask-close" aria-label="Close">×</button>
         </div>
       </div>
-      <div class="ask-msgs" id="ask-msgs"></div>
+      <div class="ask-msgs" id="ask-msgs" role="log" aria-live="polite"></div>
       <div class="ask-chips" id="ask-chips"></div>
       <form class="ask-inputrow" id="ask-form">
         <input id="ask-input" type="text" autocomplete="off"
+               aria-label="Ask about hype, momentum, brands, restocks"
                placeholder="Ask about hype, momentum, brands, restocks…" />
         <button type="submit">→</button>
       </form>
