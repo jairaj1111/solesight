@@ -1,4 +1,13 @@
 /* SoleSight — The Hype Index. Renders everything from data.json. */
+
+// Always open at the top: don't let the browser restore a mid-scroll
+// position on reload, or auto-jump to a leftover #section hash from a
+// previous nav click (content renders async below, so an early hash-jump
+// lands in the wrong place once the real layout comes in).
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+window.scrollTo(0, 0);
+
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -32,6 +41,7 @@ async function init() {
   wireControls();
   wireReveal();
   wireSheet();
+  window.scrollTo(0, 0);
 }
 
 /* ---------------- market ticker (top movers, exchange style) ---------------- */
