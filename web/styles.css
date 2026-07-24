@@ -766,6 +766,11 @@ section[id] { scroll-margin-top: 84px; }
 .pl-store { font-size: 9px; font-weight: 700; letter-spacing: .06em;
   fill: var(--pos); }
 
+/* ── demand forecast + resale charts: axis/value numbers ───── */
+.ax-lab { font-size: 9.5px; font-weight: 600; letter-spacing: .02em;
+  fill: var(--ink-3); }
+.ax-val { font-size: 10.5px; font-weight: 700; letter-spacing: .01em; }
+
 /* cross-market premium (US vs UK vs DE) */
 .xmarket { margin-top: 14px; padding: 14px 16px; border-radius: 12px;
   background: var(--paper); border: 1px solid var(--line); }

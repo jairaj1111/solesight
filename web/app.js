@@ -825,10 +825,14 @@ function openSheet(slug) {
 }
 
 /* ---------------- SVG charts ---------------- */
+const shortDate = (iso) =>
+  new Date(iso + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
+const clampX = (x, halfW, W) => Math.min(Math.max(x, halfW + 2), W - halfW - 2);
+
 function demandChart(m) {
   const hist = m.trend || [], fc = m.forecast || [];
   if (!hist.length) return "<p style='color:var(--ink-3)'>No data.</p>";
-  const W = 500, H = 190, L = 6, R = 6, T = 10, B = 18;
+  const W = 500, H = 190, L = 6, R = 6, T = 20, B = 24;
   const all = [...hist.map((p) => p.v), ...fc.map((p) => p.v), ...fc.map((p) => p.hi)];
   const max = Math.max(...all, 10), n = hist.length + fc.length;
   const X = (i) => L + (i / (n - 1)) * (W - L - R);
@@ -840,19 +844,41 @@ function demandChart(m) {
     ...fc.map((p, i) => `${X(hist.length + i)},${Y(p.hi)}`),
     ...fc.map((p, i) => `${X(hist.length + fc.length - 1 - i)},${Y(p.lo)}`),
   ].join(" ");
-  const seam = hist.length ? `${X(hist.length - 1)},${Y(hist[hist.length - 1].v)} ` : "";
+  const lastHist = hist[hist.length - 1].v;
+  const seamX = X(hist.length - 1), seamY = Y(lastHist);
+  const seam = `${seamX},${seamY} `;
+
+  // real numbers: y-axis top/bottom, a "today" callout, and the forecast peak
+  const yAxis = `
+    <text x="${L}" y="${T - 7}" class="ax-lab">${Math.round(max)}</text>
+    <text x="${L}" y="${H - B + 12}" class="ax-lab">0</text>`;
+  const todayLab = `
+    <circle cx="${seamX}" cy="${seamY}" r="2.6" fill="var(--ink)"/>
+    <text x="${clampX(seamX, 20, W)}" y="${Math.max(seamY - 8, 12)}" text-anchor="middle"
+      class="ax-val" style="fill:var(--ink)">${Math.round(lastHist)}</text>`;
+  let peakLab = "";
+  if (fc.length) {
+    const peakIdx = fc.reduce((best, p, i) => (p.v > fc[best].v ? i : best), 0);
+    const peak = fc[peakIdx];
+    const px = X(hist.length + peakIdx), py = Y(peak.v);
+    peakLab = `
+      <circle cx="${px}" cy="${py}" r="3" fill="var(--acid-ink)" stroke="var(--paper)" stroke-width="1.5"/>
+      <text x="${clampX(px, 30, W)}" y="${Math.max(py - 9, 12)}" text-anchor="middle"
+        class="ax-val" style="fill:var(--acid-ink)">${Math.round(peak.v)} · ${shortDate(peak.d)}</text>`;
+  }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}">
     <polygon points="${area}" fill="var(--acid)" opacity=".18"/>
     <polyline points="${hp.join(" ")}" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>
     <polygon points="${band}" fill="var(--ink)" opacity=".07"/>
     <polyline points="${seam}${fcLine.join(" ")}" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="3 3"/>
+    ${yAxis}${todayLab}${peakLab}
   </svg>`;
 }
 
 function resaleChart(m) {
   const rs = m.resale_series || {}, sx = rs.stockx || [], eb = rs.ebay || [];
   if (!sx.length && !eb.length) return "<p style='color:var(--ink-3)'>No resale data.</p>";
-  const W = 500, H = 170, L = 6, R = 6, T = 10, B = 14;
+  const W = 500, H = 170, L = 6, R = 6, T = 20, B = 22;
   const vals = [...sx, ...eb].map((p) => p.v).concat(m.retail || []);
   const min = Math.min(...vals) * 0.96, max = Math.max(...vals) * 1.04;
   const pointsFor = (arr) => arr.map((p, i) => {
@@ -864,6 +890,14 @@ function resaleChart(m) {
     if (!arr.length) return "";
     const pts = pointsFor(arr).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
     return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`;
+  };
+  // last-point value callout, offset up/down so eBay+StockX labels don't collide
+  const endLabel = (arr, color, dy) => {
+    if (!arr.length) return "";
+    const pts = pointsFor(arr);
+    const [x, y] = pts[pts.length - 1];
+    return `<text x="${clampX(x, 22, W)}" y="${Math.max(y + dy, 12)}" text-anchor="middle"
+      class="ax-val" style="fill:${color}">$${Math.round(arr[arr.length - 1].v)}</text>`;
   };
   let retailY = null;
   if (m.retail) retailY = T + (1 - (m.retail - min) / (max - min || 1)) * (H - T - B);
@@ -877,10 +911,18 @@ function resaleChart(m) {
       </linearGradient></defs>
       <polygon points="${pts[0][0].toFixed(1)},${H - B} ${poly} ${pts[pts.length - 1][0].toFixed(1)},${H - B}" fill="url(#rc-grad)"/>`;
   }
+  const yAxis = `
+    <text x="${L}" y="${T - 7}" class="ax-lab">$${Math.round(max)}</text>
+    <text x="${L}" y="${H - B + 12}" class="ax-lab">$${Math.round(min)}</text>`;
+  const retailLab = retailY != null
+    ? `<text x="${W - R}" y="${retailY - 4}" text-anchor="end" class="ax-lab">RETAIL $${m.retail}</text>` : "";
   return `<svg class="chart" viewBox="0 0 ${W} ${H}">
     ${area}
     ${retailY != null ? `<line x1="${L}" x2="${W - R}" y1="${retailY}" y2="${retailY}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4 4"/>` : ""}
     ${line(eb, "var(--ebay)")}
     ${line(sx, "var(--stockx)")}
+    ${yAxis}${retailLab}
+    ${endLabel(eb, "var(--ebay)", -8)}
+    ${endLabel(sx, "var(--stockx)", sx.length && eb.length ? 14 : -8)}
   </svg>`;
 }
