@@ -56,11 +56,24 @@ def snapshot(model_slug: str) -> dict:
     # `if ... else None` just means: if we don't have enough days of data yet,
     # leave it blank instead of guessing. You'll see this same 3-step shape
     # repeated for buzz, resale, wiki and press — learn it once here.
+    #
+    # A % change is only meaningful when the baseline it's measured against is
+    # itself meaningful. Google Trends (and our own buzz index) legitimately
+    # return a hard 0-4 on their 0-100 scale when a term is dwarfed by whatever
+    # else set that window's peak — a prior-window average that low is
+    # measurement noise, not "no demand", and dividing by it manufactures
+    # triple-digit swings out of nothing. `_safe_momentum`'s `floor` refuses to
+    # report a percentage against a baseline that thin; the shoe just carries
+    # no momentum opinion that cycle instead of a fabricated one.
+    def _safe_momentum(recent_v, prior_v, floor: float = 0.0) -> float | None:
+        if recent_v is None or prior_v is None or prior_v < floor:
+            return None
+        return (recent_v - prior_v) / prior_v * 100.0
+
     recent = float(trends["interest"].tail(14).mean()) if not trends.empty else None
     prior = (float(trends["interest"].tail(28).head(14).mean())
              if len(trends) >= 28 else None)
-    momentum = ((recent - prior) / prior * 100.0
-                if recent is not None and prior else None)
+    momentum = _safe_momentum(recent, prior, floor=5.0)
 
     # Social buzz: normalized 0-100 daily series (like Trends). Recent 14-day
     # level + momentum vs the prior 14 days, plus recent per-platform totals.
@@ -68,29 +81,30 @@ def snapshot(model_slug: str) -> dict:
     buzz_recent = float(buzz["buzz"].tail(14).mean()) if not buzz.empty else None
     buzz_prior = (float(buzz["buzz"].tail(28).head(14).mean())
                   if len(buzz) >= 28 else None)
-    buzz_momentum = ((buzz_recent - buzz_prior) / buzz_prior * 100.0
-                     if buzz_recent is not None and buzz_prior else None)
+    buzz_momentum = _safe_momentum(buzz_recent, buzz_prior, floor=5.0)
     social_posts = (int(buzz["posts"].tail(14).sum()) if not buzz.empty else 0)
 
     # Resale: recent avg sale price, premium over retail, price momentum, volume.
+    # $10 floor: no genuine deadstock listing prices anywhere near that low —
+    # a prior average below it means too few/garbage listings, not a real price.
     price = resale.daily_price(model_slug)
     retail = models.retail(model_slug)
     r_recent = float(price["last_sale"].tail(14).mean()) if not price.empty else None
     r_prior = (float(price["last_sale"].tail(28).head(14).mean())
                if len(price) >= 28 else None)
-    r_momentum = ((r_recent - r_prior) / r_prior * 100.0
-                  if r_recent is not None and r_prior else None)
+    r_momentum = _safe_momentum(r_recent, r_prior, floor=10.0)
     r_premium = (r_recent / retail if r_recent is not None and retail else None)
     r_sales = int(price["sales_count"].tail(14).sum()) if not price.empty else 0
 
     # Wikipedia attention (silhouette-level cultural interest; context only).
+    # 10-view floor: below that, day-to-day swings are just small-count noise.
     wiki = wikipedia.load(model_slug)
     wv = [v for _, v in wiki]
     wiki_recent = round(sum(wv[-14:]) / 14) if len(wv) >= 14 else (
         round(sum(wv) / len(wv)) if wv else None)
     wiki_prior = round(sum(wv[-28:-14]) / 14) if len(wv) >= 28 else None
-    wiki_momentum = (round((wiki_recent - wiki_prior) / wiki_prior * 100, 1)
-                     if wiki_recent and wiki_prior else None)
+    wiki_momentum = None if _safe_momentum(wiki_recent, wiki_prior, floor=10.0) is None \
+        else round(_safe_momentum(wiki_recent, wiki_prior, floor=10.0), 1)
 
     f_start = float(fc["yhat"].iloc[0]) if not fc.empty else None
     f_end = float(fc["yhat"].iloc[-1]) if not fc.empty else None

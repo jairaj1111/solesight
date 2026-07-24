@@ -58,7 +58,10 @@ def stage(slug: str, momentum_pct: float | None = None) -> str | None:
     recent = sum(vals[-14:]) / 14
     prior = sum(vals[-28:-14]) / 14
     if momentum_pct is None:
-        momentum_pct = ((recent - prior) / prior * 100.0) if prior else 0.0
+        # Same floor as signals.py's trends momentum: a prior average this
+        # thin is Trends noise, not a real baseline — don't manufacture a
+        # triple-digit swing out of it.
+        momentum_pct = ((recent - prior) / prior * 100.0) if prior >= 5.0 else 0.0
     level = recent / peak
     days_since_peak = len(vals) - 1 - vals.index(max(vals))
 

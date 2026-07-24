@@ -199,8 +199,10 @@ def snapshot_fields(model_slug: str) -> dict:
     deduped = _dedup_titles(rows)
     prior_n = len(_dedup_titles(prior))
     outlets = {r["source"] for r in deduped if r["source"]}
+    # A 1-article baseline turns "one more story ran" into a 400%+ headline —
+    # require at least 3 prior stories before reporting a growth percentage.
     momentum = (round((len(deduped) - prior_n) / prior_n * 100)
-                if prior_n else None)
+                if prior_n >= 3 else None)
     events = [classify_event(r["title"]) for r in deduped]
     top_event = max(set(events), key=events.count) if events else None
     return {"press_14d": len(deduped),

@@ -14,6 +14,11 @@ from __future__ import annotations
 import re
 
 # token -> weight. Sneaker-community vocabulary included alongside general terms.
+# Deliberately no single-character tokens (e.g. gaming-slang "W"/"L" for win/loss):
+# social chatter is multilingual, and a lone letter is far more often a common
+# short word in another language (Polish "w" = "in") than real English slang —
+# scoring those as strongly positive/negative was measured to flip sentiment
+# on 9 of 10 posts it touched, almost all foreign-language false hits.
 _LEXICON: dict[str, float] = {
     # positive — general
     "love": 2.5, "loved": 2.5, "amazing": 3.0, "great": 2.0, "good": 1.5,
@@ -22,7 +27,7 @@ _LEXICON: dict[str, float] = {
     # positive — sneaker slang
     "fire": 3.0, "heat": 2.5, "grail": 3.0, "clean": 2.0, "crispy": 2.5,
     "comfy": 2.5, "comfiest": 3.0, "comfortable": 2.5, "fresh": 2.0, "steal": 2.0,
-    "cop": 1.5, "copped": 1.5, "w": 2.0, "banger": 2.5, "underrated": 1.5,
+    "cop": 1.5, "copped": 1.5, "banger": 2.5, "underrated": 1.5,
     "unreal": 2.5, "insane": 1.5, "restocked": 1.0, "beaters": 0.5,
     # negative — general
     "hate": -2.5, "terrible": -3.0, "awful": -3.0, "bad": -1.5, "worst": -2.5,
@@ -31,7 +36,7 @@ _LEXICON: dict[str, float] = {
     # negative — sneaker slang
     "overhyped": -2.5, "overpriced": -2.5, "ridiculous": -2.0, "fake": -2.0,
     "fakes": -2.0, "creasing": -2.0, "creased": -2.0, "qc": -1.0, "flaw": -2.0,
-    "flaws": -2.0, "l": -2.0, "brick": -2.5, "bricked": -2.5, "scuff": -1.5,
+    "flaws": -2.0, "brick": -2.5, "bricked": -2.5, "scuff": -1.5,
     "glue": -1.5, "stiff": -1.0, "narrow": -0.5, "backdoored": -2.5, "bot": -1.0,
     "bots": -1.5, "reseller": -1.0, "resellers": -1.5,
 }

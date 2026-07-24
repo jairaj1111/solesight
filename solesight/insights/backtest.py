@@ -33,6 +33,7 @@ _HORIZON = 30           # days ahead we test the prediction against
 _WIN = 14               # momentum window (matches signals.py)
 _RISING = 10.0          # momentum % above which we call a shoe "rising"
 _ELEVATED = 5.0         # forward demand % above which the outcome counts as "up"
+_BASELINE_FLOOR = 5.0   # matches signals.py's momentum floor (see note below)
 
 
 def _series(conn, slug: str) -> list[float]:
@@ -56,7 +57,11 @@ def run() -> dict:
             for t in range(2 * _WIN, len(s) - _HORIZON):
                 prior = _mean(s[t - 2 * _WIN:t - _WIN])
                 recent = _mean(s[t - _WIN:t])
-                if prior <= 0 or recent <= 0:
+                # A prior baseline this thin is Trends measurement noise, not a
+                # real starting point — both "momentum" and "held" below divide
+                # by it, so a noisy near-zero prior can mechanically register as
+                # a hit on both sides at once and quietly inflate the hit rate.
+                if prior < _BASELINE_FLOOR or recent <= 0:
                     continue
                 momentum = (recent - prior) / prior * 100.0
                 fwd = _mean(s[t:t + _HORIZON])
