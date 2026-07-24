@@ -77,6 +77,11 @@ const stageBadge = (st) => {
   const m = STAGE_META[st];
   return m ? `<span class="stage-badge ${m.cls}">${m.label}</span>` : "";
 };
+// Auto-promoted from Discovery, not yet manually backfilled with a real
+// retail price / product photo — flagged rather than silently guessed.
+const pendingBadge = (m) => (!m.retail && !m.img)
+  ? `<span class="pending-badge" title="Auto-added by Discovery — retail price and product photo not backfilled yet">NEW · pending details</span>`
+  : "";
 
 function renderRadar() {
   const r = DATA.radar;
@@ -435,7 +440,7 @@ function renderPodium(top) {
       <div class="pod-glow"></div>
       <div class="pod-rank">${m.rank}</div>
       <div class="pod-img">${img(m, "")}</div>
-      <div class="pod-brand">${esc(m.brand)}</div>
+      <div class="pod-brand">${esc(m.brand)} ${pendingBadge(m)}</div>
       <div class="pod-name">${esc(m.name)}</div>
       <div class="pod-foot">
         <div class="pod-score">${m.hype ?? "—"}<small>Hype</small></div>
@@ -451,7 +456,7 @@ function renderBoard(rest) {
     <div class="row" data-slug="${m.slug}">
       <div class="row-rank">${m.rank}</div>
       <div class="row-thumb">${img(m, "")}</div>
-      <div class="row-name"><b>${esc(m.name)}</b><span>${esc(m.brand)}</span></div>
+      <div class="row-name"><b>${esc(m.name)}</b><span>${esc(m.brand)}</span> ${pendingBadge(m)}</div>
       <div class="row-spark col-hide">${spark(m.trend)}</div>
       <div class="row-metric col-hide"><b>${m.resale_premium ?? "—"}×</b><span>Resale</span></div>
       <div class="row-metric"><span class="delta ${deltaClass(m.momentum)}">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")}</span><span>Momentum</span></div>
@@ -743,7 +748,7 @@ function openSheet(slug) {
 
   $("#sheet").innerHTML = `
     <button class="sheet-close" aria-label="Close" onclick="(${closeSheet.toString()})()">×</button>
-    <div class="sheet-eyebrow">Rank #${m.rank} · ${esc(m.brand)} ${stageBadge(m.stage)}</div>
+    <div class="sheet-eyebrow">Rank #${m.rank} · ${esc(m.brand)} ${stageBadge(m.stage)} ${pendingBadge(m)}</div>
     <h2 class="sheet-title" id="sheet-title">${esc(m.name)}</h2>
     <div class="sheet-hype"><b>${m.hype ?? "—"}</b><span class="of">/ 100 hype</span>
       <span class="delta ${deltaClass(m.momentum)}" style="margin-left:auto">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")} search</span></div>

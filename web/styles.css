@@ -643,6 +643,12 @@ section[id] { scroll-margin-top: 84px; }
 /* stage badges */
 .stage-badge { display: inline-block; padding: 2px 10px; border-radius: 999px;
   font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* auto-promoted model awaiting a manual retail-price/photo backfill */
+.pending-badge { display: inline-block; padding: 2px 9px; border-radius: 999px;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  background: transparent; border: 1.5px solid #c98500; color: #9a6a00;
+  vertical-align: middle; white-space: nowrap; }
 .st-emerging { background: var(--acid); color: var(--acid-ink); }
 .st-heating  { background: #FFDFA1; color: #7A4B00; }
 .st-peaking  { background: #16150F; color: #F1ECE1; }
