@@ -51,6 +51,7 @@ STORES = [
     "lapstoneandhammer.com",    # Lapstone & Hammer
     "socialstatuspgh.com",      # Social Status
     "sneakerpolitics.com",      # Sneaker Politics
+    "kickclusivenj.com",        # Kickclusive — NJ
 ]
 
 
