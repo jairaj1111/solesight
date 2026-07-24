@@ -127,8 +127,10 @@ function renderDiscovery() {
   el.innerHTML = `
     <div class="disc-head">
       <h3>Bubbling up <span>— heating in the press, not yet indexed</span></h3>
-      <p>Un-tracked silhouettes the press feeds keep naming. The index nominates
-        its own next entries — real editorial attention, not opinion.</p>
+      <p>Un-tracked silhouettes the press feeds keep naming. The index promotes
+        a candidate into the tracked catalog automatically once real press
+        attention (3+ mentions, 2+ outlets) is confirmed by actual search
+        demand — what's shown here just hasn't cleared that bar yet.</p>
     </div>
     <div class="disc-list">
       ${d.map((c) => `<div class="disc-chip">

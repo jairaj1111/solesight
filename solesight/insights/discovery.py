@@ -1,6 +1,6 @@
 """Discovery radar — sneakers heating up in the press but NOT yet tracked.
 
-SoleSight tracks a curated 90. But the same press feeds it already reads name
+SoleSight's catalog isn't fixed. The same press feeds it already reads name
 dozens of *other* shoes every week — the ones about to matter. Rather than
 guess what to add, this lets the data nominate: it re-reads the sneaker-press
 RSS feeds, throws away every headline that matches a shoe we already track, and
@@ -11,8 +11,12 @@ The output is a ranked "bubbling up" list — a shortlist of onboarding
 candidates surfaced by real editorial attention, not opinion. Keyless and
 free; it reuses the exact feeds the press adapter already polls.
 
-This is discovery, not a scored signal — a candidate here isn't in the Hype
-Score until it's curated into the catalog (a one-line JSON add).
+This is discovery, not a scored signal by itself — a candidate here isn't in
+the Hype Score yet. See insights/promotion.py for what happens next: it
+re-checks each candidate against a conservative bar (real press traction AND
+a confirming live Trends read) and, if it clears both, adds it to the catalog
+automatically — no manual JSON edit required. What's still shown here is
+whatever hasn't cleared that bar yet.
 """
 from __future__ import annotations
 

@@ -18,6 +18,8 @@ from solesight import config, db
 def main() -> None:
     p = argparse.ArgumentParser(description="Run the SoleSight pipeline stages.")
     p.add_argument("--all", action="store_true", help="run every stage")
+    p.add_argument("--promote", action="store_true",
+                   help="auto-promote strong Discovery candidates into the catalog")
     p.add_argument("--reddit", action="store_true", help="ingest Reddit chatter")
     p.add_argument("--trends", action="store_true", help="ingest Google Trends")
     p.add_argument("--social", action="store_true", help="ingest social buzz")
@@ -35,7 +37,7 @@ def main() -> None:
     db.init_db()
 
     run_all = args.all or not any(
-        [args.reddit, args.trends, args.social, args.resale, args.wiki,
+        [args.promote, args.reddit, args.trends, args.social, args.resale, args.wiki,
          args.press, args.boutiques, args.sentiment,
          args.forecast, args.insights, args.offline_insights]
     )
@@ -47,15 +49,31 @@ def main() -> None:
         except NotImplementedError as exc:
             print(f"  ! skipped: {exc}")
 
+    if run_all or args.promote:
+        from solesight.insights import promotion
+        print("[1/11] Catalog auto-promotion (Discovery candidates -> tracked)")
+        try:
+            added = promotion.run()
+            if added:
+                print(f"  promotion: added {len(added)} new model(s): "
+                      f"{[a['slug'] for a in added]}")
+            else:
+                print("  promotion: no candidate cleared both bars tonight")
+        except Exception as exc:
+            print(f"  ! promotion failed: {str(exc)[:80]}")
+        # NB: models.CATALOG is loaded once at import time, so a model added
+        # above isn't picked up by the stages below in THIS run — it starts
+        # ingesting on the next (tomorrow's) run once the process restarts
+        # fresh. That's fine: a same-night addition has zero history anyway.
     if run_all or args.reddit:
         from solesight.ingest import reddit
-        print("[1/10] Reddit ingestion"); reddit.run()
+        print("[2/11] Reddit ingestion"); reddit.run()
     if run_all or args.trends:
         from solesight.ingest import google_trends
-        print("[2/10] Google Trends ingestion"); google_trends.run()
+        print("[3/11] Google Trends ingestion"); google_trends.run()
     if run_all or args.social:
         from solesight.ingest import bluesky, mastodon, reddit_rss, social, tumblr
-        print("[3/10] Social + community ingestion (Bluesky/Mastodon/Reddit keyless)")
+        print("[4/11] Social + community ingestion (Bluesky/Mastodon/Reddit keyless)")
         for name, mod in (("bluesky", bluesky), ("mastodon", mastodon),
                           ("reddit-rss", reddit_rss)):
             try:
@@ -66,31 +84,31 @@ def main() -> None:
         _try_stage(social)   # YouTube buzz + comments (key-gated); IG/TikTok modeled
     if run_all or args.wiki:
         from solesight.ingest import wikipedia
-        print("[4/10] Wikipedia attention"); _try_stage(wikipedia)
+        print("[5/11] Wikipedia attention"); _try_stage(wikipedia)
     if run_all or args.press:
         from solesight.ingest import press
-        print("[5/10] Sneaker press coverage (keyless RSS)"); _try_stage(press)
+        print("[6/11] Sneaker press coverage (keyless RSS)"); _try_stage(press)
     if run_all or args.boutiques:
         from solesight.ingest import boutiques
-        print("[6/10] Boutique availability"); _try_stage(boutiques)
+        print("[7/11] Boutique availability"); _try_stage(boutiques)
     if run_all or args.resale:
         from solesight.ingest import resale
-        print("[7/10] Resale ingestion"); _try_stage(resale)
+        print("[8/11] Resale ingestion"); _try_stage(resale)
     if run_all or args.sentiment:
         from solesight.nlp import sentiment
-        print("[8/10] Sentiment scoring"); sentiment.run()
+        print("[9/11] Sentiment scoring"); sentiment.run()
     if run_all or args.forecast:
         from solesight.forecast import prophet_model
-        print("[9/10] Prophet forecasting"); prophet_model.run()
+        print("[10/11] Prophet forecasting"); prophet_model.run()
     if want_insights:
         if args.offline_insights or not config.OPENAI_API_KEY:
             from solesight.insights import rules
             why = ("forced by --offline-insights" if args.offline_insights
                    else "no OPENAI_API_KEY set")
-            print(f"[10/10] Insights: offline rule engine ({why})"); rules.run()
+            print(f"[11/11] Insights: offline rule engine ({why})"); rules.run()
         else:
             from solesight.insights import llm
-            print("[10/10] Insights: OpenAI"); llm.run()
+            print("[11/11] Insights: OpenAI"); llm.run()
 
     print("Done.")
 
