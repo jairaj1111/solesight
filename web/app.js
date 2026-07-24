@@ -616,7 +616,8 @@ const STORE_NAMES = {
   "bdgastore.com": "Bodega", "cncpts.com": "Concepts", "feature.com": "Feature",
   "lapstoneandhammer.com": "Lapstone & Hammer",
   "socialstatuspgh.com": "Social Status", "sneakerpolitics.com": "Sneaker Politics",
-  "kickclusivenj.com": "Kickclusive",
+  "kickclusivenj.com": "Kickclusive", "soledoutjc.com": "Soled Out",
+  "showtimenj.com": "Showtime Sneaker Boutique", "sneakerprovider.com": "Sneakerprovider",
 };
 
 /* Price ladder: retail tick, boutique-shelf dots, eBay median-ask diamond

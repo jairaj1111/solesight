@@ -52,6 +52,12 @@ STORES = [
     "socialstatuspgh.com",      # Social Status
     "sneakerpolitics.com",      # Sneaker Politics
     "kickclusivenj.com",        # Kickclusive — NJ
+    # Consignment/resale-style — mix used and new pairs with no condition tag,
+    # unlike the eBay adapter's deadstock-only filter. Sellout%/price readings
+    # here reflect that blend, not pure new-inventory sell-through.
+    "soledoutjc.com",           # Soled Out — Jersey City
+    "showtimenj.com",           # Showtime Sneaker Boutique — Elizabeth, NJ
+    "sneakerprovider.com",      # Sneakerprovider — Haledon, NJ
 ]
 
 
