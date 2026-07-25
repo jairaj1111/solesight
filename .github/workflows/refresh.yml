@@ -117,6 +117,8 @@ jobs:
         run: python -m scripts.build_site
 
       - name: Commit refreshed data
+        id: commit
+        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -130,7 +132,25 @@ jobs:
               msg="chore: nightly data refresh"
             fi
             git commit -m "$msg"
-            git push
+            # This workflow also self-triggers on any push touching refresh.yml
+            # (see the `on: push:` trigger above), so an active dev session and
+            # a live run can genuinely overlap — a manual push landing on main
+            # mid-run is a real race, not hypothetical. Rebase onto whatever's
+            # new and retry instead of failing the whole job over it.
+            pushed=false
+            for attempt in 1 2 3; do
+              if git push; then
+                pushed=true
+                break
+              fi
+              echo "push rejected (attempt $attempt) — rebasing onto latest main"
+              git fetch origin main
+              git rebase origin/main
+            done
+            if [ "$pushed" != true ]; then
+              echo "::error::push still failing after 3 attempts"
+              exit 1
+            fi
           fi
 
       - name: Configure Pages
@@ -166,6 +186,7 @@ jobs:
             [sentiment]="${{ steps.sentiment.outcome }}"
             [resale]="${{ steps.resale.outcome }}"
             [forecast]="${{ steps.forecast.outcome }}"
+            [commit]="${{ steps.commit.outcome }}"
           )
           failed=()
           for name in "${!OUTCOMES[@]}"; do
