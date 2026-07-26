@@ -1161,5 +1161,25 @@
   ],
   "retail": 165,
   "image": "Hoka-One-One-Bondi-8-Shifting-Sand"
+ },
+ {
+  "slug": "nike-lebron-23",
+  "name": "Nike LeBron 23",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike LeBron 23",
+  "keywords": [
+   "nike lebron 23"
+  ]
+ },
+ {
+  "slug": "air-jordan-4",
+  "name": "Air Jordan 4",
+  "brand": "Air Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 4",
+  "keywords": [
+   "air jordan 4"
+  ]
  }
 ]
