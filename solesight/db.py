@@ -49,6 +49,15 @@ CREATE TABLE IF NOT EXISTS trends (
     PRIMARY KEY (model_slug, date)
 );
 
+CREATE TABLE IF NOT EXISTS trends_region (
+    model_slug    TEXT NOT NULL,
+    date          TEXT NOT NULL,          -- ISO date this snapshot was taken
+    region        TEXT NOT NULL,          -- US state name, per Google Trends
+    interest      REAL NOT NULL,          -- 0-100, relative across regions for this model
+    fetched_at    INTEGER NOT NULL,
+    PRIMARY KEY (model_slug, date, region)
+);
+
 CREATE TABLE IF NOT EXISTS forecasts (
     model_slug    TEXT NOT NULL,
     horizon_date  TEXT NOT NULL,          -- ISO date being predicted

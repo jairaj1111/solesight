@@ -688,6 +688,23 @@ function priceLadder(m) {
     ${intlPremium(m)}`;
 }
 
+/* Where demand is concentrated — top US states by search interest, straight
+   from Google Trends' regional breakdown. The brand-side pitch for this: a
+   boutique or retail buyer can see "allocate more inventory to the Northeast,
+   this shoe's spiking there" instead of guessing from national totals alone. */
+function regionList(m) {
+  const regions = m.top_regions || [];
+  if (!regions.length) return "";
+  const max = Math.max(...regions.map((r) => r.interest), 1);
+  const rows = regions.map((r) => `
+    <div class="bar-row"><div class="lab">${esc(r.region)}</div>
+      <div class="bar-track"><div class="bar-fill" data-w="${(r.interest / max) * 100}"></div></div>
+      <div class="bar-val">${r.interest}</div></div>`).join("");
+  return `<h4>Where demand is concentrated</h4>
+    <div class="bars region-bars">${rows}</div>
+    <p class="buy-note">Relative search interest by state, last 30 days — highest-interest state set to 100.</p>`;
+}
+
 /* Cross-market premium — US vs UK vs DE eBay asks (all USD-converted). */
 function intlPremium(m) {
   const r = m.premium_regions || {};
@@ -783,6 +800,8 @@ function openSheet(slug) {
       ${bar("Sentiment", sentPct)}
       ${bar("Resale", resalePct)}
     </div>
+
+    ${regionList(m)}
 
     ${m.sent_summary ? `
     <h4>Community pulse</h4>

@@ -116,6 +116,69 @@ def store(rows: list[dict]) -> int:
     return len(rows)
 
 
+# --- Regional breakdown (US states) — the brand-side "where to allocate" signal ---
+_REGION_TOP_N = 8   # keep the long tail out of both storage and the UI
+
+
+@retry(
+    retry=retry_if_exception_type(_RETRYABLE),
+    wait=wait_exponential(multiplier=2, min=4, max=60),
+    stop=stop_after_attempt(4),
+    reraise=True,
+)
+def _interest_by_region(pytrends: TrendReq, term: str, timeframe: str) -> pd.DataFrame:
+    # A separate build_payload (geo="US") from the worldwide one used for the
+    # daily series above — region resolution only makes sense scoped to one
+    # country, and "US" matches where the rest of the pipeline already lives
+    # (eBay's home market, the boutique network, the resale premium baseline).
+    pytrends.build_payload([term], timeframe=timeframe, geo="US")
+    return pytrends.interest_by_region(resolution="REGION", inc_low_vol=True)
+
+
+def fetch_model_region(pytrends: TrendReq, model: models.SneakerModel,
+                       timeframe: str | None = None) -> list[dict]:
+    """Top US states by relative search interest for this model, or [] if unavailable."""
+    now = int(time.time())
+    df = _interest_by_region(pytrends, model.trends_term, timeframe or default_timeframe())
+    if df.empty or model.trends_term not in df.columns:
+        return []
+    today = date.today().isoformat()
+    top = df[model.trends_term].sort_values(ascending=False)
+    top = top[top > 0].head(_REGION_TOP_N)
+    return [
+        {"model_slug": model.slug, "date": today, "region": region,
+         "interest": float(val), "fetched_at": now}
+        for region, val in top.items()
+    ]
+
+
+def store_region(rows: list[dict]) -> int:
+    if not rows:
+        return 0
+    with connect() as conn:
+        conn.executemany(
+            """INSERT INTO trends_region (model_slug, date, region, interest, fetched_at)
+               VALUES (:model_slug, :date, :region, :interest, :fetched_at)
+               ON CONFLICT(model_slug, date, region) DO UPDATE SET
+                   interest   = excluded.interest,
+                   fetched_at = excluded.fetched_at""",
+            rows,
+        )
+    return len(rows)
+
+
+def top_regions(model_slug: str, limit: int = 5) -> list[dict]:
+    """Latest-day regional breakdown for one model, highest interest first."""
+    with connect() as conn:
+        rows = conn.execute(
+            """SELECT region, interest FROM trends_region
+               WHERE model_slug=? AND date=(
+                   SELECT MAX(date) FROM trends_region WHERE model_slug=?)
+               ORDER BY interest DESC LIMIT ?""",
+            (model_slug, model_slug, limit)).fetchall()
+    return [{"region": r["region"], "interest": round(r["interest"])} for r in rows]
+
+
 def _stalest_first() -> list[models.SneakerModel]:
     """Catalog ordered by how stale each model's trends data is.
 
@@ -153,6 +216,7 @@ def run(timeframe: str | None = None,
                   f"({skipped} fresher ones deferred to the next run)")
     pytrends = TrendReq(hl="en-US", tz=360)
     summary = TrendsSummary()
+    region_stored = region_failed = 0
     for model in queue:
         try:
             n = store(fetch_model(pytrends, model, timeframe))
@@ -162,6 +226,18 @@ def run(timeframe: str | None = None,
             summary.failed.append(model.slug)
             print(f"  ! trends failed for {model.slug}: {exc}")
         time.sleep(pause)
+        # Regional breakdown is a separate best-effort call on the same model —
+        # its own try/except so a failure here never touches the daily series
+        # that forecasting/scoring actually depend on.
+        try:
+            r = store_region(fetch_model_region(pytrends, model, timeframe))
+            region_stored += 1 if r else 0
+        except Exception as exc:
+            region_failed += 1
+            print(f"  ! region breakdown failed for {model.slug}: {str(exc)[:60]}")
+        time.sleep(pause)
+    print(f"  trends: region breakdown stored for {region_stored} models "
+          f"({region_failed} failed)")
     summary.report()
     return summary
 

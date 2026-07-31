@@ -313,6 +313,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
   width: 0; transition: width .8s var(--ease); }
 .bar-fill.acid { background: linear-gradient(90deg, var(--acid), #a9d92a); }
 .bar-val { text-align: right; font-size: .8rem; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.region-bars .bar-row { grid-template-columns: 132px 1fr 40px; }
 .sheet-insight { background: var(--paper); border: 1px solid var(--line);
   border-left: 3px solid var(--acid); border-radius: 14px; padding: 16px 18px;
   font-size: .95rem; line-height: 1.6; color: var(--ink); margin: 8px 0 20px; }

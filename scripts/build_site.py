@@ -16,7 +16,7 @@ from pathlib import Path
 
 from solesight import models
 from solesight.db import connect
-from solesight.ingest import press, resale
+from solesight.ingest import google_trends, press, resale
 from solesight.insights import backtest, discovery, lifecycle, market, signals
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -155,6 +155,7 @@ def build() -> dict:
             "trend": _trend(m.slug),
             "forecast": _forecast(m.slug),
             "resale_series": _resale_series(m.slug),
+            "top_regions": google_trends.top_regions(m.slug),
         })
     records.sort(key=lambda r: -(r["hype"] or 0))
     for i, r in enumerate(records, 1):
