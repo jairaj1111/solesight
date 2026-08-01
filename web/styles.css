@@ -412,6 +412,7 @@ svg.chart { width: 100%; height: auto; display: block; }
 .pulse-pct.up { color: var(--pos); } .pulse-pct.down { color: var(--neg); }
 .pulse-notes { font-size: .86rem; color: var(--ink-2); display: grid; gap: 2px; }
 .pulse-notes b { color: var(--ink); }
+.al-range { color: var(--ink-3); font-size: .78rem; }
 
 @media (max-width: 760px) {
   .mkt-row { grid-template-columns: 1.2fr .5fr 1.6fr .9fr; }

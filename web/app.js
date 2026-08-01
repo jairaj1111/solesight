@@ -811,6 +811,7 @@ function openSheet(slug) {
         <div>${m.sent_summary.posts} scored posts</div>
         ${m.sent_summary.praise ? `<div>Praised for <b>${esc(m.sent_summary.praise)}</b></div>` : ""}
         ${m.sent_summary.complaint ? `<div>Top complaint: <b>${esc(m.sent_summary.complaint)}</b></div>` : ""}
+        ${m.audience_lean ? `<div title="Inferred from this shoe's mix of platforms (TikTok, Instagram, YouTube, Bluesky), each weighted by its own well-documented audience skew — not measured, and never an exact age.">Audience: <b>${esc(m.audience_lean.label)}</b> <span class="al-range">(${esc(m.audience_lean.range)}, inferred)</span></div>` : ""}
       </div>
     </div>` : ""}
 

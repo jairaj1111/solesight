@@ -17,7 +17,8 @@ from pathlib import Path
 from solesight import models
 from solesight.db import connect
 from solesight.ingest import google_trends, press, resale
-from solesight.insights import backtest, discovery, lifecycle, market, signals
+from solesight.insights import (audience, backtest, discovery, lifecycle, market,
+                                signals)
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
@@ -126,6 +127,7 @@ def build() -> dict:
                               "neu": s["sentiment_neutral"],
                               "neg": s["sentiment_negative"]},
             "platforms": s["social_platform_engagement"],
+            "audience_lean": audience.lean(s["social_platform_engagement"]),
             "resale_last": _round(s["resale_last_sale"], 0),
             "resale_premium": _round(s["resale_premium"], 2),
             "premium_regions": s["resale_premium_by_region"],
