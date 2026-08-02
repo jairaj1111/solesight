@@ -676,6 +676,7 @@ function priceLadder(m) {
       <path d="M ${ex} ${base - 8} l 8 8 l -8 8 l -8 -8 Z" fill="var(--ebay)" stroke="var(--paper)" stroke-width="2"/></g>
     <text x="${Math.min(Math.max(ex, 58), W - 58)}" y="${base - 18 - liftNear}" text-anchor="middle" class="pl-lab">EBAY ASK $${Math.round(ebay)}</text>`;
   return `<h4>Where it trades</h4>
+    ${resaleForecastBadge(m)}
     <svg class="chart pl" viewBox="0 0 ${W} ${H}">
       <line x1="${L}" y1="${base}" x2="${W - R}" y2="${base}" stroke="var(--line-2)" stroke-width="2"/>
       <line x1="${rx}" y1="${base - 12}" x2="${rx}" y2="${base + 12}" stroke="var(--ink-3)" stroke-width="2.5"/>
@@ -686,6 +687,21 @@ function priceLadder(m) {
       ? `<span><i style="background:var(--pos)"></i>Boutique shelves (${shelf.length})</span>` : ""}${ebay
       ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}</div>
     ${intlPremium(m)}`;
+}
+
+/* Prominent standalone callout for the predicted resale price — a range (the
+   Prophet forecast's own confidence interval), not a false-precision point
+   estimate, surfaced right next to "Where it trades" since that's the natural
+   place a buyer/boutique is already thinking in dollar terms. */
+function resaleForecastBadge(m) {
+  const fc = m.resale_forecast || [];
+  if (!fc.length) return "";
+  const last = fc[fc.length - 1];
+  return `<div class="forecast-badge">
+    <div class="fb-lab">Predicted resale · ${shortDate(last.d)}</div>
+    <div class="fb-range">$${Math.round(last.lo)}<span class="fb-dash">–</span>$${Math.round(last.hi)}</div>
+    <div class="fb-note">30-day Prophet forecast, 80% confidence interval · point estimate $${Math.round(last.v)}</div>
+  </div>`;
 }
 
 /* Where demand is concentrated — top US states by search interest, straight
@@ -960,13 +976,13 @@ function resaleChart(m) {
     const bandBottom = seamed.map(([x], i) =>
       `${x.toFixed(1)},${Y(i === 0 ? eb[eb.length - 1].v : fc[i - 1].lo).toFixed(1)}`).reverse();
     const last = fcPts[fcPts.length - 1];
-    const predicted = fc[fc.length - 1].v;
+    const { lo: predLo, hi: predHi } = fc[fc.length - 1];
     fcSvg = `
       <polygon points="${[...bandTop, ...bandBottom].join(" ")}" fill="var(--ink)" opacity=".07"/>
       <polyline points="${dashed}" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="3 3"/>
       <circle cx="${last[0]}" cy="${last[1]}" r="3" fill="var(--acid-ink)" stroke="var(--paper)" stroke-width="1.5"/>
       <text x="${clampX(last[0], 40, W)}" y="${Math.max(last[1] - 9, 12)}" text-anchor="middle"
-        class="ax-val" style="fill:var(--acid-ink)">$${Math.round(predicted)} predicted</text>`;
+        class="ax-val" style="fill:var(--acid-ink)">$${Math.round(predLo)}–${Math.round(predHi)}</text>`;
   }
 
   const yAxis = `
