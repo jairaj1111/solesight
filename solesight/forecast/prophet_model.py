@@ -1,12 +1,14 @@
-"""Prophet demand forecasting.
+"""Prophet forecasting — demand (search interest) and resale price.
 
-The demand signal we forecast is the daily Google Trends interest index — a dense,
-evenly-spaced 0-100 series Prophet handles well. Two domain adjustments:
+Two series are forecast today, both daily and both fit independently per model
+(magnitudes are never compared across models):
 
-  * The series is bounded [0, 100], so we clip the forecast (incl. intervals) into
-    that range — a raw linear trend can otherwise drift negative or above 100.
-  * Google Trends normalizes each model to its own peak, so we forecast each
-    model's own trajectory; magnitudes are never compared across models.
+  * Demand — the Google Trends interest index, bounded [0, 100], so its forecast
+    (incl. intervals) is clipped into that range; a raw linear trend can otherwise
+    drift negative or above 100.
+  * Resale price — the blended home-market (StockX + eBay) daily price in USD,
+    floored at 0 (a price can't go negative) but with no ceiling, since resale
+    prices can run well past any sensible preset cap.
 
 Reddit buzz/sentiment are surfaced separately today and are the natural next
 regressors once we've backfilled enough of their daily history.
@@ -20,6 +22,7 @@ import pandas as pd
 
 from .. import config, models
 from ..db import connect
+from ..ingest import resale
 
 # Prophet + cmdstanpy are extremely chatty; quiet them to warnings.
 logging.getLogger("prophet").setLevel(logging.WARNING)
@@ -27,6 +30,7 @@ logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
 
 MIN_HISTORY = 30          # fewest daily points we'll fit on
 _INTEREST_FLOOR, _INTEREST_CEIL = 0.0, 100.0
+_PRICE_FLOOR = 0.0        # resale price forecast: no upper clip
 
 
 def load_series(model_slug: str) -> pd.DataFrame:
@@ -44,14 +48,20 @@ def load_series(model_slug: str) -> pd.DataFrame:
     )
 
 
-def forecast_model(model_slug: str,
-                   horizon: int = config.FORECAST_HORIZON_DAYS) -> pd.DataFrame | None:
-    """Fit Prophet and return the clipped forecast frame for the horizon window."""
+def load_resale_series(model_slug: str) -> pd.DataFrame:
+    """Load the blended daily resale-price series as a Prophet-ready (ds, y) frame."""
+    df = resale.daily_price(model_slug)
+    if df.empty:
+        return pd.DataFrame(columns=["ds", "y"])
+    return df.rename(columns={"date": "ds", "last_sale": "y"})[["ds", "y"]]
+
+
+def _fit_forecast(df: pd.DataFrame, horizon: int,
+                  floor: float | None, ceil: float | None) -> pd.DataFrame | None:
+    """Fit Prophet on a (ds, y) frame and return the clipped forecast window."""
     from prophet import Prophet  # lazy: cmdstan model load is slow
 
-    df = load_series(model_slug)
     if len(df) < MIN_HISTORY:
-        print(f"  ! forecast skipped for {model_slug}: only {len(df)} points")
         return None
 
     m = Prophet(
@@ -65,8 +75,29 @@ def forecast_model(model_slug: str,
     fc = m.predict(future).tail(horizon)
 
     cols = ["yhat", "yhat_lower", "yhat_upper"]
-    fc[cols] = fc[cols].clip(lower=_INTEREST_FLOOR, upper=_INTEREST_CEIL)
+    if floor is not None or ceil is not None:
+        fc[cols] = fc[cols].clip(lower=floor, upper=ceil)
     return fc[["ds", *cols]]
+
+
+def forecast_model(model_slug: str,
+                   horizon: int = config.FORECAST_HORIZON_DAYS) -> pd.DataFrame | None:
+    """Fit Prophet on demand (search interest) and return the forecast window."""
+    df = load_series(model_slug)
+    fc = _fit_forecast(df, horizon, _INTEREST_FLOOR, _INTEREST_CEIL)
+    if fc is None:
+        print(f"  ! forecast skipped for {model_slug}: only {len(df)} points")
+    return fc
+
+
+def forecast_resale_model(model_slug: str,
+                          horizon: int = config.FORECAST_HORIZON_DAYS) -> pd.DataFrame | None:
+    """Fit Prophet on the blended resale-price series and return the forecast window."""
+    df = load_resale_series(model_slug)
+    fc = _fit_forecast(df, horizon, _PRICE_FLOOR, None)
+    if fc is None:
+        print(f"  ! resale forecast skipped for {model_slug}: only {len(df)} points")
+    return fc
 
 
 def best_marketing_window(fc: pd.DataFrame) -> dict:
@@ -80,9 +111,8 @@ def best_marketing_window(fc: pd.DataFrame) -> dict:
     }
 
 
-def store(model_slug: str, fc: pd.DataFrame) -> int:
-    now = int(time.time())
-    rows = [
+def _forecast_rows(model_slug: str, fc: pd.DataFrame, now: int) -> list[dict]:
+    return [
         {
             "model_slug": model_slug,
             "horizon_date": row.ds.date().isoformat(),
@@ -93,9 +123,26 @@ def store(model_slug: str, fc: pd.DataFrame) -> int:
         }
         for row in fc.itertuples()
     ]
+
+
+def store(model_slug: str, fc: pd.DataFrame) -> int:
+    rows = _forecast_rows(model_slug, fc, int(time.time()))
     with connect() as conn:
         conn.executemany(
             """INSERT OR REPLACE INTO forecasts
+               (model_slug, horizon_date, yhat, yhat_lower, yhat_upper, generated_at)
+               VALUES (:model_slug, :horizon_date, :yhat, :yhat_lower, :yhat_upper,
+                       :generated_at)""",
+            rows,
+        )
+    return len(rows)
+
+
+def store_resale(model_slug: str, fc: pd.DataFrame) -> int:
+    rows = _forecast_rows(model_slug, fc, int(time.time()))
+    with connect() as conn:
+        conn.executemany(
+            """INSERT OR REPLACE INTO resale_forecasts
                (model_slug, horizon_date, yhat, yhat_lower, yhat_upper, generated_at)
                VALUES (:model_slug, :horizon_date, :yhat, :yhat_lower, :yhat_upper,
                        :generated_at)""",
@@ -112,6 +159,20 @@ def run(horizon: int = config.FORECAST_HORIZON_DAYS) -> None:
             win = best_marketing_window(fc)
             print(f"  forecast: {model.slug} -> {n} days "
                   f"(peak {win['peak_yhat']} on {win['peak_date']})")
+
+        # Resale-price forecasting is newer and leans on a thinner, spottier
+        # daily series (eBay-only today, 1 row/day with no backfill) than the
+        # demand forecast above — its own try/except so a rough fit here never
+        # costs a model its (more mature) demand forecast for the night.
+        try:
+            rfc = forecast_resale_model(model.slug, horizon=horizon)
+        except Exception as exc:
+            rfc = None
+            print(f"  ! resale forecast failed for {model.slug}: {str(exc)[:60]}")
+        if rfc is not None:
+            rn = store_resale(model.slug, rfc)
+            print(f"  resale forecast: {model.slug} -> {rn} days "
+                  f"(predicted ${rfc['yhat'].iloc[-1]:.0f} in {horizon}d)")
 
 
 if __name__ == "__main__":

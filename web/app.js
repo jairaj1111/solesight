@@ -833,11 +833,12 @@ function openSheet(slug) {
     <h4>Demand &amp; 30-day forecast</h4>
     ${demandChart(m)}
 
-    <h4>Resale ${(m.resale_series || {}).stockx?.length ? "· StockX vs eBay" : "· live eBay asks"}</h4>
+    <h4>Resale ${(m.resale_series || {}).stockx?.length ? "· StockX vs eBay" : "· live eBay asks"}${(m.resale_forecast || []).length ? " · 30-day forecast" : ""}</h4>
     ${resaleChart(m)}
     <div class="legend">
       ${(m.resale_series || {}).stockx?.length ? `<span><i style="background:var(--stockx)"></i>StockX</span>` : ""}
       ${(m.resale_series || {}).ebay?.length ? `<span><i style="background:var(--ebay)"></i>eBay median ask</span>` : ""}
+      ${(m.resale_forecast || []).length ? `<span><i style="background:var(--ink-2)"></i>Predicted price</span>` : ""}
       <span><i style="background:var(--ink-3)"></i>Retail $${m.retail ?? "—"}</span>
     </div>
   `;
@@ -904,52 +905,93 @@ function demandChart(m) {
 
 function resaleChart(m) {
   const rs = m.resale_series || {}, sx = rs.stockx || [], eb = rs.ebay || [];
+  const fc = m.resale_forecast || [];
   if (!sx.length && !eb.length) return "<p style='color:var(--ink-3)'>No resale data.</p>";
   const W = 500, H = 170, L = 6, R = 6, T = 20, B = 22;
-  const vals = [...sx, ...eb].map((p) => p.v).concat(m.retail || []);
+  const vals = [...sx, ...eb].map((p) => p.v).concat(m.retail || [])
+    .concat(fc.flatMap((p) => [p.v, p.lo, p.hi]));
   const min = Math.min(...vals) * 0.96, max = Math.max(...vals) * 1.04;
-  const pointsFor = (arr) => arr.map((p, i) => {
-    const x = L + (i / (arr.length - 1)) * (W - L - R);
-    const y = T + (1 - (p.v - min) / (max - min || 1)) * (H - T - B);
-    return [x, y];
-  });
-  const line = (arr, color) => {
-    if (!arr.length) return "";
-    const pts = pointsFor(arr).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
-    return `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`;
-  };
+  const Y = (v) => T + (1 - (v - min) / (max - min || 1)) * (H - T - B);
+
+  // StockX and eBay share one time axis (both are the same daily window when
+  // both exist), and the forecast tail extends that same axis past the end of
+  // eBay's history — same seam pattern as demandChart. Sharing the axis (not
+  // giving StockX its own independent one) keeps its end-label from drifting
+  // out to the far-right edge and colliding with the forecast's callout.
+  const total = Math.max(sx.length, eb.length + fc.length, 2);
+  const X = (i) => L + (i / (total - 1)) * (W - L - R);
+
+  const ebPts = eb.map((p, i) => [X(i), Y(p.v)]);
+  const sxPts = sx.map((p, i) => [X(i), Y(p.v)]);
+  const fcPts = fc.map((p, i) => [X(eb.length + i), Y(p.v)]);
+
+  const poly = (pts) => pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const line = (pts, color) => pts.length
+    ? `<polyline points="${poly(pts)}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`
+    : "";
   // last-point value callout, offset up/down so eBay+StockX labels don't collide
-  const endLabel = (arr, color, dy) => {
-    if (!arr.length) return "";
-    const pts = pointsFor(arr);
+  const endLabel = (pts, arr, color, dy) => {
+    if (!pts.length) return "";
     const [x, y] = pts[pts.length - 1];
     return `<text x="${clampX(x, 22, W)}" y="${Math.max(y + dy, 12)}" text-anchor="middle"
       class="ax-val" style="fill:${color}">$${Math.round(arr[arr.length - 1].v)}</text>`;
   };
   let retailY = null;
-  if (m.retail) retailY = T + (1 - (m.retail - min) / (max - min || 1)) * (H - T - B);
+  if (m.retail) retailY = Y(m.retail);
   let area = "";
-  if (eb.length) {
-    const pts = pointsFor(eb);
-    const poly = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  if (ebPts.length) {
+    const p = poly(ebPts);
     area = `<defs><linearGradient id="rc-grad" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="var(--ebay)" stop-opacity=".16"/>
         <stop offset="100%" stop-color="var(--ebay)" stop-opacity="0"/>
       </linearGradient></defs>
-      <polygon points="${pts[0][0].toFixed(1)},${H - B} ${poly} ${pts[pts.length - 1][0].toFixed(1)},${H - B}" fill="url(#rc-grad)"/>`;
+      <polygon points="${ebPts[0][0].toFixed(1)},${H - B} ${p} ${ebPts[ebPts.length - 1][0].toFixed(1)},${H - B}" fill="url(#rc-grad)"/>`;
   }
+
+  // Forecast continuation: dashed line + shaded uncertainty band, seamed onto
+  // the last real eBay point — same visual language as the demand chart.
+  let fcSvg = "";
+  if (fcPts.length && ebPts.length) {
+    const seam = ebPts[ebPts.length - 1];
+    const seamed = [seam, ...fcPts];
+    const dashed = poly(seamed);
+    const bandTop = seamed.map(([x], i) =>
+      `${x.toFixed(1)},${Y(i === 0 ? eb[eb.length - 1].v : fc[i - 1].hi).toFixed(1)}`);
+    const bandBottom = seamed.map(([x], i) =>
+      `${x.toFixed(1)},${Y(i === 0 ? eb[eb.length - 1].v : fc[i - 1].lo).toFixed(1)}`).reverse();
+    const last = fcPts[fcPts.length - 1];
+    const predicted = fc[fc.length - 1].v;
+    fcSvg = `
+      <polygon points="${[...bandTop, ...bandBottom].join(" ")}" fill="var(--ink)" opacity=".07"/>
+      <polyline points="${dashed}" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="3 3"/>
+      <circle cx="${last[0]}" cy="${last[1]}" r="3" fill="var(--acid-ink)" stroke="var(--paper)" stroke-width="1.5"/>
+      <text x="${clampX(last[0], 40, W)}" y="${Math.max(last[1] - 9, 12)}" text-anchor="middle"
+        class="ax-val" style="fill:var(--acid-ink)">$${Math.round(predicted)} predicted</text>`;
+  }
+
   const yAxis = `
     <text x="${L}" y="${T - 7}" class="ax-lab">$${Math.round(max)}</text>
     <text x="${L}" y="${H - B + 12}" class="ax-lab">$${Math.round(min)}</text>`;
   const retailLab = retailY != null
     ? `<text x="${W - R}" y="${retailY - 4}" text-anchor="end" class="ax-lab">RETAIL $${m.retail}</text>` : "";
+
+  // End-label offsets: push whichever point sits higher on the chart further
+  // up, and whichever sits lower further down, so the two labels separate
+  // instead of drifting toward each other when the two prices happen to be
+  // close together.
+  let ebDy = -8, sxDy = -8;
+  if (ebPts.length && sxPts.length) {
+    const ebY0 = ebPts[ebPts.length - 1][1], sxY0 = sxPts[sxPts.length - 1][1];
+    [ebDy, sxDy] = ebY0 <= sxY0 ? [-10, 14] : [14, -10];
+  }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}">
     ${area}
     ${retailY != null ? `<line x1="${L}" x2="${W - R}" y1="${retailY}" y2="${retailY}" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="4 4"/>` : ""}
-    ${line(eb, "var(--ebay)")}
-    ${line(sx, "var(--stockx)")}
+    ${line(ebPts, "var(--ebay)")}
+    ${line(sxPts, "var(--stockx)")}
+    ${fcSvg}
     ${yAxis}${retailLab}
-    ${endLabel(eb, "var(--ebay)", -8)}
-    ${endLabel(sx, "var(--stockx)", sx.length && eb.length ? 14 : -8)}
+    ${endLabel(ebPts, eb, "var(--ebay)", ebDy)}
+    ${endLabel(sxPts, sx, "var(--stockx)", sxDy)}
   </svg>`;
 }

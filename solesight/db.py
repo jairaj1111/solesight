@@ -68,6 +68,16 @@ CREATE TABLE IF NOT EXISTS forecasts (
     PRIMARY KEY (model_slug, horizon_date, generated_at)
 );
 
+CREATE TABLE IF NOT EXISTS resale_forecasts (
+    model_slug    TEXT NOT NULL,
+    horizon_date  TEXT NOT NULL,          -- ISO date being predicted
+    yhat          REAL NOT NULL,          -- predicted resale price (USD)
+    yhat_lower    REAL,
+    yhat_upper    REAL,
+    generated_at  INTEGER NOT NULL,
+    PRIMARY KEY (model_slug, horizon_date, generated_at)
+);
+
 CREATE TABLE IF NOT EXISTS insights (
     model_slug    TEXT NOT NULL,
     generated_at  INTEGER NOT NULL,

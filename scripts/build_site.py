@@ -53,6 +53,18 @@ def _forecast(slug: str) -> list[dict]:
             for r in rows]
 
 
+def _resale_forecast(slug: str) -> list[dict]:
+    with connect() as conn:
+        rows = conn.execute(
+            """SELECT horizon_date, yhat, yhat_lower, yhat_upper FROM resale_forecasts
+               WHERE model_slug=? AND generated_at=(
+                   SELECT MAX(generated_at) FROM resale_forecasts WHERE model_slug=?)
+               ORDER BY horizon_date""", (slug, slug)).fetchall()
+    return [{"d": r["horizon_date"], "v": round(r["yhat"], 0),
+             "lo": round(r["yhat_lower"], 0), "hi": round(r["yhat_upper"], 0)}
+            for r in rows]
+
+
 def _resale_series(slug: str) -> dict:
     df = resale.load(slug)
     out: dict[str, list[dict]] = {}
@@ -110,6 +122,7 @@ def build() -> dict:
     for m in models.CATALOG:
         s = snaps[m.slug]
         img = models.image_path(m.slug)
+        rf = _resale_forecast(m.slug)
         records.append({
             "slug": m.slug, "name": m.name, "brand": m.brand,
             "category": models.category(m.slug),
@@ -150,6 +163,8 @@ def build() -> dict:
                 else s["forecast_end_30d"] - s["forecast_start"], 0),
             "forecast_peak": _round(s["forecast_peak"], 0),
             "forecast_peak_date": s["forecast_peak_date"],
+            "resale_forecast": rf,
+            "resale_forecast_30d": rf[-1]["v"] if rf else None,
             "insight": _insight(m.slug),
             "hype_delta_7d": market.hype_delta(m.slug, days=7),
             "stage": lifecycle.stage(m.slug, s["momentum_pct"]),
