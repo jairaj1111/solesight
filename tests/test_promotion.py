@@ -76,6 +76,16 @@ def test_brand_category_defaults():
         {"name": "Vans Sk8-Hi Reissue"})["category"] == "skate"
 
 
+def test_air_jordan_press_naming_normalizes_to_jordan_brand():
+    # Press headlines almost always say "Air Jordan", but every hand-curated
+    # catalog entry uses the brand name "Jordan" — auto-promoted entries must
+    # match that convention, or brand rollups split one brand across two rows.
+    assert promotion._brand_from_name("Air Jordan 9 Retro Racer Blue") == "Jordan"
+    assert promotion._brand_from_name("Jordan 4 Comic") == "Jordan"
+    entry = promotion._make_entry({"name": "Air Jordan 9 Retro Racer Blue"})
+    assert entry["brand"] == "Jordan"
+
+
 def test_existing_slug_collision_is_skipped_not_overwritten(tmp_path, monkeypatch):
     existing = [{"slug": "nike-air-huarache-since-91", "name": "placeholder",
                  "brand": "Nike", "category": "lifestyle",

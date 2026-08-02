@@ -65,7 +65,12 @@ def _brand_from_name(name: str) -> str:
     lowered = name.lower()
     for brand in discovery._BRANDS:
         if lowered.startswith(brand.lower()):
-            return brand
+            # discovery._BRANDS detects "Air Jordan" as a distinct text pattern
+            # (official product names almost always say "Air Jordan"), but the
+            # catalog's own convention — every hand-curated Jordan entry — uses
+            # the brand name "Jordan". Normalize so market rollups never split
+            # one brand's stats across two rows.
+            return "Jordan" if brand == "Air Jordan" else brand
     return name.split()[0]
 
 
