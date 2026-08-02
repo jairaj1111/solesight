@@ -1164,62 +1164,80 @@
  },
  {
   "slug": "nike-lebron-23",
-  "name": "Nike LeBron 23",
+  "name": "Nike LeBron 23 Hardwood Classic",
   "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike LeBron 23",
+  "category": "basketball",
+  "trends_term": "Nike LeBron 23 Hardwood Classic",
   "keywords": [
-   "nike lebron 23"
-  ]
+   "lebron 23 hardwood classic",
+   "lebron 23 cavs"
+  ],
+  "retail": 210,
+  "image": "Nike-LeBron-23-Hardwood-Classics"
  },
  {
   "slug": "air-jordan-4",
-  "name": "Air Jordan 4",
+  "name": "Air Jordan 4 Comic",
   "brand": "Air Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 4",
+  "trends_term": "Air Jordan 4 Comic",
   "keywords": [
-   "air jordan 4"
-  ]
+   "jordan 4 comic",
+   "aj4 comic"
+  ],
+  "retail": 230,
+  "image": "Air-Jordan-4-Retro-Comic"
  },
  {
   "slug": "nike-kd-19",
-  "name": "Nike KD 19",
+  "name": "Nike KD 19 Butter Candy",
   "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike KD 19",
+  "category": "basketball",
+  "trends_term": "Nike KD 19 Butter Candy",
   "keywords": [
-   "nike kd 19"
-  ]
+   "kd 19 butter candy",
+   "kd19 butter candy"
+  ],
+  "retail": 155,
+  "image": "Nike-KD-19-Butter-Candy"
  },
  {
   "slug": "air-jordan-3",
-  "name": "Air Jordan 3",
+  "name": "Air Jordan 3 Laser",
   "brand": "Air Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 3",
+  "trends_term": "Air Jordan 3 Laser",
   "keywords": [
-   "air jordan 3"
-  ]
+   "jordan 3 laser",
+   "aj3 laser"
+  ],
+  "retail": 230,
+  "image": "Air-Jordan-3-Retro-Laser-Palomino"
  },
  {
   "slug": "nike-book-2",
-  "name": "Nike Book 2",
+  "name": "Nike Book 2 Tiger Camo",
   "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike Book 2",
+  "category": "basketball",
+  "trends_term": "Nike Book 2 Tiger Camo",
   "keywords": [
-   "nike book 2"
-  ]
+   "book 2 tiger camo",
+   "nike book 2 camo"
+  ],
+  "retail": 155,
+  "image": "Nike-Book-2-Tiger-Camo"
  },
  {
   "slug": "air-jordan-13",
-  "name": "Air Jordan 13",
+  "name": "Air Jordan 13 Flint",
   "brand": "Air Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 13",
+  "trends_term": "Air Jordan 13 Flint",
   "keywords": [
-   "air jordan 13"
-  ]
+   "jordan 13 flint",
+   "aj13 flint"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-13-Retro-Flint-2026"
  }
 ]
