@@ -56,6 +56,25 @@ def load_resale_series(model_slug: str) -> pd.DataFrame:
     return df.rename(columns={"date": "ds", "last_sale": "y"})[["ds", "y"]]
 
 
+def load_resale_series_with_backfill(model_slug: str) -> tuple[pd.DataFrame, bool]:
+    """Real resale series, topped up with resale.estimate_backfill() if too thin.
+
+    Returns (series, used_estimate) — callers must flag any forecast fit on
+    the padded series as estimate-backed, never presented as equivalent to a
+    forecast fit purely on real sold-price history.
+    """
+    real = load_resale_series(model_slug)
+    if len(real) >= MIN_HISTORY:
+        return real, False
+    est = resale.estimate_backfill(model_slug)
+    if est.empty:
+        return real, False
+    combined = (pd.concat([est, real], ignore_index=True)
+                  .sort_values("ds").drop_duplicates("ds", keep="last")
+                  .reset_index(drop=True))
+    return combined, True
+
+
 def _fit_forecast(df: pd.DataFrame, horizon: int,
                   floor: float | None, ceil: float | None) -> pd.DataFrame | None:
     """Fit Prophet on a (ds, y) frame and return the clipped forecast window."""
@@ -90,14 +109,34 @@ def forecast_model(model_slug: str,
     return fc
 
 
-def forecast_resale_model(model_slug: str,
-                          horizon: int = config.FORECAST_HORIZON_DAYS) -> pd.DataFrame | None:
-    """Fit Prophet on the blended resale-price series and return the forecast window."""
-    df = load_resale_series(model_slug)
+
+# A short series (mostly modeled backfill, not real sold-price history) gives
+# Prophet's linear trend very little to anchor on — it can extrapolate a
+# 30-day fit into an implausible number (a $120-retail shoe "predicted" at
+# $11). The estimate's job is to bridge the gap honestly and conservatively,
+# not to make bold directional calls, so its output is bounded to a sane band
+# around today's real anchor price. Once real history naturally clears
+# MIN_HISTORY, this bound no longer applies — a fully real-data forecast is
+# allowed to call a genuine breakout.
+_ESTIMATE_BAND = (0.6, 1.6)   # anchor price * (lo, hi)
+
+
+def forecast_resale_model(
+    model_slug: str, horizon: int = config.FORECAST_HORIZON_DAYS,
+) -> tuple[pd.DataFrame | None, bool]:
+    """Fit Prophet on the resale-price series (real, topped up with a labeled
+    estimate if too thin) and return (forecast window, used_estimate)."""
+    df, used_estimate = load_resale_series_with_backfill(model_slug)
     fc = _fit_forecast(df, horizon, _PRICE_FLOOR, None)
     if fc is None:
         print(f"  ! resale forecast skipped for {model_slug}: only {len(df)} points")
-    return fc
+        return None, False
+    if used_estimate:
+        anchor = float(df["y"].iloc[-1])   # today's real price, always the last row
+        lo, hi = anchor * _ESTIMATE_BAND[0], anchor * _ESTIMATE_BAND[1]
+        cols = ["yhat", "yhat_lower", "yhat_upper"]
+        fc[cols] = fc[cols].clip(lower=lo, upper=hi)
+    return fc, used_estimate
 
 
 def best_marketing_window(fc: pd.DataFrame) -> dict:
@@ -138,14 +177,17 @@ def store(model_slug: str, fc: pd.DataFrame) -> int:
     return len(rows)
 
 
-def store_resale(model_slug: str, fc: pd.DataFrame) -> int:
+def store_resale(model_slug: str, fc: pd.DataFrame, estimated: bool = False) -> int:
     rows = _forecast_rows(model_slug, fc, int(time.time()))
+    for row in rows:
+        row["estimated"] = int(estimated)
     with connect() as conn:
         conn.executemany(
             """INSERT OR REPLACE INTO resale_forecasts
-               (model_slug, horizon_date, yhat, yhat_lower, yhat_upper, generated_at)
+               (model_slug, horizon_date, yhat, yhat_lower, yhat_upper, estimated,
+                generated_at)
                VALUES (:model_slug, :horizon_date, :yhat, :yhat_lower, :yhat_upper,
-                       :generated_at)""",
+                       :estimated, :generated_at)""",
             rows,
         )
     return len(rows)
@@ -165,14 +207,15 @@ def run(horizon: int = config.FORECAST_HORIZON_DAYS) -> None:
         # demand forecast above — its own try/except so a rough fit here never
         # costs a model its (more mature) demand forecast for the night.
         try:
-            rfc = forecast_resale_model(model.slug, horizon=horizon)
+            rfc, rfc_estimated = forecast_resale_model(model.slug, horizon=horizon)
         except Exception as exc:
-            rfc = None
+            rfc, rfc_estimated = None, False
             print(f"  ! resale forecast failed for {model.slug}: {str(exc)[:60]}")
         if rfc is not None:
-            rn = store_resale(model.slug, rfc)
+            rn = store_resale(model.slug, rfc, estimated=rfc_estimated)
+            tag = " (estimate-backed)" if rfc_estimated else ""
             print(f"  resale forecast: {model.slug} -> {rn} days "
-                  f"(predicted ${rfc['yhat'].iloc[-1]:.0f} in {horizon}d)")
+                  f"(predicted ${rfc['yhat'].iloc[-1]:.0f} in {horizon}d){tag}")
 
 
 if __name__ == "__main__":

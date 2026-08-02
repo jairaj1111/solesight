@@ -697,10 +697,15 @@ function resaleForecastBadge(m) {
   const fc = m.resale_forecast || [];
   if (!fc.length) return "";
   const last = fc[fc.length - 1];
-  return `<div class="forecast-badge">
-    <div class="fb-lab">Predicted resale · ${shortDate(last.d)}</div>
+  const estimated = !!m.resale_forecast_estimated;
+  const note = estimated
+    ? `Real daily eBay history is still under 30 days, so this fit is topped up with a modeled backfill (anchored on today's real price, shaped by real search-interest trend) — not sold-price history. Point estimate $${Math.round(last.v)}.`
+    : `30-day Prophet forecast on real daily resale history, 80% confidence interval · point estimate $${Math.round(last.v)}.`;
+  return `<div class="forecast-badge${estimated ? " fb-estimated" : ""}">
+    <div class="fb-lab">Predicted resale · ${shortDate(last.d)}${estimated
+      ? ` <span class="fb-pill">ESTIMATED</span>` : ""}</div>
     <div class="fb-range">$${Math.round(last.lo)}<span class="fb-dash">–</span>$${Math.round(last.hi)}</div>
-    <div class="fb-note">30-day Prophet forecast, 80% confidence interval · point estimate $${Math.round(last.v)}</div>
+    <div class="fb-note">${note}</div>
   </div>`;
 }
 
@@ -977,12 +982,14 @@ function resaleChart(m) {
       `${x.toFixed(1)},${Y(i === 0 ? eb[eb.length - 1].v : fc[i - 1].lo).toFixed(1)}`).reverse();
     const last = fcPts[fcPts.length - 1];
     const { lo: predLo, hi: predHi } = fc[fc.length - 1];
+    const estColor = m.resale_forecast_estimated ? "#9a6a00" : "var(--acid-ink)";
+    const estTag = m.resale_forecast_estimated ? " (est.)" : "";
     fcSvg = `
       <polygon points="${[...bandTop, ...bandBottom].join(" ")}" fill="var(--ink)" opacity=".07"/>
       <polyline points="${dashed}" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="3 3"/>
-      <circle cx="${last[0]}" cy="${last[1]}" r="3" fill="var(--acid-ink)" stroke="var(--paper)" stroke-width="1.5"/>
+      <circle cx="${last[0]}" cy="${last[1]}" r="3" fill="${estColor}" stroke="var(--paper)" stroke-width="1.5"/>
       <text x="${clampX(last[0], 40, W)}" y="${Math.max(last[1] - 9, 12)}" text-anchor="middle"
-        class="ax-val" style="fill:var(--acid-ink)">$${Math.round(predLo)}–${Math.round(predHi)}</text>`;
+        class="ax-val" style="fill:${estColor}">$${Math.round(predLo)}–${Math.round(predHi)}${estTag}</text>`;
   }
 
   const yAxis = `

@@ -87,6 +87,49 @@ def daily_price(model_slug: str) -> pd.DataFrame:
               .sort_values("date"))
 
 
+# --- modeled backfill (clearly NOT sold-price history) -----------------------
+# eBay's free Browse API only returns currently-active listings — there is no
+# way to query what something sold for 20 days ago without the Marketplace
+# Insights API, which needs a separate eBay approval we don't have. Real daily
+# history accrues at 1 day/night regardless. This backfill exists only to
+# unblock the forecast's 30-day minimum *before* that real history arrives —
+# it anchors on today's real price and shapes the trailing days using the
+# model's real Trends interest (the one series we do have 90 real days of),
+# and every caller must treat/label its output as an estimate, never as
+# equivalent to genuine sold-price history.
+_BACKFILL_DAYS = 29        # + today's 1 real day = 30, clearing MIN_HISTORY
+_BACKFILL_DAMPING = 0.4    # how strongly relative search interest sways the estimate
+
+
+def estimate_backfill(model_slug: str, days: int = _BACKFILL_DAYS) -> pd.DataFrame:
+    """A labeled ESTIMATE of the prior `days` of resale price (Prophet-ready ds/y).
+
+    Empty if there's no real price to anchor on, or too little real Trends
+    history to shape a trend from.
+    """
+    price_df = daily_price(model_slug)
+    if price_df.empty:
+        return pd.DataFrame(columns=["ds", "y"])
+    today_price = float(price_df.sort_values("date")["last_sale"].iloc[-1])
+
+    with connect() as conn:
+        rows = conn.execute(
+            """SELECT date, interest FROM trends WHERE model_slug=?
+               ORDER BY date DESC LIMIT ?""", (model_slug, days + 1)).fetchall()
+    if len(rows) < (days + 1) // 2:   # too little real Trends history to shape a trend
+        return pd.DataFrame(columns=["ds", "y"])
+
+    interest = pd.DataFrame([dict(r) for r in rows]).sort_values("date")
+    interest["date"] = pd.to_datetime(interest["date"])
+    today_i = interest["interest"].iloc[-1] or interest["interest"].mean() or 1.0
+    ratio = interest["interest"] / today_i
+    est_price = (today_price * (1 + _BACKFILL_DAMPING * (ratio - 1))).clip(lower=0)
+    return pd.DataFrame({
+        "ds": interest["date"].iloc[:-1].reset_index(drop=True),
+        "y": est_price.iloc[:-1].reset_index(drop=True),
+    })
+
+
 def premiums_by_region(model_slug: str, retail: int | None) -> dict:
     """Latest resale premium (× retail) per marketplace — US vs UK vs DE.
 

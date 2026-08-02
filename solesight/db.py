@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS resale_forecasts (
     yhat          REAL NOT NULL,          -- predicted resale price (USD)
     yhat_lower    REAL,
     yhat_upper    REAL,
+    estimated     INTEGER NOT NULL DEFAULT 0,  -- 1 if fit used modeled backfill, not all-real history
     generated_at  INTEGER NOT NULL,
     PRIMARY KEY (model_slug, horizon_date, generated_at)
 );
@@ -173,6 +174,7 @@ def connect(db_path: Path | None = None) -> Iterator[sqlite3.Connection]:
 _MIGRATIONS = {
     "availability": [("url", "TEXT")],
     "resale": [("listing_url", "TEXT")],
+    "resale_forecasts": [("estimated", "INTEGER NOT NULL DEFAULT 0")],
 }
 
 
