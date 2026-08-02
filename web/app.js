@@ -995,8 +995,11 @@ function resaleChart(m) {
   const yAxis = `
     <text x="${L}" y="${T - 7}" class="ax-lab">$${Math.round(max)}</text>
     <text x="${L}" y="${H - B + 12}" class="ax-lab">$${Math.round(min)}</text>`;
+  // Anchored at the LEFT end of its own full-width reference line — the right
+  // edge is already claimed by the forecast's predicted-range callout when
+  // one exists, and the two were landing on top of each other.
   const retailLab = retailY != null
-    ? `<text x="${W - R}" y="${retailY - 4}" text-anchor="end" class="ax-lab">RETAIL $${m.retail}</text>` : "";
+    ? `<text x="${L}" y="${retailY - 4}" text-anchor="start" class="ax-lab">RETAIL $${m.retail}</text>` : "";
 
   // End-label offsets: push whichever point sits higher on the chart further
   // up, and whichever sits lower further down, so the two labels separate
