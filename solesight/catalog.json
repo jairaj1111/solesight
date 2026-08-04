@@ -1239,5 +1239,15 @@
   ],
   "retail": 215,
   "image": "Air-Jordan-13-Retro-Flint-2026"
+ },
+ {
+  "slug": "adidas-jellyfish",
+  "name": "adidas Jellyfish",
+  "brand": "adidas",
+  "category": "lifestyle",
+  "trends_term": "adidas Jellyfish",
+  "keywords": [
+   "adidas jellyfish"
+  ]
  }
 ]
