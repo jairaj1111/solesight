@@ -131,15 +131,34 @@ def _interest_by_region(pytrends: TrendReq, term: str, timeframe: str) -> pd.Dat
     # daily series above — region resolution only makes sense scoped to one
     # country, and "US" matches where the rest of the pipeline already lives
     # (eBay's home market, the boutique network, the resale premium baseline).
+    #
+    # inc_low_vol=False (Google's own default) is deliberate, not an oversight:
+    # inc_low_vol=True forces in states with too little query volume to be
+    # statistically reliable, and a tiny population can then register "100"
+    # relative interest off a handful of searches — verified live, a Travis
+    # Scott collab's top region came back as Wyoming with inc_low_vol=True,
+    # which vanished from the top 10 entirely once this was set to False.
     pytrends.build_payload([term], timeframe=timeframe, geo="US")
-    return pytrends.interest_by_region(resolution="REGION", inc_low_vol=True)
+    return pytrends.interest_by_region(resolution="REGION", inc_low_vol=False)
+
+
+_REGION_LOOKBACK_DAYS = 30   # deliberately short: recent regional demand for
+                             # near-term inventory decisions, not a 9-month blend
 
 
 def fetch_model_region(pytrends: TrendReq, model: models.SneakerModel,
                        timeframe: str | None = None) -> list[dict]:
-    """Top US states by relative search interest for this model, or [] if unavailable."""
+    """Top US states by relative search interest for this model, or [] if unavailable.
+
+    Uses its own ~30-day window regardless of the daily-series default (269
+    days) — the UI's "last 30 days" caption must match what was actually
+    queried, and a 9-month blend would wash out the recent spikes this signal
+    exists to surface.
+    """
     now = int(time.time())
-    df = _interest_by_region(pytrends, model.trends_term, timeframe or default_timeframe())
+    df = _interest_by_region(
+        pytrends, model.trends_term,
+        timeframe or default_timeframe(_REGION_LOOKBACK_DAYS))
     if df.empty or model.trends_term not in df.columns:
         return []
     today = date.today().isoformat()
@@ -230,7 +249,11 @@ def run(timeframe: str | None = None,
         # its own try/except so a failure here never touches the daily series
         # that forecasting/scoring actually depend on.
         try:
-            r = store_region(fetch_model_region(pytrends, model, timeframe))
+            # Deliberately not passing the outer `timeframe` through — that
+            # argument overrides the DAILY series window, and forwarding it
+            # here would defeat fetch_model_region's own dedicated 30-day
+            # default if a caller ever backfills history with a longer window.
+            r = store_region(fetch_model_region(pytrends, model))
             region_stored += 1 if r else 0
         except Exception as exc:
             region_failed += 1

@@ -23,9 +23,10 @@ def _model():
 class _FakePytrends:
     def __init__(self, df):
         self._df = df
+        self.build_payload_calls: list[dict] = []
 
     def build_payload(self, *a, **kw):
-        pass
+        self.build_payload_calls.append(kw)
 
     def interest_by_region(self, *a, **kw):
         return self._df
@@ -81,3 +82,17 @@ def test_store_region_noop_on_empty_list():
 
 def test_top_regions_empty_for_unknown_model():
     assert google_trends.top_regions("nonexistent-slug") == []
+
+
+def test_fetch_model_region_defaults_to_30_days_not_the_daily_series_window():
+    # The UI caption says "last 30 days" — the actual query must match that,
+    # not silently inherit the daily series' ~269-day default (which would
+    # blend 9 months of history into what's supposed to read as recent).
+    import datetime
+    df = pd.DataFrame({"Jordan 1 Chicago": [50]}, index=["Illinois"])
+    fake = _FakePytrends(df)
+    google_trends.fetch_model_region(fake, _model())   # no explicit timeframe
+    assert len(fake.build_payload_calls) == 1
+    start_s, end_s = fake.build_payload_calls[0]["timeframe"].split()
+    span = (datetime.date.fromisoformat(end_s) - datetime.date.fromisoformat(start_s)).days
+    assert span == google_trends._REGION_LOOKBACK_DAYS
