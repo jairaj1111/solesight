@@ -295,9 +295,10 @@ main, .nav, .footer { position: relative; z-index: 1; }
   overflow-y: auto; padding: 28px clamp(20px, 3vw, 34px) 60px;
 }
 .sheet.on { transform: translateX(0); }
-.sheet-close { position: sticky; top: 0; float: right; border: 0; background: transparent;
+.sheet-close { position: fixed; top: 14px; right: 14px; z-index: 5; border: 0; background: transparent;
   font-size: 1.6rem; cursor: pointer; color: var(--ink-2); line-height: 1; }
-.sheet-eyebrow { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+.sheet-eyebrow { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3);
+  padding-right: 50px; }
 .sheet-title { font-family: var(--serif); font-size: 2.6rem; line-height: .96; margin: 6px 0 4px; }
 .sheet-hype { display: flex; align-items: baseline; gap: 10px; margin: 18px 0 6px; }
 .sheet-hype b { font-family: var(--serif); font-size: 4rem; line-height: .8; }

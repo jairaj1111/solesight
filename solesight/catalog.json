@@ -1241,13 +1241,17 @@
   "image": "Air-Jordan-13-Retro-Flint-2026"
  },
  {
-  "slug": "adidas-jellyfish",
-  "name": "adidas Jellyfish",
+  "slug": "adidas-jellyfish-white",
+  "name": "adidas Jellyfish White",
   "brand": "adidas",
   "category": "lifestyle",
-  "trends_term": "adidas Jellyfish",
+  "trends_term": "adidas Jellyfish White",
   "keywords": [
-   "adidas jellyfish"
-  ]
+   "adidas jellyfish",
+   "pharrell jellyfish",
+   "adistar jellyfish"
+  ],
+  "retail": 300,
+  "image": "adidas-Adistar-Jellyfish-Pharrell-Williams-White"
  }
 ]
