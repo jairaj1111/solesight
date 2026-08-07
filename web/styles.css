@@ -82,7 +82,8 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .brand-word { font-family: var(--serif); font-size: 1.5rem; letter-spacing: -.01em; }
 .nav-links { display: flex; gap: 30px; }
 .nav-links a {
-  font-size: .86rem; font-weight: 550; color: var(--ink-2);
+  font-size: .78rem; font-weight: 650; color: var(--ink-2);
+  text-transform: uppercase; letter-spacing: .05em;
   position: relative; padding: 4px 0; transition: color .25s;
 }
 .nav-links a::after {
