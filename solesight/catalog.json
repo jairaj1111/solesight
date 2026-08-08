@@ -1253,5 +1253,15 @@
   ],
   "retail": 300,
   "image": "adidas-Adistar-Jellyfish-Pharrell-Williams-White"
+ },
+ {
+  "slug": "nike-ja-4",
+  "name": "Nike Ja 4",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Ja 4",
+  "keywords": [
+   "nike ja 4"
+  ]
  }
 ]
