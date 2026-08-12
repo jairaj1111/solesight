@@ -1255,16 +1255,6 @@
   "image": "adidas-Adistar-Jellyfish-Pharrell-Williams-White"
  },
  {
-  "slug": "nike-ja-4",
-  "name": "Nike Ja 4",
-  "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike Ja 4",
-  "keywords": [
-   "nike ja 4"
-  ]
- },
- {
   "slug": "nike-caitlin-1",
   "name": "Nike Caitlin 1",
   "brand": "Nike",
@@ -1273,5 +1263,18 @@
   "keywords": [
    "nike caitlin 1"
   ]
+ },
+ {
+  "slug": "nike-ja-4-ny-vs-ny",
+  "name": "Nike Ja 4 NY vs. NY",
+  "brand": "Nike",
+  "category": "basketball",
+  "trends_term": "Nike Ja 4 NY vs. NY",
+  "keywords": [
+   "ja 4 ny vs ny",
+   "ja morant ny vs ny"
+  ],
+  "retail": 140,
+  "image": "Nike-Ja-4-NY-vs-NY"
  }
 ]
