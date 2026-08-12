@@ -1256,13 +1256,17 @@
  },
  {
   "slug": "nike-caitlin-1",
-  "name": "Nike Caitlin 1",
+  "name": "Nike Caitlin 1 Racer Blue",
   "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike Caitlin 1",
+  "category": "basketball",
+  "trends_term": "Nike Caitlin 1 Racer Blue",
   "keywords": [
-   "nike caitlin 1"
-  ]
+   "nike caitlin 1",
+   "caitlin 1 racer blue",
+   "caitlin clark racer blue"
+  ],
+  "retail": 140,
+  "image": "Nike-Caitlin-1-Racer-Blue-Womens"
  },
  {
   "slug": "nike-ja-4-ny-vs-ny",
