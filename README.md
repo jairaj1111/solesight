@@ -116,6 +116,12 @@ python -m scripts.run_pipeline --trends     # or run individual stages
 python -m scripts.run_pipeline --reddit --sentiment
 ```
 
+Auto-discovery can promote a trending search term into the catalog with just
+a slug/name/brand — no retail price or product photo yet. Run
+`python -m scripts.check_catalog` anytime to list entries still missing
+either, so they can get a real colorway, photo and price before they climb
+the rankings.
+
 The insights stage auto-selects an engine: it uses OpenAI when `OPENAI_API_KEY`
 is set, and otherwise falls back to the offline rule engine. Force the offline
 engine anytime with `--offline-insights`. Sentiment scoring works the same way:
@@ -201,7 +207,7 @@ access is granted.
 - [x] Launch Radar demand-event detection + lifecycle stages
 - [x] Ask SoleSight — agentic analyst (Claude tool-use, BYOK)
 - [ ] Reddit community signal (adapter ready — awaiting free API keys)
-- [ ] Backtest study: do hype/momentum scores predict forward outcomes?
+- [x] Backtest study: do hype/momentum scores predict forward outcomes?
       (earns Wikipedia/press/boutiques their Hype Score weights)
 - [ ] Sold-price resale via partner APIs (StockX / eBay Marketplace Insights)
 - [ ] Launch Radar alerts (email / Discord webhook)
