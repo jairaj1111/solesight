@@ -3,9 +3,12 @@
 // Always open at the top: don't let the browser restore a mid-scroll
 // position on reload, or auto-jump to a leftover #section hash from a
 // previous nav click (content renders async below, so an early hash-jump
-// lands in the wrong place once the real layout comes in).
+// lands in the wrong place once the real layout comes in). #shoe- hashes are
+// a deep link to a specific model's detail sheet, not a section anchor —
+// leave those alone so init() can open the right sheet once data loads.
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+if (location.hash && !location.hash.startsWith("#shoe-"))
+  history.replaceState(null, "", location.pathname + location.search);
 window.scrollTo(0, 0);
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -42,6 +45,11 @@ async function init() {
   wireReveal();
   wireSheet();
   window.scrollTo(0, 0);
+
+  const hashSlug = location.hash.startsWith("#shoe-")
+    ? decodeURIComponent(location.hash.slice(6)) : null;
+  if (hashSlug && DATA.models.some((m) => m.slug === hashSlug))
+    openSheet(hashSlug, { replace: true });
 }
 
 /* ---------------- market ticker (top movers, exchange style) ---------------- */
@@ -595,14 +603,33 @@ function spark(series) {
 function wireSheet() {
   $("#sheet-backdrop").onclick = closeSheet;
   document.addEventListener("keydown", (e) => e.key === "Escape" && closeSheet());
+  // Read the current hash rather than event.state: Chrome/Safari fire a
+  // spurious popstate on plain page load (a long-standing cross-browser
+  // quirk), and by then location.hash already reflects the real target —
+  // trusting it keeps that stray event a no-op instead of closing a sheet
+  // that just opened via a deep link.
+  window.addEventListener("popstate", () => {
+    const slug = location.hash.startsWith("#shoe-")
+      ? decodeURIComponent(location.hash.slice(6)) : null;
+    if (slug && DATA.models.some((m) => m.slug === slug))
+      openSheet(slug, { fromPopstate: true });
+    else closeSheet(true);
+  });
 }
 let SHEET_OPENER = null;
-function closeSheet() {
+let SHEET_PUSHED = false;   // true when we pushed a history entry for the open sheet
+function closeSheet(fromPopstate) {
   $("#sheet").classList.remove("on");
   $("#sheet").setAttribute("aria-hidden", "true");
   $("#sheet-backdrop").classList.remove("on");
   setBackgroundInert(false);
   if (SHEET_OPENER) { SHEET_OPENER.focus(); SHEET_OPENER = null; }
+  if (fromPopstate) { SHEET_PUSHED = false; return; }
+  // User-initiated close (X / backdrop / Escape): undo whatever we did to
+  // the URL when the sheet opened, so back/forward stay consistent.
+  if (SHEET_PUSHED) { SHEET_PUSHED = false; history.back(); }
+  else if (location.hash.startsWith("#shoe-"))
+    history.replaceState(null, "", location.pathname + location.search);
 }
 
 // While the detail sheet is open, everything behind the backdrop is
@@ -772,7 +799,8 @@ function buyLinks(m) {
       : ""} SoleSight isn't a retailer — these point you to live listings.</p>`;
 }
 
-function openSheet(slug) {
+function openSheet(slug, opts) {
+  opts = opts || {};
   const m = DATA.models.find((x) => x.slug === slug);
   if (!m) return;
   const bar = (lab, val, acid) => `
@@ -785,7 +813,7 @@ function openSheet(slug) {
   const mom = m.momentum == null ? null : Math.max(0, Math.min(100, 50 + m.momentum * 0.8));
 
   $("#sheet").innerHTML = `
-    <button class="sheet-close" aria-label="Close" onclick="(${closeSheet.toString()})()">×</button>
+    <button class="sheet-close" aria-label="Close">×</button>
     <div class="sheet-eyebrow">Rank #${m.rank} · ${esc(m.brand)} ${stageBadge(m.stage)} ${pendingBadge(m)}</div>
     <h2 class="sheet-title" id="sheet-title">${esc(m.name)}</h2>
     <div class="sheet-hype"><b>${m.hype ?? "—"}</b><span class="of">/ 100 hype</span>
@@ -866,11 +894,22 @@ function openSheet(slug) {
   $("#sheet").classList.add("on");
   $("#sheet").setAttribute("aria-hidden", "false");
   $("#sheet-backdrop").classList.add("on");
+  $(".sheet-close").onclick = () => closeSheet();
   setBackgroundInert(true);
   SHEET_OPENER = document.activeElement;
   $("#sheet").focus();
   requestAnimationFrame(() =>
     $$("#sheet .bar-fill").forEach((f) => (f.style.width = f.dataset.w + "%")));
+
+  if (!opts.fromPopstate) {
+    if (opts.replace) {
+      history.replaceState({ sheet: slug }, "", "#shoe-" + slug);
+      SHEET_PUSHED = false;
+    } else {
+      history.pushState({ sheet: slug }, "", "#shoe-" + slug);
+      SHEET_PUSHED = true;
+    }
+  }
 }
 
 /* ---------------- SVG charts ---------------- */
