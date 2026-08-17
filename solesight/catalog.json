@@ -1283,22 +1283,28 @@
  },
  {
   "slug": "nike-kobe-5-protro",
-  "name": "Nike Kobe 5 Protro",
+  "name": "Nike Kobe 5 Protro Dodgers",
   "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike Kobe 5 Protro",
+  "category": "basketball",
+  "trends_term": "Nike Kobe 5 Protro Dodgers",
   "keywords": [
-   "nike kobe 5 protro"
-  ]
+   "nike kobe 5 protro",
+   "kobe 5 dodgers"
+  ],
+  "retail": 190,
+  "image": "Nike-Kobe-5-Protro-Dodgers"
  },
  {
   "slug": "air-jordan-8",
-  "name": "Air Jordan 8",
+  "name": "Air Jordan 8 Chrome",
   "brand": "Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 8",
+  "trends_term": "Air Jordan 8 Chrome",
   "keywords": [
-   "air jordan 8"
-  ]
+   "air jordan 8",
+   "jordan 8 chrome"
+  ],
+  "retail": 215,
+  "image": "air-jordan-8-retro-chrome-2026"
  }
 ]
