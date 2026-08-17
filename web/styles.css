@@ -306,6 +306,8 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .sheet-hype .of { color: var(--ink-3); font-size: 1.1rem; }
 .sheet-photo { text-align: center; margin: 8px 0 6px; }
 .sheet-photo img { max-width: 80%; filter: drop-shadow(0 20px 26px rgba(20,19,15,.3)); }
+.sheet-materials { text-align: center; font-size: .76rem; font-style: italic;
+  color: var(--ink-3); margin: -2px 0 14px; }
 .bars { margin: 14px 0; }
 .bar-row { display: grid; grid-template-columns: 96px 1fr 40px; align-items: center; gap: 12px; margin: 9px 0; }
 .bar-row .lab { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }

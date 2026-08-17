@@ -152,6 +152,7 @@ def build() -> dict:
         records.append({
             "slug": m.slug, "name": m.name, "brand": m.brand,
             "category": models.category(m.slug),
+            "materials": m.materials,
             "retail": s["retail_price"],
             "img": f"img/{m.slug}.png" if img else None,
             "has_360": (WEB / "img360" / m.slug / "f01.png").exists(),

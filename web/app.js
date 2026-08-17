@@ -819,6 +819,7 @@ function openSheet(slug, opts) {
     <div class="sheet-hype"><b>${m.hype ?? "—"}</b><span class="of">/ 100 hype</span>
       <span class="delta ${deltaClass(m.momentum)}" style="margin-left:auto">${arrow(m.momentum)} ${fmtSigned(m.momentum, "%")} search</span></div>
     <div class="sheet-photo">${img(m, "")}</div>
+    ${m.materials ? `<p class="sheet-materials">${esc(m.materials)}</p>` : ""}
 
     <div class="sheet-facts">
       ${m.stores_stocking ? `<details class="sf-details">

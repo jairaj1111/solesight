@@ -31,6 +31,7 @@ class SneakerModel:
     category: str = "lifestyle"  # basketball / running / lifestyle / skate
     retail_price: int | None = None   # MSRP (USD) — resale-premium baseline
     image_slug: str | None = None     # StockX 360 CDN product id (photo source)
+    materials: str | None = None      # upper/sole construction, editorial copy
 
     def matches(self, text: str) -> bool:
         lowered = text.lower()
@@ -45,6 +46,7 @@ def _load() -> list[SneakerModel]:
             trends_term=e["trends_term"], keywords=tuple(e["keywords"]),
             category=e.get("category", "lifestyle"),
             retail_price=e.get("retail"), image_slug=e.get("image"),
+            materials=e.get("materials"),
         )
         for e in entries
     ]

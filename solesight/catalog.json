@@ -64,7 +64,8 @@
    "aj11 concord"
   ],
   "retail": 235,
-  "image": "Air-Jordan-11-Retro-Concord-2018"
+  "image": "Air-Jordan-11-Retro-Concord-2018",
+  "materials": "Ballistic mesh upper with a patent leather mudguard, carbon fiber shank, rubber outsole."
  },
  {
   "slug": "dunk-low-panda",
@@ -131,7 +132,8 @@
    "cactus jack 1"
   ],
   "retail": 150,
-  "image": "Air-Jordan-1-Retro-Low-Travis-Scott"
+  "image": "Air-Jordan-1-Retro-Low-Travis-Scott",
+  "materials": "Suede and leather upper with khaki suede overlays; rubber cupsole outsole."
  },
  {
   "slug": "nb-550-white-green",
@@ -197,7 +199,8 @@
    "yeezy slides"
   ],
   "retail": 70,
-  "image": "adidas-Yeezy-Slide-Pure"
+  "image": "adidas-Yeezy-Slide-Pure",
+  "materials": "Single-piece EVA foam construction (monosock)."
  },
  {
   "slug": "samba-og",
@@ -250,7 +253,8 @@
    "asics 1130"
   ],
   "retail": 100,
-  "image": "ASICS-Gel-1130-White-Clay-Canyon"
+  "image": "ASICS-Gel-1130-White-Clay-Canyon",
+  "materials": "Mesh and synthetic leather upper, rearfoot GEL cushioning, rubber outsole."
  },
  {
   "slug": "asics-gt-2160",
@@ -263,7 +267,8 @@
    "gt 2160"
   ],
   "retail": 110,
-  "image": "ASICS-GT-2160-White-Black"
+  "image": "ASICS-GT-2160-White-Black",
+  "materials": "Mesh and synthetic upper, GEL cushioning in heel and forefoot, rubber outsole."
  },
  {
   "slug": "sb-dunk-low-jarritos",
@@ -276,7 +281,8 @@
    "jarritos dunk"
   ],
   "retail": 125,
-  "image": "Nike-SB-Dunk-Low-Jarritos"
+  "image": "Nike-SB-Dunk-Low-Jarritos",
+  "materials": "Leather and suede upper, Zoom Air cushioning, vulcanized rubber outsole."
  },
  {
   "slug": "aj4-military-black",
@@ -302,7 +308,8 @@
    "grinch kobe"
   ],
   "retail": 190,
-  "image": "Nike-Kobe-6-Protro-Grinch"
+  "image": "Nike-Kobe-6-Protro-Grinch",
+  "materials": "Skin-Fuse base layered under micro-mesh, PU \"island\" overlays mimicking snake scales, translucent rubber outsole."
  },
  {
   "slug": "aj1-royal",
@@ -354,7 +361,8 @@
    "ts jordan 1 high"
   ],
   "retail": 175,
-  "image": "Air-Jordan-1-Retro-High-Travis-Scott"
+  "image": "Air-Jordan-1-Retro-High-Travis-Scott",
+  "materials": "Leather and suede upper with a deconstructed, unlined \"reverse\" Swoosh; rubber cupsole outsole."
  },
  {
   "slug": "aj4-white-cement",
@@ -483,7 +491,8 @@
    "am95"
   ],
   "retail": 175,
-  "image": "Nike-Air-Max-95-OG-Neon-2020"
+  "image": "Nike-Air-Max-95-OG-Neon-2020",
+  "materials": "Layered mesh and synthetic upper (gradient panel design), visible Max Air unit, rubber waffle outsole."
  },
  {
   "slug": "air-max-97-silver",
@@ -534,7 +543,8 @@
    "nike shox"
   ],
   "retail": 170,
-  "image": "Nike-Shox-TL-Triple-Black"
+  "image": "Nike-Shox-TL-Triple-Black",
+  "materials": "Mesh and synthetic upper, full-length visible Shox columns in the heel, rubber outsole."
  },
  {
   "slug": "nike-cortez",
@@ -573,7 +583,8 @@
    "blazer mid"
   ],
   "retail": 105,
-  "image": "Nike-Blazer-Mid-77-Vintage-White-Black"
+  "image": "Nike-Blazer-Mid-77-Vintage-White-Black",
+  "materials": "Leather upper, rubber cupsole with a foxing-style wrap outsole."
  },
  {
   "slug": "dunk-low-grey-fog",
@@ -637,7 +648,8 @@
    "gt cut"
   ],
   "retail": 190,
-  "image": "Nike-GT-Cut-3-Panda"
+  "image": "Nike-GT-Cut-3-Panda",
+  "materials": "Mesh and synthetic upper reinforced with Flywire, full-length ZoomX foam, rubber outsole."
  },
  {
   "slug": "nike-pegasus-41",
@@ -701,7 +713,8 @@
    "adidas forum"
   ],
   "retail": 100,
-  "image": "adidas-Forum-Low-White-Green"
+  "image": "adidas-Forum-Low-White-Green",
+  "materials": "Leather upper with hook-and-loop ankle strap, rubber cupsole outsole."
  },
  {
   "slug": "ultraboost-1",
@@ -753,7 +766,8 @@
    "yeezy foam"
   ],
   "retail": 90,
-  "image": "adidas-Yeezy-Foam-RNNR-Onyx"
+  "image": "adidas-Yeezy-Foam-RNNR-Onyx",
+  "materials": "Single-piece algae-based EVA foam construction."
  },
  {
   "slug": "yeezy-500",
@@ -778,7 +792,8 @@
    "sl72"
   ],
   "retail": 100,
-  "image": "adidas-SL-72-OG-Blue-Bird-Off-White-Womens"
+  "image": "adidas-SL-72-OG-Blue-Bird-Off-White-Womens",
+  "materials": "Nylon and suede upper, EVA midsole, rubber outsole."
  },
  {
   "slug": "nb-530",
@@ -791,7 +806,8 @@
    "new balance 530"
   ],
   "retail": 100,
-  "image": "New-Balance-530-White-Silver-Navy"
+  "image": "New-Balance-530-White-Silver-Navy",
+  "materials": "Mesh and suede upper, ABZORB cushioning, rubber outsole."
  },
  {
   "slug": "nb-574",
@@ -841,7 +857,8 @@
    "new balance 992"
   ],
   "retail": 185,
-  "image": "New-Balance-992-Grey"
+  "image": "New-Balance-992-Grey",
+  "materials": "Pigskin suede and mesh upper, ENCAP midsole, blown rubber outsole."
  },
  {
   "slug": "nb-993",
@@ -893,7 +910,8 @@
    "gel-kayano 14"
   ],
   "retail": 160,
-  "image": "ASICS-Gel-Kayano-14-JJJJound-Silver-Black"
+  "image": "ASICS-Gel-Kayano-14-JJJJound-Silver-Black",
+  "materials": "Mesh and synthetic upper, visible rearfoot GEL cushioning, rubber outsole."
  },
  {
   "slug": "asics-gel-nyc",
@@ -906,7 +924,8 @@
    "gel nyc"
   ],
   "retail": 130,
-  "image": "ASICS-Gel-NYC-Cream-Arctic-Sky"
+  "image": "ASICS-Gel-NYC-Cream-Arctic-Sky",
+  "materials": "Mesh and synthetic leather upper, GEL cushioning, rubber outsole."
  },
  {
   "slug": "gel-lyte-iii",
@@ -969,7 +988,8 @@
    "puma f1 shoe"
   ],
   "retail": 100,
-  "image": "Puma-Speedcat-OG-Black-White"
+  "image": "Puma-Speedcat-OG-Black-White",
+  "materials": "Suede upper, low-profile motorsport-inspired silhouette, rubber outsole."
  },
  {
   "slug": "puma-mb03",
@@ -1085,7 +1105,8 @@
    "knu skool"
   ],
   "retail": 75,
-  "image": "Vans-Knu-Skool-Black-White"
+  "image": "Vans-Knu-Skool-Black-White",
+  "materials": "Suede and canvas upper, vulcanized rubber waffle outsole."
  },
  {
   "slug": "chuck-70-hi",
@@ -1252,7 +1273,8 @@
    "adistar jellyfish"
   ],
   "retail": 300,
-  "image": "adidas-Adistar-Jellyfish-Pharrell-Williams-White"
+  "image": "adidas-Adistar-Jellyfish-Pharrell-Williams-White",
+  "materials": "Leather-free mesh upper with sculptural 3D-molded TPU overlay panels; cold-cement construction."
  },
  {
   "slug": "nike-caitlin-1",
@@ -1266,7 +1288,8 @@
    "caitlin clark racer blue"
   ],
   "retail": 140,
-  "image": "Nike-Caitlin-1-Racer-Blue-Womens"
+  "image": "Nike-Caitlin-1-Racer-Blue-Womens",
+  "materials": "Nike Opticast upper (cast PU nodes for reduced drag), full-length cushioning, rubber outsole."
  },
  {
   "slug": "nike-ja-4-ny-vs-ny",
@@ -1292,7 +1315,8 @@
    "kobe 5 dodgers"
   ],
   "retail": 190,
-  "image": "Nike-Kobe-5-Protro-Dodgers"
+  "image": "Nike-Kobe-5-Protro-Dodgers",
+  "materials": "Skin-Fuse synthetic upper with Flywire support, low-profile Zoom Air cushioning, translucent rubber outsole."
  },
  {
   "slug": "air-jordan-8",
@@ -1305,6 +1329,7 @@
    "jordan 8 chrome"
   ],
   "retail": 215,
-  "image": "air-jordan-8-retro-chrome-2026"
+  "image": "air-jordan-8-retro-chrome-2026",
+  "materials": "Nubuck upper with chrome-finished hardware and dual cross straps; rubber outsole."
  }
 ]
