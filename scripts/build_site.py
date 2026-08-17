@@ -118,6 +118,27 @@ def _round(x, n=1):
     return None if x is None else round(x, n)
 
 
+def _competitors(rec: dict, all_records: list[dict], n: int = 3) -> list[dict]:
+    """The closest same-category rivals from other brands, ranked by how
+    directly they compete on retail price — a merchandising comp set, not a
+    measured substitution signal (SoleSight has no purchase-consideration
+    data to back that stronger claim)."""
+    if rec["retail"] is None:
+        return []
+    candidates = [
+        r for r in all_records
+        if r["slug"] != rec["slug"] and r["brand"] != rec["brand"]
+        and r["category"] == rec["category"] and r["retail"] is not None
+    ]
+    candidates.sort(key=lambda r: abs(r["retail"] - rec["retail"]))
+    return [{
+        "slug": r["slug"], "name": r["name"], "brand": r["brand"],
+        "retail": r["retail"], "hype": r["hype"], "momentum": r["momentum"],
+        "resale_premium": r["resale_premium"],
+        "stores_stocking": r["stores_stocking"], "sellout_rate": r["sellout_rate"],
+    } for r in candidates[:n]]
+
+
 def build() -> dict:
     # One snapshot per model, computed once and shared with every aggregation.
     snaps = {m.slug: signals.snapshot(m.slug) for m in models.CATALOG}
@@ -183,6 +204,8 @@ def build() -> dict:
     records.sort(key=lambda r: -(r["hype"] or 0))
     for i, r in enumerate(records, 1):
         r["rank"] = i
+    for r in records:
+        r["competitors"] = _competitors(r, records)
     return {"generated_at": int(time.time()),
             "brands": sorted({m.brand for m in models.CATALOG}),
             "categories": sorted({models.category(m.slug) for m in models.CATALOG}),

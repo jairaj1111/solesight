@@ -770,6 +770,24 @@ section[id] { scroll-margin-top: 84px; }
 .stk-sizes.low { color: #9a6a00; font-weight: 600; }
 .sf-none span { color: var(--ink-3); font-style: italic; }
 
+/* ── competitive set in the detail sheet ───────────────────── */
+.comp-note { font-size: .78rem; color: var(--ink-3); line-height: 1.5; margin: -4px 0 10px; }
+.comp-list { display: flex; flex-direction: column; gap: 6px; margin: 0 0 4px; }
+.comp-row { display: grid; grid-template-columns: 1fr 52px 44px 1fr;
+  align-items: center; gap: 10px; width: 100%; text-align: left;
+  font: inherit; font-size: .78rem; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px;
+  cursor: pointer; transition: background .2s, border-color .2s; }
+.comp-row:hover { background: var(--paper-2); border-color: var(--line-2); }
+.comp-name { display: flex; flex-direction: column; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.comp-name i { font-style: normal; font-weight: 500; font-size: .7rem; color: var(--ink-3); }
+.comp-hype { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+.comp-hype b { display: block; font-weight: 500; font-size: .64rem;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+.comp-price { text-align: right; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.comp-stock { text-align: right; color: var(--ink-3); font-size: .72rem; }
+
 /* ── price ladder in the detail sheet ─────────────────────── */
 .pl-lab { font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
   fill: var(--ink-2); }
@@ -942,6 +960,9 @@ section[id] { scroll-margin-top: 84px; }
   .bar-row { grid-template-columns: 78px 1fr 34px; gap: 8px; }
   .stk-row { grid-template-columns: minmax(0, 1fr) 40px 52px 68px; gap: 7px;
     font-size: .72rem; }
+  .comp-row { display: flex; flex-wrap: wrap; row-gap: 4px; column-gap: 12px; }
+  .comp-name { flex: 1 1 100%; }
+  .comp-hype, .comp-price, .comp-stock { text-align: left; }
   .movers { grid-template-columns: 1fr; }
   .method-grid { grid-template-columns: 1fr; }
   .mkt-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }

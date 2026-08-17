@@ -876,6 +876,20 @@ function openSheet(slug, opts) {
       </a>`).join("")}
     </div>` : ""}
 
+    ${(m.competitors && m.competitors.length) ? `
+    <h4>Competing for the same shelf</h4>
+    <p class="comp-note">Closest rivals by category and retail price — not a
+      measured substitution signal, just what else occupies this price tier.</p>
+    <div class="comp-list">
+      ${m.competitors.map((c) => `
+        <button class="comp-row" data-slug="${c.slug}">
+          <span class="comp-name">${esc(c.name)}<i>${esc(c.brand)}</i></span>
+          <span class="comp-hype">${c.hype ?? "—"}<b>hype</b></span>
+          <span class="comp-price">$${c.retail}</span>
+          <span class="comp-stock">${c.stores_stocking ?? 0}/15 boutiques${c.sellout_rate != null ? ` · ${Math.round(c.sellout_rate * 100)}% sold out` : ""}</span>
+        </button>`).join("")}
+    </div>` : ""}
+
     <h4>Marketing readout</h4>
     <div class="sheet-insight">${esc(m.insight) || "No insight available."}</div>
 
@@ -895,6 +909,7 @@ function openSheet(slug, opts) {
   $("#sheet").setAttribute("aria-hidden", "false");
   $("#sheet-backdrop").classList.add("on");
   $(".sheet-close").onclick = () => closeSheet();
+  $$(".comp-row").forEach((el) => (el.onclick = () => openSheet(el.dataset.slug)));
   setBackgroundInert(true);
   SHEET_OPENER = document.activeElement;
   $("#sheet").focus();
