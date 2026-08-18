@@ -1358,5 +1358,15 @@
   "retail": 215,
   "image": "air-jordan-8-retro-chrome-2026",
   "materials": "Nubuck upper with chrome-finished hardware and dual cross straps; rubber outsole."
+ },
+ {
+  "slug": "air-jordan-5",
+  "name": "Air Jordan 5",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 5",
+  "keywords": [
+   "air jordan 5"
+  ]
  }
 ]
