@@ -142,6 +142,7 @@ Every stage degrades gracefully, so the platform is honest about what's real:
 | Press coverage | Google News RSS per model + Hypebeast / Sneaker News / Nice Kicks / SBD / Highsnobiety feeds | **Live** (nightly) | nothing — no key needed |
 | Social buzz (YouTube) | YouTube Data API v3 | **Live** (nightly) | done ✓ |
 | Demand forecast | Prophet on trends | **Live** (nightly) | nothing |
+| Launch Radar alerts | Discord incoming webhook, posted on new demand-spike events | API-ready | free webhook URL (channel → Integrations → Webhooks) → `DISCORD_WEBHOOK_URL` |
 | Community (Reddit, richer) | Reddit API via PRAW — adds scores/comments on top of the keyless RSS feed | Optional upgrade | app at [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) (approval queue) → `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` / `REDDIT_USER_AGENT` |
 | Resale (ask-side) | eBay Browse API — median deadstock (new/unworn) asks, decile-trimmed | **Live** (nightly) | done ✓ |
 | Resale (international) | eBay UK + DE marketplaces, USD-converted via ECB/Frankfurter | **Live** (nightly) | done ✓ (same eBay key) |
@@ -210,7 +211,7 @@ access is granted.
 - [x] Backtest study: do hype/momentum scores predict forward outcomes?
       (earns Wikipedia/press/boutiques their Hype Score weights)
 - [ ] Sold-price resale via partner APIs (StockX / eBay Marketplace Insights)
-- [ ] Launch Radar alerts (email / Discord webhook)
+- [x] Launch Radar alerts (Discord webhook — set `DISCORD_WEBHOOK_URL` to activate)
 - [ ] Public read API over the nightly payload
 
 ## Dashboard

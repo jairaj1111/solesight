@@ -32,6 +32,8 @@ def main() -> None:
     p.add_argument("--insights", action="store_true", help="marketing insights")
     p.add_argument("--offline-insights", action="store_true",
                    help="force the offline rule engine even if OPENAI_API_KEY is set")
+    p.add_argument("--radar-alerts", action="store_true",
+                   help="post new Launch Radar demand spikes to Discord")
     args = p.parse_args()
 
     db.init_db()
@@ -39,7 +41,7 @@ def main() -> None:
     run_all = args.all or not any(
         [args.promote, args.reddit, args.trends, args.social, args.resale, args.wiki,
          args.press, args.boutiques, args.sentiment,
-         args.forecast, args.insights, args.offline_insights]
+         args.forecast, args.insights, args.offline_insights, args.radar_alerts]
     )
     want_insights = run_all or args.insights or args.offline_insights
 
@@ -51,7 +53,7 @@ def main() -> None:
 
     if run_all or args.promote:
         from solesight.insights import promotion
-        print("[1/11] Catalog auto-promotion (Discovery candidates -> tracked)")
+        print("[1/12] Catalog auto-promotion (Discovery candidates -> tracked)")
         try:
             added = promotion.run()
             if added:
@@ -67,13 +69,13 @@ def main() -> None:
         # fresh. That's fine: a same-night addition has zero history anyway.
     if run_all or args.reddit:
         from solesight.ingest import reddit
-        print("[2/11] Reddit ingestion"); reddit.run()
+        print("[2/12] Reddit ingestion"); reddit.run()
     if run_all or args.trends:
         from solesight.ingest import google_trends
-        print("[3/11] Google Trends ingestion"); google_trends.run()
+        print("[3/12] Google Trends ingestion"); google_trends.run()
     if run_all or args.social:
         from solesight.ingest import bluesky, mastodon, reddit_rss, social, tumblr
-        print("[4/11] Social + community ingestion (Bluesky/Mastodon/Reddit keyless)")
+        print("[4/12] Social + community ingestion (Bluesky/Mastodon/Reddit keyless)")
         for name, mod in (("bluesky", bluesky), ("mastodon", mastodon),
                           ("reddit-rss", reddit_rss)):
             try:
@@ -84,31 +86,40 @@ def main() -> None:
         _try_stage(social)   # YouTube buzz + comments (key-gated); IG/TikTok modeled
     if run_all or args.wiki:
         from solesight.ingest import wikipedia
-        print("[5/11] Wikipedia attention"); _try_stage(wikipedia)
+        print("[5/12] Wikipedia attention"); _try_stage(wikipedia)
     if run_all or args.press:
         from solesight.ingest import press
-        print("[6/11] Sneaker press coverage (keyless RSS)"); _try_stage(press)
+        print("[6/12] Sneaker press coverage (keyless RSS)"); _try_stage(press)
     if run_all or args.boutiques:
         from solesight.ingest import boutiques
-        print("[7/11] Boutique availability"); _try_stage(boutiques)
+        print("[7/12] Boutique availability"); _try_stage(boutiques)
     if run_all or args.resale:
         from solesight.ingest import resale
-        print("[8/11] Resale ingestion"); _try_stage(resale)
+        print("[8/12] Resale ingestion"); _try_stage(resale)
     if run_all or args.sentiment:
         from solesight.nlp import sentiment
-        print("[9/11] Sentiment scoring"); sentiment.run()
+        print("[9/12] Sentiment scoring"); sentiment.run()
     if run_all or args.forecast:
         from solesight.forecast import prophet_model
-        print("[10/11] Prophet forecasting"); prophet_model.run()
+        print("[10/12] Prophet forecasting"); prophet_model.run()
     if want_insights:
         if args.offline_insights or not config.OPENAI_API_KEY:
             from solesight.insights import rules
             why = ("forced by --offline-insights" if args.offline_insights
                    else "no OPENAI_API_KEY set")
-            print(f"[11/11] Insights: offline rule engine ({why})"); rules.run()
+            print(f"[11/12] Insights: offline rule engine ({why})"); rules.run()
         else:
             from solesight.insights import llm
-            print("[11/11] Insights: OpenAI"); llm.run()
+            print("[11/12] Insights: OpenAI"); llm.run()
+    if run_all or args.radar_alerts:
+        from solesight.insights import alerts
+        print("[12/12] Launch Radar alerts (Discord)")
+        if config.DISCORD_WEBHOOK_URL:
+            sent = alerts.run()
+            print(f"  radar-alerts: sent {len(sent)} new event(s)" if sent
+                  else "  radar-alerts: nothing new to post")
+        else:
+            print("  ! skipped: no DISCORD_WEBHOOK_URL set")
 
     print("Done.")
 

@@ -151,6 +151,13 @@ CREATE TABLE IF NOT EXISTS hype_history (
     hype          REAL NOT NULL,          -- composite 0-100 Hype Score that day
     PRIMARY KEY (model_slug, date)
 );
+
+CREATE TABLE IF NOT EXISTS radar_alerts (
+    model_slug    TEXT NOT NULL,
+    event_date    TEXT NOT NULL,          -- the demand event's peak date (Launch Radar)
+    sent_at       INTEGER NOT NULL,       -- unix time the webhook was sent
+    PRIMARY KEY (model_slug, event_date)
+);
 """
 
 

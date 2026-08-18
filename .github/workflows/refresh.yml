@@ -41,6 +41,7 @@ jobs:
       EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       TUMBLR_API_KEY: ${{ secrets.TUMBLR_API_KEY }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       # Scale guard: refresh at most N (stalest-first) models per nightly run,
       # so the catalog can grow without Google Trends rate-limit bursts.
       TRENDS_MAX_PER_RUN: "60"
@@ -112,6 +113,12 @@ jobs:
 
       - name: Regenerate insights (offline rule engine)
         run: python -m scripts.run_pipeline --offline-insights
+
+      - name: Post Launch Radar alerts (once DISCORD_WEBHOOK_URL is set)
+        id: radar-alerts
+        if: env.DISCORD_WEBHOOK_URL != ''
+        continue-on-error: true
+        run: python -m scripts.run_pipeline --radar-alerts
 
       - name: Rebuild site payload
         run: python -m scripts.build_site
@@ -186,6 +193,7 @@ jobs:
             [sentiment]="${{ steps.sentiment.outcome }}"
             [resale]="${{ steps.resale.outcome }}"
             [forecast]="${{ steps.forecast.outcome }}"
+            [radar-alerts]="${{ steps.radar-alerts.outcome }}"
             [commit]="${{ steps.commit.outcome }}"
           )
           failed=()

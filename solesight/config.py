@@ -76,6 +76,11 @@ STOCKX_API_KEY = os.getenv("STOCKX_API_KEY", "")     # StockX partner API
 # so live ingestion can purge demo data the moment real data starts flowing.
 SEED_TAG = 970000000
 
+# --- Launch Radar alerts ---
+# Discord incoming-webhook URL (free, no bot/app needed: a channel's
+# Integrations -> Webhooks settings). Unset skips alerting cleanly.
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
+
 # --- NLP ---
 SENTIMENT_MODEL = os.getenv(
     "SENTIMENT_MODEL", "cardiffnlp/twitter-roberta-base-sentiment-latest"
