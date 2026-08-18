@@ -51,7 +51,8 @@
    "aj3 cement"
   ],
   "retail": 210,
-  "image": "Air-Jordan-3-Retro-Black-Cement-2018"
+  "image": "Air-Jordan-3-Retro-Black-Cement-2018",
+  "materials": "Leather upper with elephant-print overlays, visible Air-Sole unit, rubber outsole."
  },
  {
   "slug": "aj11-concord",
@@ -104,7 +105,8 @@
    "dunk syracuse"
   ],
   "retail": 110,
-  "image": "Nike-Dunk-Low-SP-Syracuse"
+  "image": "Nike-Dunk-Low-SP-Syracuse",
+  "materials": "Leather upper, Zoom Air cushioning, vulcanized rubber outsole."
  },
  {
   "slug": "nike-af1-white",
@@ -118,7 +120,8 @@
    "triple white af1"
   ],
   "retail": 115,
-  "image": "Nike-Air-Force-1-Low-White-07"
+  "image": "Nike-Air-Force-1-Low-White-07",
+  "materials": "Leather upper, encapsulated Air-Sole unit, rubber outsole."
  },
  {
   "slug": "travis-scott-aj1-low",
@@ -213,7 +216,8 @@
    "samba og"
   ],
   "retail": 100,
-  "image": "adidas-Samba-OG-Cloud-White-Core-Black"
+  "image": "adidas-Samba-OG-Cloud-White-Core-Black",
+  "materials": "Leather and suede upper, gum rubber outsole."
  },
  {
   "slug": "adidas-gazelle",
@@ -226,7 +230,8 @@
    "gazelle"
   ],
   "retail": 100,
-  "image": "adidas-Gazelle-Indoor-College-Navy-Gum"
+  "image": "adidas-Gazelle-Indoor-College-Navy-Gum",
+  "materials": "Suede upper, rubber cupsole outsole."
  },
  {
   "slug": "nike-vomero-5",
@@ -239,7 +244,8 @@
    "zoom vomero"
   ],
   "retail": 160,
-  "image": "Nike-Zoom-Vomero-5-SP-Vast-Grey"
+  "image": "Nike-Zoom-Vomero-5-SP-Vast-Grey",
+  "materials": "Mesh and synthetic upper, dual Zoom Air cushioning, rubber outsole."
  },
  {
   "slug": "asics-gel-1130",
@@ -348,7 +354,8 @@
    "lost & found 1"
   ],
   "retail": 180,
-  "image": "Air-Jordan-1-Retro-High-OG-Lost-and-Found-PS"
+  "image": "Air-Jordan-1-Retro-High-OG-Lost-and-Found-PS",
+  "materials": "Leather upper with a deliberately aged, yellowed midsole; rubber cupsole outsole."
  },
  {
   "slug": "travis-scott-aj1-high",
@@ -388,7 +395,8 @@
    "aj4 thunder"
   ],
   "retail": 215,
-  "image": "Air-Jordan-4-Retro-Thunder-2023"
+  "image": "Air-Jordan-4-Retro-Thunder-2023",
+  "materials": "Nubuck and mesh upper, visible Air-Sole unit, rubber outsole."
  },
  {
   "slug": "aj5-fire-red",
@@ -452,7 +460,8 @@
    "jumpman jack"
   ],
   "retail": 160,
-  "image": "Air-Jordan-Jumpman-Jack-TR-Travis-Scott-University-Red"
+  "image": "Air-Jordan-Jumpman-Jack-TR-Travis-Scott-University-Red",
+  "materials": "Canvas upper with leather and nubuck overlays; rubber cupsole outsole."
  },
  {
   "slug": "air-max-1",
@@ -478,7 +487,8 @@
    "am90"
   ],
   "retail": 130,
-  "image": "Nike-Air-Max-90-Infrared-2020"
+  "image": "Nike-Air-Max-90-Infrared-2020",
+  "materials": "Layered mesh, leather, and synthetic upper, visible Max Air unit, rubber waffle outsole."
  },
  {
   "slug": "air-max-95",
@@ -530,7 +540,8 @@
    "p6000"
   ],
   "retail": 110,
-  "image": "Nike-P-6000-Metallic-Silver"
+  "image": "Nike-P-6000-Metallic-Silver",
+  "materials": "Mesh and synthetic overlay upper, foam midsole, rubber outsole."
  },
  {
   "slug": "nike-shox-tl",
@@ -557,7 +568,8 @@
    "cortez leather"
   ],
   "retail": 90,
-  "image": "Nike-Cortez-White-Black-Product"
+  "image": "Nike-Cortez-White-Black-Product",
+  "materials": "Leather and nylon upper, EVA midsole, rubber waffle outsole."
  },
  {
   "slug": "nike-killshot-2",
@@ -570,7 +582,8 @@
    "killshot"
   ],
   "retail": 90,
-  "image": "Nike-Killshot-2-Leather-Sail"
+  "image": "Nike-Killshot-2-Leather-Sail",
+  "materials": "Leather, suede, and nylon upper, rubber cupsole outsole."
  },
  {
   "slug": "blazer-mid-77",
@@ -674,7 +687,8 @@
    "adidas campus"
   ],
   "retail": 110,
-  "image": "adidas-Campus-00s-Core-Black"
+  "image": "adidas-Campus-00s-Core-Black",
+  "materials": "Suede upper, gum rubber outsole."
  },
  {
   "slug": "handball-spezial",
@@ -687,7 +701,8 @@
    "spezial"
   ],
   "retail": 100,
-  "image": "adidas-Handball-Spezial-Light-Blue"
+  "image": "adidas-Handball-Spezial-Light-Blue",
+  "materials": "Suede upper, gum rubber outsole."
  },
  {
   "slug": "adidas-superstar",
@@ -700,7 +715,8 @@
    "shell toe"
   ],
   "retail": 100,
-  "image": "adidas-Superstar-Cloud-White-Core-Black"
+  "image": "adidas-Superstar-Cloud-White-Core-Black",
+  "materials": "Leather upper with a rubber shell toe cap, herringbone rubber outsole."
  },
  {
   "slug": "forum-low",
@@ -820,7 +836,8 @@
    "new balance 574"
   ],
   "retail": 90,
-  "image": "New-Balance-574-Grey"
+  "image": "New-Balance-574-Grey",
+  "materials": "Suede and mesh upper, EVA midsole, rubber outsole."
  },
  {
   "slug": "nb-990v4",
@@ -844,7 +861,8 @@
    "990v6"
   ],
   "retail": 200,
-  "image": "New-Balance-990v6-Grey"
+  "image": "New-Balance-990v6-Grey",
+  "materials": "Pigskin suede and mesh upper, ENCAP and Fresh Foam midsole, rubber outsole."
  },
  {
   "slug": "nb-992",
@@ -871,7 +889,8 @@
    "new balance 993"
   ],
   "retail": 200,
-  "image": "New-Balance-993-MIU-Grey"
+  "image": "New-Balance-993-MIU-Grey",
+  "materials": "Pigskin suede and mesh upper, ENCAP midsole, rubber outsole."
  },
  {
   "slug": "nb-1906r",
@@ -884,7 +903,8 @@
    "nb 1906"
   ],
   "retail": 155,
-  "image": "New-Balance-1906R-Silver-Metallic-Sea-Salt"
+  "image": "New-Balance-1906R-Silver-Metallic-Sea-Salt",
+  "materials": "Open-hole mesh upper with synthetic overlays, ACTEVA LITE and N-ergy cushioning, ABZORB SBS heel pods."
  },
  {
   "slug": "nb-9060",
@@ -897,7 +917,8 @@
    "9060s"
   ],
   "retail": 150,
-  "image": "New-Balance-9060-Sea-Salt-White"
+  "image": "New-Balance-9060-Sea-Salt-White",
+  "materials": "Mesh upper with pigskin suede overlays, ABZORB and stability-web (SBS) cushioning."
  },
  {
   "slug": "gel-kayano-14",
@@ -1055,7 +1076,8 @@
    "salomon xt"
   ],
   "retail": 200,
-  "image": "Salomon-S-Lab-XT-6-Adv-Triple-Black"
+  "image": "Salomon-S-Lab-XT-6-Adv-Triple-Black",
+  "materials": "Abrasion-resistant mesh upper with welded synthetic overlays, Quicklace closure, EVA midsole."
  },
  {
   "slug": "salomon-acs-pro",
@@ -1080,7 +1102,8 @@
    "vans old school"
   ],
   "retail": 70,
-  "image": "Vans-Old-Skool-Black-White"
+  "image": "Vans-Old-Skool-Black-White",
+  "materials": "Canvas and suede upper, vulcanized rubber waffle outsole."
  },
  {
   "slug": "vans-sk8-hi",
@@ -1119,7 +1142,8 @@
    "chuck taylor 70"
   ],
   "retail": 85,
-  "image": "Converse-Chuck-Taylor-All-Star-70-Hi-Black-1"
+  "image": "Converse-Chuck-Taylor-All-Star-70-Hi-Black-1",
+  "materials": "Canvas upper, vulcanized rubber outsole, OrthoLite insole."
  },
  {
   "slug": "converse-one-star-pro",
@@ -1143,7 +1167,8 @@
    "cloudmonster"
   ],
   "retail": 170,
-  "image": "On-Running-Cloudmonster-Undyed-White"
+  "image": "On-Running-Cloudmonster-Undyed-White",
+  "materials": "Engineered mesh upper, stacked CloudTec cushioning pods, rubber outsole."
  },
  {
   "slug": "on-cloudtilt",
@@ -1181,7 +1206,8 @@
    "hoka bondi"
   ],
   "retail": 165,
-  "image": "Hoka-One-One-Bondi-8-Shifting-Sand"
+  "image": "Hoka-One-One-Bondi-8-Shifting-Sand",
+  "materials": "Engineered mesh upper, oversized EVA midsole, rubber outsole."
  },
  {
   "slug": "nike-lebron-23",
@@ -1259,7 +1285,8 @@
    "aj13 flint"
   ],
   "retail": 215,
-  "image": "Air-Jordan-13-Retro-Flint-2026"
+  "image": "Air-Jordan-13-Retro-Flint-2026",
+  "materials": "Leather upper with a translucent rubber outsole and reflective eyelets."
  },
  {
   "slug": "adidas-jellyfish-white",
