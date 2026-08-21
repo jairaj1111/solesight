@@ -996,7 +996,8 @@
    "palermo og"
   ],
   "retail": 80,
-  "image": "Puma-Palermo-Archive-Green"
+  "image": "Puma-Palermo-Archive-Green",
+  "materials": "Suede upper with a leather Formstrip and signature T-toe, gum rubber outsole."
  },
  {
   "slug": "puma-speedcat",
@@ -1361,42 +1362,58 @@
  },
  {
   "slug": "air-jordan-5",
-  "name": "Air Jordan 5",
+  "name": "Air Jordan 5 Black University Blue",
   "brand": "Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 5",
+  "trends_term": "Air Jordan 5 Black University Blue",
   "keywords": [
-   "air jordan 5"
-  ]
+   "air jordan 5",
+   "jordan 5 university blue"
+  ],
+  "retail": 210,
+  "image": "Air-Jordan-5-Retro-Black-University-Blue-2026",
+  "materials": "Nubuck and mesh upper, visible Air-Sole unit in a translucent midsole, reflective 3M tongue."
  },
  {
   "slug": "air-jordan-6",
-  "name": "Air Jordan 6",
+  "name": "Air Jordan 6 Oreo",
   "brand": "Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 6",
+  "trends_term": "Air Jordan 6 Oreo",
   "keywords": [
-   "air jordan 6"
-  ]
+   "air jordan 6",
+   "jordan 6 oreo"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-6-Retro-Oreo-2026",
+  "materials": "Leather upper with suede panels, visible Air-Sole unit, rubber outsole with the signature spoiler heel tab."
  },
  {
   "slug": "nike-kobe-3-low-protro",
-  "name": "Nike Kobe 3 Low Protro",
+  "name": "Nike Kobe 3 Low Protro Grinch",
   "brand": "Nike",
-  "category": "lifestyle",
-  "trends_term": "Nike Kobe 3 Low Protro",
+  "category": "basketball",
+  "trends_term": "Nike Kobe 3 Low Protro Grinch",
   "keywords": [
-   "nike kobe 3 low protro"
-  ]
+   "nike kobe 3 low protro",
+   "kobe 3 grinch"
+  ],
+  "retail": 190,
+  "image": "nike-kobe-3-low-protro-grinch",
+  "materials": "Mesh upper with TPU side-panel overlays, low-profile full-length Zoom Air cushioning, rubber outsole."
  },
  {
   "slug": "air-jordan-12",
-  "name": "Air Jordan 12",
+  "name": "Air Jordan 12 Sumo",
   "brand": "Jordan",
   "category": "basketball",
-  "trends_term": "Air Jordan 12",
+  "trends_term": "Air Jordan 12 Sumo",
   "keywords": [
-   "air jordan 12"
-  ]
+   "air jordan 12",
+   "jordan 12 sumo"
+  ],
+  "retail": 215,
+  "image": "Air-Jordan-12-Retro-Sumo",
+  "materials": "Leather and suede upper with overlays, full-length Zoom Air cushioning, carbon fiber shank."
  }
 ]
