@@ -283,6 +283,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
   border-top: 1px solid var(--line); }
 .footer-word { font-family: var(--serif); font-size: 2.4rem; }
 .footer p { color: var(--ink-3); font-size: .84rem; margin-top: 6px; }
+.footer-credit { font-size: .72rem; letter-spacing: .04em; margin-top: 18px; }
 
 /* ─────────────── detail sheet ─────────────── */
 .sheet-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(20,19,15,.42);
