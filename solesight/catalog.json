@@ -1415,5 +1415,25 @@
   "retail": 215,
   "image": "Air-Jordan-12-Retro-Sumo",
   "materials": "Leather and suede upper with overlays, full-length Zoom Air cushioning, carbon fiber shank."
+ },
+ {
+  "slug": "air-jordan-11",
+  "name": "Air Jordan 11",
+  "brand": "Jordan",
+  "category": "basketball",
+  "trends_term": "Air Jordan 11",
+  "keywords": [
+   "air jordan 11"
+  ]
+ },
+ {
+  "slug": "nike-mind-001",
+  "name": "Nike Mind 001",
+  "brand": "Nike",
+  "category": "lifestyle",
+  "trends_term": "Nike Mind 001",
+  "keywords": [
+   "nike mind 001"
+  ]
  }
 ]
